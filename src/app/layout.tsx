@@ -22,7 +22,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang={locale} className={`${plexThai.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
-        <header className="flex items-center justify-between gap-4 border-b border-current/10 px-4 py-3">
+        <header className="flex items-center justify-between gap-4 border-b border-border bg-surface px-4 py-3">
           <Link href="/" className="font-semibold">
             {t.appName}
           </Link>
