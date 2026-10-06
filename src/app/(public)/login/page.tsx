@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { SiteHeader } from "@/components/site-header";
 import { getDictionary } from "@/lib/i18n";
 import { getOfficer } from "@/lib/supabase/server";
 import { LoginForm } from "./login-form";
@@ -8,9 +9,14 @@ export default async function LoginPage() {
   const { t } = await getDictionary();
 
   return (
-    <main className="mx-auto w-full max-w-sm px-4 py-12">
-      <h1 className="mb-6 text-2xl font-semibold">{t.login.title}</h1>
-      <LoginForm t={t.login} />
-    </main>
+    <>
+      <SiteHeader
+        width="max-w-sm"
+        banner={<h1 className="pb-1 font-display text-2xl font-bold">{t.login.title}</h1>}
+      />
+      <main className="mx-auto w-full max-w-sm px-4 py-8">
+        <LoginForm t={t.login} />
+      </main>
+    </>
   );
 }

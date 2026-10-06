@@ -17,7 +17,7 @@ export default async function MembersPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <h1 className="text-2xl font-semibold">{t.members.title}</h1>
+      <h1 className="font-display text-2xl font-bold">{t.members.title}</h1>
 
       <AddMembersForm t={t.members} />
 

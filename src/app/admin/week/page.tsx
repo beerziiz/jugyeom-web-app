@@ -23,25 +23,32 @@ export default async function WeekPage({ searchParams }: PageProps<"/admin/week"
         .order("ign"),
       supabase
         .from("content_types")
-        .select("id, name_en, name_th, has_score, score_label")
+        .select("id, key, name_en, name_th, has_score, score_label, default_runs")
         .eq("active", true)
         .order("sort_order"),
       supabase.from("periods").select("id").eq("week_start", weekStart).maybeSingle(),
       supabase.from("settings").select("miss_threshold").maybeSingle(),
     ]);
 
-  const { data: entries } = period
-    ? await supabase
-        .from("entries")
-        .select("member_id, content_type_id, missed_count, score")
-        .eq("period_id", period.id)
-    : { data: [] };
+  const [{ data: entries }, { data: runs }] = period
+    ? await Promise.all([
+        supabase
+          .from("entries")
+          .select("member_id, content_type_id, missed_count, score")
+          .eq("period_id", period.id),
+        supabase.from("period_contents").select("content_type_id, runs_held").eq("period_id", period.id),
+      ])
+    : [{ data: [] }, { data: [] }];
+
+  const runsByContent = new Map((runs ?? []).map((r) => [r.content_type_id, r.runs_held]));
 
   const gridContents: GridContent[] = (contents ?? []).map((c) => ({
     id: c.id,
     name: locale === "th" ? c.name_th : c.name_en,
+    key: c.key,
     hasScore: c.has_score,
     scoreLabel: c.score_label,
+    runs: runsByContent.get(c.id) ?? c.default_runs ?? 1,
   }));
 
   const gridEntries: GridEntry[] = (entries ?? []).map((e) => ({
@@ -55,7 +62,7 @@ export default async function WeekPage({ searchParams }: PageProps<"/admin/week"
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold">{t.week.title}</h1>
+          <h1 className="font-display text-2xl font-bold">{t.week.title}</h1>
           <p className="text-muted tabular-nums">
             {t.week.weekOf} {weekStart} – {end}
           </p>

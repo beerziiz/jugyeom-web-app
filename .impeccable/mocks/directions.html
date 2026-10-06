@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jugyeom Directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Trirong:wght@600;700&family=Kanit:ital,wght@0,500;0,700;1,700&family=Mitr:wght@400;500;600&family=Prompt:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F3F4F2; --fg: #1C1E21; --muted: #5B6168; --line: #D9DCD8; --card: #FFFFFF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #141518; --fg: #ECEDEF; --muted: #A2A7AE; --line: #2C2F34; --card: #1C1E22; }
+  }
+  :root[data-theme="dark"] { --bg: #141518; --fg: #ECEDEF; --muted: #A2A7AE; --line: #2C2F34; --card: #1C1E22; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: Anuphan, system-ui, sans-serif; line-height: 1.55; }
+  .page { max-width: 1180px; margin: 0 auto; padding: 48px 16px 96px; }
+  .intro h1 { font-size: 2.1rem; line-height: 1.2; margin: 0 0 12px; letter-spacing: -0.01em; }
+  .intro p { max-width: 68ch; color: var(--muted); margin: 0 0 8px; }
+  .demo-note { display: inline-block; margin-top: 8px; font-size: .85rem; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+  .option { display: grid; grid-template-columns: 390px 1fr; gap: 48px; align-items: start; padding: 56px 0; border-top: 1px solid var(--line); }
+  .option:first-of-type { margin-top: 40px; }
+  .option > * { min-width: 0; }
+  .tag { font-size: .8rem; font-weight: 600; color: var(--muted); }
+  .tag.roll { color: #1F4D3A; } @media (prefers-color-scheme: dark) { .tag.roll { color: #8FD1AE; } }
+  .info h2 { font-size: 1.7rem; line-height: 1.25; margin: 4px 0 10px; }
+  .info .thesis { font-size: 1.1rem; margin: 0 0 20px; max-width: 56ch; }
+  .chips { display: flex; gap: 6px; margin: 0 0 22px; flex-wrap: wrap; }
+  .chips span { width: 34px; height: 34px; border-radius: 8px; border: 1px solid rgb(0 0 0 / .12); }
+  .info dl { margin: 0; display: grid; gap: 14px; max-width: 60ch; }
+  .info dt { font-weight: 600; font-size: .95rem; }
+  .info dd { margin: 2px 0 0; color: var(--muted); }
+  .info ul { margin: 4px 0 0; padding-left: 1.1em; color: var(--muted); }
+  .phone { width: 390px; height: 800px; border-radius: 36px; border: 10px solid #111; background: #111; overflow: hidden; box-shadow: 0 24px 48px -16px rgb(0 0 0 / .35); position: sticky; top: 24px; }
+  .screen { width: 100%; height: 100%; overflow-y: auto; scrollbar-width: none; }
+  .screen::-webkit-scrollbar { display: none; }
+  @media (max-width: 900px) {
+    .option { grid-template-columns: 1fr; gap: 24px; }
+    .phone { position: static; margin: 0 auto; width: min(390px, 100%); }
+  }
+
+  /* ───────── A. Guild Hall Board ───────── */
+  .a { --banner: #1F4D3A; --stone: #E4E7E2; --oak: #2A2420; --brass: #C9A227; --seal: #B3261E; --paper: #FBFBF8;
+       --gw: #2F6FB0; --cr: #9A6A2F; --ae: #6B4FA0; --ci: #3C8D5A;
+       background: var(--stone); color: var(--oak); font-family: Anuphan, sans-serif; min-height: 100%; }
+  .a header { background: var(--banner); color: #F1F5F2; padding: 18px 20px 30px; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 14px), 0 100%); }
+  .a header .row { display: flex; justify-content: space-between; align-items: center; font-size: .8rem; opacity: .85; }
+  .a header h1 { font-family: Trirong, serif; font-size: 1.6rem; margin: 6px 0 0; letter-spacing: .01em; }
+  .a header .wk { font-size: .85rem; opacity: .8; }
+  .a .notice { position: relative; background: var(--paper); margin: 4px 16px 0; padding: 22px 18px 16px; border-radius: 4px; box-shadow: 0 2px 0 rgb(42 36 32 / .08), 0 10px 20px -12px rgb(42 36 32 / .35); }
+  .a .pin { position: absolute; top: -7px; left: 50%; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #F3DC7A, var(--brass) 60%, #8C6E12); box-shadow: 0 2px 3px rgb(0 0 0 / .3); }
+  .a .who { display: flex; justify-content: space-between; align-items: baseline; }
+  .a .who b { font-family: Trirong, serif; font-size: 1.45rem; }
+  .a .who small { color: #6E655D; }
+  .a .verdict { margin: 10px 0 14px; padding: 10px 12px; border-radius: 4px; background: #EEF3EF; color: var(--banner); font-weight: 600; display: flex; justify-content: space-between; }
+  .a .verdict span:last-child { font-weight: 500; color: #4E5B53; }
+  .a .crow { padding: 10px 0; border-top: 1px dashed #D8D4CC; }
+  .a .crow .top { display: flex; justify-content: space-between; align-items: center; font-size: .92rem; }
+  .a .crow .name { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+  .a .crow .name i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .a .crow .score { font-variant-numeric: tabular-nums; color: #6E655D; font-size: .85rem; }
+  .a .seals { display: flex; gap: 5px; margin-top: 7px; }
+  .a .seal { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #B9B2A8; }
+  .a .seal.miss { border: none; background: radial-gradient(circle at 38% 35%, #D9473D, var(--seal) 55%, #7E1A14); box-shadow: inset 0 0 0 3px rgb(255 255 255 / .12); }
+  .a .limit { margin-top: 12px; font-size: .8rem; color: #6E655D; display: flex; align-items: center; gap: 8px; }
+  .a .limit .bar { flex: 1; height: 6px; background: #E5E1DA; border-radius: 3px; position: relative; }
+  .a .limit .bar b { position: absolute; inset: 0 auto 0 0; width: 66%; background: var(--seal); border-radius: 3px; }
+  .a .limit .bar u { position: absolute; top: -4px; bottom: -4px; right: 0; width: 2px; background: var(--oak); }
+  .a .scrub { margin: 22px 16px 0; display: flex; gap: 6px; overflow: hidden; }
+  .a .scrub span { flex: 1; text-align: center; font-size: .72rem; padding: 6px 0; border-radius: 4px; background: #D3D8D1; color: #4E5B53; font-variant-numeric: tabular-nums; }
+  .a .scrub span.on { background: var(--banner); color: #fff; }
+  .a h2 { font-family: Trirong, serif; font-size: 1.1rem; margin: 22px 20px 8px; }
+  .a .board { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px 28px; }
+  .a .mini { background: var(--paper); border-radius: 3px; padding: 12px 10px 10px; position: relative; box-shadow: 0 6px 12px -8px rgb(42 36 32 / .4); }
+  .a .mini:nth-child(odd) { transform: rotate(-.6deg); } .a .mini:nth-child(even) { transform: rotate(.5deg); }
+  .a .mini::before { content: ""; position: absolute; top: -4px; left: 50%; margin-left: -4px; width: 8px; height: 8px; border-radius: 50%; background: var(--brass); }
+  .a .mini.flag { outline: 2px solid var(--seal); }
+  .a .mini b { font-size: .92rem; display: block; }
+  .a .mini .s { display: flex; gap: 3px; margin-top: 6px; }
+  .a .mini .s i { width: 11px; height: 11px; border-radius: 50%; border: 1px solid #B9B2A8; }
+  .a .mini .s i.miss { border: none; background: var(--seal); }
+  .a .mini small { font-size: .72rem; color: var(--seal); font-weight: 600; }
+
+  /* ───────── B. Matchday Table ───────── */
+  .b { --navy: #0E1B2C; --navy2: #15263B; --chalk: #F4F6F8; --win: #2BB673; --draw: #F2A900; --loss: #E5484D; --dim: #8A9AB0;
+       background: var(--navy); color: var(--chalk); font-family: Anuphan, sans-serif; min-height: 100%; }
+  .b header { padding: 18px 20px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #22344C; }
+  .b header h1 { font-family: Kanit, sans-serif; font-style: italic; font-weight: 700; font-size: 1.35rem; margin: 0; letter-spacing: .02em; }
+  .b header span { font-size: .78rem; color: var(--dim); }
+  .b .mine { margin: 16px; padding: 16px; border-radius: 12px; background: linear-gradient(180deg, #1A3150, #142740); border: 1px solid #2B4566; }
+  .b .mine .r1 { display: flex; justify-content: space-between; align-items: center; }
+  .b .pos { font-family: Kanit, sans-serif; font-weight: 700; font-size: 2.6rem; line-height: 1; }
+  .b .pos small { font-size: .9rem; color: var(--dim); font-weight: 500; }
+  .b .mine b { font-size: 1.2rem; }
+  .b .form { display: flex; gap: 5px; margin-top: 12px; align-items: center; }
+  .b .form i { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: .62rem; font-weight: 700; color: var(--navy); }
+  .b .form i.g { background: var(--win); } .b .form i.a { background: var(--draw); } .b .form i.r { background: var(--loss); color: #fff; }
+  .b .form em { font-style: normal; font-size: .72rem; color: var(--dim); margin-right: 4px; }
+  .b .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+  .b .stats div { background: rgb(255 255 255 / .05); border-radius: 8px; padding: 8px 10px; }
+  .b .stats small { display: block; font-size: .7rem; color: var(--dim); }
+  .b .stats strong { font-family: Kanit, sans-serif; font-size: 1.2rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .b .stats .warnish { color: var(--draw); }
+  .b .tabs { display: flex; gap: 4px; margin: 4px 16px 10px; background: var(--navy2); border-radius: 8px; padding: 3px; }
+  .b .tabs span { flex: 1; text-align: center; padding: 7px 0; font-size: .8rem; border-radius: 6px; color: var(--dim); }
+  .b .tabs span.on { background: var(--chalk); color: var(--navy); font-weight: 600; }
+  .b table { width: calc(100% - 32px); margin: 0 16px 28px; border-collapse: collapse; font-size: .85rem; }
+  .b th { text-align: left; font-weight: 500; font-size: .7rem; color: var(--dim); padding: 6px 4px; border-bottom: 1px solid #22344C; }
+  .b td { padding: 10px 4px; border-bottom: 1px solid #1B2D44; font-variant-numeric: tabular-nums; }
+  .b td.n { text-align: right; } .b th.n { text-align: right; }
+  .b tr.me td { background: rgb(242 169 0 / .08); }
+  .b tr.zone td:first-child { box-shadow: inset 3px 0 0 var(--loss); }
+  .b .p { font-family: Kanit, sans-serif; width: 26px; color: var(--dim); }
+  .b .f { display: flex; gap: 2px; } .b .f i { width: 7px; height: 7px; border-radius: 50%; }
+  .b .f i.g { background: var(--win); } .b .f i.a { background: var(--draw); } .b .f i.r { background: var(--loss); }
+  .b .zone-label { margin: -18px 16px 24px; font-size: .72rem; color: var(--loss); }
+
+  /* ───────── C. Hero Roster ───────── */
+  .c { --ink: #2B2340; --lilac: #ECE6F8; --mint: #D6F1E3; --coral: #FF6F61; --sky: #DCEBFF; --butter: #FFF1C9;
+       background: var(--lilac); color: var(--ink); font-family: Mitr, sans-serif; min-height: 100%; }
+  .c header { padding: 18px 20px 6px; display: flex; justify-content: space-between; align-items: center; }
+  .c header h1 { font-size: 1.3rem; font-weight: 600; margin: 0; }
+  .c header span { font-size: .78rem; opacity: .7; }
+  .c .hero { margin: 10px 16px 0; background: #fff; border-radius: 22px; padding: 16px; box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--ink); position: relative; overflow: hidden; }
+  .c .hero .art { height: 130px; border-radius: 16px; background: var(--mint); display: grid; place-items: center; position: relative; }
+  .c .avatar { width: 84px; height: 84px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 2rem; font-weight: 600; box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--ink); }
+  .c .rank { position: absolute; top: 10px; left: 10px; background: var(--ink); color: #fff; font-size: .78rem; padding: 2px 10px; border-radius: 999px; }
+  .c .stars { position: absolute; top: 10px; right: 12px; font-size: .78rem; background: #fff; padding: 2px 10px; border-radius: 999px; }
+  .c .hero h2 { margin: 12px 0 0; font-size: 1.35rem; font-weight: 600; text-align: center; }
+  .c .hero .role { text-align: center; font-size: .82rem; opacity: .7; margin: 0; }
+  .c .meter { margin: 12px 0 4px; display: flex; gap: 6px; }
+  .c .meter span { flex: 1; height: 12px; border-radius: 6px; background: #EEE9F7; }
+  .c .meter span.on { background: var(--coral); }
+  .c .meter-l { font-size: .8rem; text-align: center; }
+  .c .attrs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .c .attrs div { border-radius: 12px; padding: 8px 10px; font-size: .78rem; }
+  .c .attrs strong { display: block; font-size: 1rem; font-weight: 500; }
+  .c h3 { font-size: 1rem; font-weight: 600; margin: 24px 20px 10px; display: flex; justify-content: space-between; }
+  .c h3 small { font-weight: 400; opacity: .7; font-size: .78rem; }
+  .c .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 16px 28px; }
+  .c .plate { background: #fff; border-radius: 16px; padding: 10px 6px 8px; text-align: center; box-shadow: 0 0 0 2px var(--ink); position: relative; }
+  .c .plate .av { width: 46px; height: 46px; margin: 0 auto; border-radius: 50%; display: grid; place-items: center; font-weight: 600; }
+  .c .plate b { display: block; font-weight: 500; font-size: .82rem; margin-top: 4px; }
+  .c .plate small { font-size: .68rem; opacity: .7; }
+  .c .plate .rib { position: absolute; top: 6px; right: -4px; background: var(--coral); color: #fff; font-size: .62rem; padding: 1px 6px; border-radius: 4px 0 0 4px; }
+  .c .plate.gone { filter: grayscale(1); opacity: .55; }
+
+  /* ───────── D. Friendly Pocket App ───────── */
+  .d { --ground: #F1ECE6; --ink: #2D2A26; --soft: #77706A; --act: #3D5AFE; --ok: #1E8E5A; --warn: #C2410C;
+       background: var(--ground); color: var(--ink); font-family: Prompt, sans-serif; min-height: 100%; position: relative; padding-bottom: 76px; }
+  .d header { padding: 22px 20px 8px; }
+  .d header small { color: var(--soft); font-size: .82rem; }
+  .d header h1 { margin: 2px 0 0; font-size: 1.5rem; font-weight: 600; }
+  .d .card { background: #fff; border-radius: 22px; margin: 12px 16px; padding: 18px; }
+  .d .big { display: flex; align-items: center; gap: 16px; }
+  .d .ring { width: 78px; height: 78px; border-radius: 50%; background: conic-gradient(var(--warn) 0 66%, #EFE9E2 0); display: grid; place-items: center; flex: none; }
+  .d .ring span { width: 60px; height: 60px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 1.3rem; font-weight: 600; }
+  .d .big p { margin: 0; color: var(--soft); font-size: .88rem; }
+  .d .big strong { font-size: 1.1rem; display: block; color: var(--ink); }
+  .d .list div { display: flex; justify-content: space-between; padding: 11px 0; border-top: 1px solid #F0EBE5; font-size: .92rem; }
+  .d .list div:first-child { border-top: none; }
+  .d .list em { font-style: normal; color: var(--soft); }
+  .d .list .bad { color: var(--warn); font-weight: 500; }
+  .d .btn { display: block; width: 100%; text-align: center; background: var(--act); color: #fff; border-radius: 14px; padding: 12px; font-weight: 500; margin-top: 8px; }
+  .d h2 { font-size: 1rem; margin: 20px 20px 0; font-weight: 600; }
+  .d .warnrow { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-top: 1px solid #F0EBE5; }
+  .d .warnrow:first-child { border-top: none; }
+  .d .pill { font-size: .75rem; padding: 3px 10px; border-radius: 999px; background: #FDEBDD; color: var(--warn); }
+  .d nav { position: absolute; bottom: 0; left: 0; right: 0; height: 66px; background: #fff; display: flex; border-top: 1px solid #ECE6DF; }
+  .d nav span { flex: 1; display: grid; place-items: center; font-size: .78rem; color: var(--soft); }
+  .d nav span.on { color: var(--act); font-weight: 600; }
+  .d nav svg { width: 20px; height: 20px; display: block; margin: 0 auto 2px; }
+
+  /* ───────── E. Canon ───────── */
+  .e { --b0: #1E1F22; --b1: #2B2D31; --b2: #313338; --t: #F2F3F5; --t2: #B5BAC1; --blurple: #5865F2; --red: #F23F43; --green: #23A55A;
+       background: var(--b0); color: var(--t); font-family: "Noto Sans Thai", sans-serif; min-height: 100%; }
+  .e header { padding: 16px 18px; background: var(--b1); display: flex; align-items: center; gap: 10px; }
+  .e header i { width: 28px; height: 28px; border-radius: 8px; background: var(--blurple); }
+  .e header h1 { font-size: 1.05rem; margin: 0; }
+  .e .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 16px; }
+  .e .tile { background: var(--b1); border-radius: 8px; padding: 12px; }
+  .e .tile small { color: var(--t2); font-size: .75rem; }
+  .e .tile strong { display: block; font-size: 1.5rem; }
+  .e .tile.red strong { color: var(--red); }
+  .e .me { margin: 0 16px; background: var(--b2); border-radius: 8px; padding: 12px; border: 1px solid var(--blurple); font-size: .88rem; }
+  .e table { width: calc(100% - 32px); margin: 16px; border-collapse: collapse; font-size: .82rem; background: var(--b1); border-radius: 8px; overflow: hidden; }
+  .e th { text-align: left; padding: 8px 10px; color: var(--t2); font-weight: 500; font-size: .72rem; background: var(--b2); }
+  .e td { padding: 9px 10px; border-top: 1px solid #3A3C42; }
+  .e .badge { font-size: .68rem; padding: 2px 6px; border-radius: 4px; }
+  .e .badge.r { background: rgb(242 63 67 / .2); color: #FF8A8C; } .e .badge.g { background: rgb(35 165 90 / .2); color: #6BD397; }
+</style>
+</head>
+<body>
+<main class="page">
+  <section class="intro">
+    <h1>Jugyeom: เลือกหน้าตาของเว็บกิลด์</h1>
+    <p>ทุกแบบด้านล่างคือหน้าเดียวกัน: หน้าที่สมาชิกเปิดจากลิงก์ใน Discord โดยเห็น <b>สถานะของตัวเองก่อน</b> (ขาดกี่ครั้ง, เตือนหรือไม่, คะแนน) แล้วตามด้วยภาพรวมทั้งกิลด์แบบเปิดเผยทั้งหมด</p>
+    <p>ต่างกันแค่ "โลก" ของดีไซน์: สี ตัวอักษร ความหนาแน่น และลูกเล่นหลักหนึ่งอย่าง เลื่อนดูในกรอบโทรศัพท์ได้</p>
+    <span class="demo-note">ชื่อและตัวเลขทั้งหมดเป็นข้อมูลตัวอย่าง</span>
+  </section>
+
+  <!-- A -->
+  <section class="option">
+    <div class="phone"><div class="screen a" id="mA"></div></div>
+    <div class="info">
+      <div class="tag roll">ตัวเลือกจากการสุ่ม</div>
+      <h2>A · Guild Hall Board (กระดานประกาศกิลด์)</h2>
+      <p class="thesis">สัปดาห์ของสมาชิกแต่ละคนคือ "ใบประกาศ" ที่ปักหมุดบนกระดานกิลด์ ทุกครั้งที่ขาดจะถูกประทับ <b>ตราครั่งสีแดง</b> ลงไป</p>
+      <div class="chips"><span style="background:#1F4D3A"></span><span style="background:#E4E7E2"></span><span style="background:#2A2420"></span><span style="background:#C9A227"></span><span style="background:#B3261E"></span></div>
+      <dl>
+        <div><dt>ลูกเล่นหลัก</dt><dd>ตราครั่ง: วงกลมทึบสีแดง = ขาด, วงกลมโปร่ง = เข้าร่วม นับได้ด้วยตาทันทีว่าขาดกี่ครั้งจากทั้งหมดกี่รอบ พร้อมเส้นลิมิต 3 ครั้ง</dd></div>
+        <div><dt>เหมาะเพราะ</dt><dd>รู้สึกเป็น "กิลด์" ชัดเจน อบอุ่นแต่จริงจัง ตรงกับกิลด์แบบเป็นกันเองแต่มีวินัย</dd></div>
+        <div><dt>สิ่งที่ยืมมาจากตัวเลือกอื่น</dt><dd><ul><li>แต่ละคอนเทนต์มีสีประจำตัวเดียวกันทุกหน้า</li><li>แสดงความจุ: เข้าร่วมกี่รอบจากที่จัดกี่รอบ</li><li>แถบเลือกสัปดาห์ เลื่อนดูย้อนหลังได้ทั้งกระดาน</li></ul></dd></div>
+        <div><dt>ความเสี่ยง</dt><dd>ถ้าใส่ของแฟนตาซีมากเกินจะดูเป็นคอสตูม ต้องคุมให้ตราครั่งอยู่แค่ที่ตัวนับการขาด</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- B -->
+  <section class="option">
+    <div class="phone"><div class="screen b" id="mB"></div></div>
+    <div class="info">
+      <div class="tag">ตัวเลือกที่ผมแนะนำ</div>
+      <h2>B · Matchday Table (ตารางคะแนนลีก)</h2>
+      <p class="thesis">กิลด์เป็นตารางลีกฟุตบอล สมาชิกแต่ละคนคือหนึ่งแถว แต่ละสัปดาห์คือจุด "ฟอร์ม" หนึ่งจุด</p>
+      <div class="chips"><span style="background:#0E1B2C"></span><span style="background:#F4F6F8"></span><span style="background:#2BB673"></span><span style="background:#F2A900"></span><span style="background:#E5484D"></span></div>
+      <dl>
+        <div><dt>ลูกเล่นหลัก</dt><dd>ฟอร์ม 6 สัปดาห์ล่าสุด: เขียว = เข้าครบ, เหลือง = ขาดบ้าง, แดง = โดนเตือน และ "โซนตกชั้น" สำหรับคนที่เกินลิมิต</dd></div>
+        <div><dt>เหมาะเพราะ</dt><dd>คนไทยคุ้นกับตารางบอลมาก อ่านเร็ว เห็นอันดับและแนวโน้มทันที</dd></div>
+        <div><dt>ความเสี่ยง</dt><dd>คุ้นตาที่สุด หน้าตาคล้ายแอปกีฬาและแดชบอร์ดทั่วไป ไม่ค่อยมีเอกลักษณ์</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- C -->
+  <section class="option">
+    <div class="phone"><div class="screen c" id="mC"></div></div>
+    <div class="info">
+      <div class="tag">ตัวเลือกทางเลือก (สูสี)</div>
+      <h2>C · Hero Roster (หน้ารวมฮีโร่)</h2>
+      <p class="thesis">กิลด์เป็นหน้ารวมตัวละครแบบเกมกาชา สมาชิกแต่ละคนคือการ์ดฮีโร่ อดีตสมาชิกเป็นสีเทา</p>
+      <div class="chips"><span style="background:#2B2340"></span><span style="background:#ECE6F8"></span><span style="background:#D6F1E3"></span><span style="background:#FF6F61"></span><span style="background:#FFFFFF"></span></div>
+      <dl>
+        <div><dt>ลูกเล่นหลัก</dt><dd>การ์ดของคุณใหญ่ด้านบนเหมือนหน้าโปรไฟล์ฮีโร่ มีแถบ "ขาด" 3 ช่อง คนที่โดนเตือนมีริบบิ้นสีคอรัล</dd></div>
+        <div><dt>เหมาะเพราะ</dt><dd>ผู้เล่น Seven Knights คุ้นกับหน้ารวมฮีโร่ทุกวัน รู้สึกเป็น "ของเรา" มากที่สุด</dd></div>
+        <div><dt>ความเสี่ยง</dt><dd>สีพาสเทลน่ารักอาจทำให้คำเตือนหรือการเตะดูไม่จริงจัง</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- D -->
+  <section class="option">
+    <div class="phone"><div class="screen d" id="mD"></div></div>
+    <div class="info">
+      <div class="tag">ตัวเลือกทางเลือก (สูสี)</div>
+      <h2>D · Friendly Pocket App (แอปมือถือเป็นมิตร)</h2>
+      <p class="thesis">การ์ดมุมมน ข้อความเป็นกันเอง และสีสดหนึ่งสีที่ใช้เฉพาะปุ่มที่กดได้ มีแถบเมนูด้านล่าง</p>
+      <div class="chips"><span style="background:#F1ECE6"></span><span style="background:#FFFFFF"></span><span style="background:#2D2A26"></span><span style="background:#3D5AFE"></span></div>
+      <dl>
+        <div><dt>เหมาะเพราะ</dt><dd>ใช้มือเดียวบนมือถือสะดวกที่สุด อ่านง่าย ไม่ต้องเรียนรู้</dd></div>
+        <div><dt>ความเสี่ยง</dt><dd>ทั่วไปเกินไป ไม่มีอะไรบอกว่าเป็นกิลด์หรือเกม</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- E -->
+  <section class="option">
+    <div class="phone"><div class="screen e" id="mE"></div></div>
+    <div class="info">
+      <div class="tag">มาตรฐานทั่วไป</div>
+      <h2>E · Discord Bot Dashboard</h2>
+      <p class="thesis">แดชบอร์ดมืดแบบเว็บบอท Discord: การ์ดตัวเลขด้านบน ตามด้วยตารางสมาชิก สีม่วงบลูเปิล</p>
+      <div class="chips"><span style="background:#1E1F22"></span><span style="background:#2B2D31"></span><span style="background:#F2F3F5"></span><span style="background:#5865F2"></span></div>
+      <dl>
+        <div><dt>เหมาะเพราะ</dt><dd>คนใน Discord คุ้นเคยทันที ปลอดภัย</dd></div>
+        <div><dt>ความเสี่ยง</dt><dd>เหมือนแดชบอร์ดบอททุกตัว ไม่มีเอกลักษณ์ของ Jugyeom</dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<script>
+// ── Demo data (synthetic) ──
+const contents = [
+  { k: "gw", name: "กิลด์วอร์", runs: 3, missed: 0, score: "1.24M", label: "คะแนน" },
+  { k: "cr", name: "บุกปราสาท", runs: 7, missed: 1, score: "845K", label: "ดาเมจ" },
+  { k: "ae", name: "แอดเวนต์ เอ็กซ์เปดิชัน", runs: 2, missed: 1, score: "2.31M", label: "ดาเมจ" },
+  { k: "ci", name: "เช็กอิน / บริจาค", runs: 7, missed: 0, score: null },
+];
+const members = [
+  { n: "Rudy", m: 2, s: 4.40, f: "ggagaa", me: true },
+  { n: "Aria", m: 0, s: 6.12, f: "gggggg" },
+  { n: "Kaelen", m: 4, s: 2.05, f: "aarara" },
+  { n: "Mira", m: 1, s: 5.37, f: "ggaggg" },
+  { n: "Thorne", m: 3, s: 3.10, f: "garaar" },
+  { n: "Yuki", m: 0, s: 5.88, f: "gggagg" },
+  { n: "Bram", m: 0, s: 4.95, f: "gggggg" },
+  { n: "Selene", m: 1, s: 3.76, f: "agggag" },
+];
+const LIMIT = 3;
+const byScore = [...members].sort((a, b) => b.s - a.s);
+const rankOf = (n) => byScore.findIndex((x) => x.n === n) + 1;
+const me = members[0];
+const colors = { gw: "#2F6FB0", cr: "#9A6A2F", ae: "#6B4FA0", ci: "#3C8D5A" };
+const fmt = (s) => s.toFixed(2) + "M";
+
+// A
+document.getElementById("mA").innerHTML = `
+  <header>
+    <div class="row"><span>Jugyeom</span><span>EN</span></div>
+    <h1>กระดานกิลด์</h1>
+    <div class="wk">สัปดาห์ 6–12 ต.ค.</div>
+  </header>
+  <div class="notice"><div class="pin"></div>
+    <div class="who"><b>${me.n}</b><small>สมาชิก</small></div>
+    <div class="verdict"><span>ขาด ${me.m} จาก ${LIMIT}</span><span>อีก 1 ครั้งจะโดนเตือน</span></div>
+    ${contents.map((c) => `
+      <div class="crow">
+        <div class="top"><span class="name"><i style="background:${colors[c.k]}"></i>${c.name}</span>
+        <span class="score">${c.score ? c.label + " " + c.score : (c.runs - c.missed) + "/" + c.runs + " วัน"}</span></div>
+        <div class="seals">${Array.from({ length: c.runs }, (_, i) => `<span class="seal ${i < c.missed ? "miss" : ""}"></span>`).join("")}</div>
+      </div>`).join("")}
+    <div class="limit">ลิมิต<div class="bar"><b></b><u></u></div>${me.m}/${LIMIT}</div>
+  </div>
+  <div class="scrub">${["8 ก.ย.", "15 ก.ย.", "22 ก.ย.", "29 ก.ย.", "6 ต.ค."].map((w, i) => `<span class="${i === 4 ? "on" : ""}">${w}</span>`).join("")}</div>
+  <h2>โดนเตือนสัปดาห์นี้</h2>
+  <div class="board">${members.filter((x) => x.m >= LIMIT).map(mini).join("")}</div>
+  <h2>ทั้งกิลด์</h2>
+  <div class="board">${members.filter((x) => x.m < LIMIT).map(mini).join("")}</div>`;
+function mini(x) {
+  return `<div class="mini ${x.m >= LIMIT ? "flag" : ""}"><b>${x.n}</b>
+    <div class="s">${Array.from({ length: Math.max(LIMIT, x.m) }, (_, i) => `<i class="${i < x.m ? "miss" : ""}"></i>`).join("")}</div>
+    ${x.m >= LIMIT ? `<small>เตือน · ขาด ${x.m}</small>` : ""}</div>`;
+}
+
+// B
+document.getElementById("mB").innerHTML = `
+  <header><h1>JUGYEOM</h1><span>สัปดาห์ 6–12 ต.ค. · EN</span></header>
+  <div class="mine">
+    <div class="r1"><div><small style="color:#8A9AB0;font-size:.75rem">อันดับของคุณ</small><br><b>${me.n}</b></div>
+      <div class="pos">${rankOf(me.n)}<small>/${members.length}</small></div></div>
+    <div class="form"><em>ฟอร์ม</em>${me.f.split("").map((c) => `<i class="${c}">${c === "g" ? "✓" : c === "a" ? "–" : "!"}</i>`).join("")}</div>
+    <div class="stats">
+      <div><small>ขาด</small><strong class="warnish">${me.m}/${LIMIT}</strong></div>
+      <div><small>คะแนนรวม</small><strong>${fmt(me.s)}</strong></div>
+      <div><small>สถานะ</small><strong style="color:#2BB673">ปกติ</strong></div>
+    </div>
+  </div>
+  <div class="tabs"><span class="on">ตารางกิลด์</span><span>คอนเทนต์</span><span>ย้อนหลัง</span></div>
+  <table>
+    <tr><th>#</th><th>สมาชิก</th><th>ฟอร์ม</th><th class="n">ขาด</th><th class="n">คะแนน</th></tr>
+    ${byScore.map((x, i) => `<tr class="${x.me ? "me" : ""} ${x.m >= LIMIT ? "zone" : ""}">
+      <td class="p">${i + 1}</td><td>${x.n}</td>
+      <td><div class="f">${x.f.split("").map((c) => `<i class="${c}"></i>`).join("")}</div></td>
+      <td class="n" style="${x.m >= LIMIT ? "color:#E5484D;font-weight:600" : ""}">${x.m}</td><td class="n">${fmt(x.s)}</td></tr>`).join("")}
+  </table>
+  <div class="zone-label">▍แถบแดง = เกินลิมิต ${LIMIT} ครั้ง (โซนเตือน)</div>`;
+
+// C
+const tints = ["#D6F1E3", "#DCEBFF", "#FFF1C9", "#FFE0EC", "#E6E0FF"];
+document.getElementById("mC").innerHTML = `
+  <header><h1>Jugyeom</h1><span>6–12 ต.ค. · EN</span></header>
+  <div class="hero">
+    <div class="art"><span class="rank">อันดับ ${rankOf(me.n)}</span><span class="stars">${fmt(me.s)}</span><div class="avatar">R</div></div>
+    <h2>${me.n}</h2><p class="role">สมาชิก · เข้ากิลด์ มี.ค. 2026</p>
+    <div class="meter">${Array.from({ length: LIMIT }, (_, i) => `<span class="${i < me.m ? "on" : ""}"></span>`).join("")}</div>
+    <div class="meter-l">ขาด ${me.m} จาก ${LIMIT} · อีก 1 ครั้งจะโดนเตือน</div>
+    <div class="attrs">${contents.map((c, i) => `<div style="background:${tints[i]}">${c.name}<strong>${c.score ?? (c.runs - c.missed) + "/" + c.runs}</strong>${c.missed ? `ขาด ${c.missed}` : "ครบ"}</div>`).join("")}</div>
+  </div>
+  <h3>ฮีโร่ของกิลด์ <small>เรียงตามคะแนน</small></h3>
+  <div class="grid">${byScore.map((x, i) => `<div class="plate">
+    ${x.m >= LIMIT ? `<span class="rib">เตือน</span>` : ""}
+    <div class="av" style="background:${tints[i % 5]}">${x.n[0]}</div><b>${x.n}</b><small>#${i + 1} · ขาด ${x.m}</small></div>`).join("")}
+    <div class="plate gone"><div class="av" style="background:#eee">D</div><b>Dorin</b><small>ออกแล้ว</small></div>
+  </div>`;
+
+// D
+const icon = (p) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+document.getElementById("mD").innerHTML = `
+  <header><small>สวัสดี ${me.n} · 6–12 ต.ค.</small><h1>สัปดาห์นี้ของคุณ</h1></header>
+  <div class="card"><div class="big"><div class="ring"><span>${me.m}/${LIMIT}</span></div>
+    <div><strong>ยังปลอดภัย</strong><p>ขาดอีก 1 ครั้งจะโดนเตือน ลองเข้าบุกปราสาทให้ครบนะ</p></div></div></div>
+  <div class="card list">${contents.map((c) => `<div><span>${c.name}</span>${c.missed ? `<span class="bad">ขาด ${c.missed}</span>` : `<em>${c.score ?? "ครบ"}</em>`}</div>`).join("")}
+    <span class="btn">ดูย้อนหลังของฉัน</span></div>
+  <h2>โดนเตือนสัปดาห์นี้</h2>
+  <div class="card">${members.filter((x) => x.m >= LIMIT).map((x) => `<div class="warnrow"><span>${x.n}</span><span class="pill">ขาด ${x.m}</span></div>`).join("")}</div>
+  <nav><span class="on">${icon('<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>')}ฉัน</span>
+    <span>${icon('<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M15 15c3 0 6 1.5 6 4"/>')}กิลด์</span>
+    <span>${icon('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>')}สัปดาห์</span></nav>`;
+
+// E
+document.getElementById("mE").innerHTML = `
+  <header><i></i><h1>Jugyeom Dashboard</h1></header>
+  <div class="tiles">
+    <div class="tile"><small>สมาชิก</small><strong>${members.length}</strong></div>
+    <div class="tile red"><small>โดนเตือน</small><strong>${members.filter((x) => x.m >= LIMIT).length}</strong></div>
+    <div class="tile"><small>ขาดรวม</small><strong>${members.reduce((a, x) => a + x.m, 0)}</strong></div>
+    <div class="tile"><small>เข้าร่วมเฉลี่ย</small><strong>91%</strong></div>
+  </div>
+  <div class="me">คุณ: <b>${me.n}</b> · ขาด ${me.m}/${LIMIT} · อันดับ ${rankOf(me.n)}</div>
+  <table><tr><th>สมาชิก</th><th>ขาด</th><th>คะแนน</th><th>สถานะ</th></tr>
+    ${byScore.map((x) => `<tr><td>${x.n}</td><td>${x.m}</td><td>${fmt(x.s)}</td><td><span class="badge ${x.m >= LIMIT ? "r" : "g"}">${x.m >= LIMIT ? "เตือน" : "ปกติ"}</span></td></tr>`).join("")}
+  </table>`;
+</script>
+</body>
+</html>

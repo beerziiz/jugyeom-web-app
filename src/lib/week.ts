@@ -24,3 +24,15 @@ export function parseWeek(value: string | string[] | undefined): string {
   }
   return mondayOf(new Date());
 }
+
+/** "6–12 Oct" / "6–12 ต.ค." for a week starting on the given Monday. */
+export function formatWeek(weekStart: string, locale: "th" | "en"): { start: string; end: string; short: string } {
+  const fmt = new Intl.DateTimeFormat(locale === "th" ? "th-TH" : "en-GB", {
+    day: "numeric",
+    month: "short",
+    timeZone: "UTC",
+  });
+  const start = fmt.format(new Date(weekStart));
+  const end = fmt.format(new Date(weekEnd(weekStart)));
+  return { start, end, short: start };
+}

@@ -5,9 +5,17 @@ import { TriangleAlert } from "lucide-react";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { saveWeek } from "./actions";
 import { primaryButton } from "@/lib/ui";
+import { contentColor } from "@/lib/content";
 
 export type GridMember = { id: number; ign: string };
-export type GridContent = { id: number; name: string; hasScore: boolean; scoreLabel: string | null };
+export type GridContent = {
+  id: number;
+  key: string;
+  name: string;
+  hasScore: boolean;
+  scoreLabel: string | null;
+  runs: number;
+};
 export type GridEntry = { memberId: number; contentTypeId: number; missed: number; score: number | null };
 
 type Cell = { missed: string; score: string };
@@ -51,12 +59,20 @@ export function WeekGrid({
   threshold: number;
   t: Dictionary["week"];
 }) {
-  const [saved, setSaved] = useState(() => initialCells(members, contents, entries));
-  const [cells, setCells] = useState(saved);
+  const [saved, setSaved] = useState(() => ({
+    cells: initialCells(members, contents, entries),
+    runs: Object.fromEntries(contents.map((c) => [c.id, String(c.runs)])) as Record<number, string>,
+  }));
+  const [cells, setCells] = useState(saved.cells);
+  const [runs, setRuns] = useState(saved.runs);
   const [status, setStatus] = useState<"idle" | "saved" | "error">("idle");
   const [pending, startSave] = useTransition();
 
-  const dirty = useMemo(() => JSON.stringify(cells) !== JSON.stringify(saved), [cells, saved]);
+  const dirty = useMemo(
+    () => JSON.stringify({ cells, runs }) !== JSON.stringify(saved),
+    [cells, runs, saved],
+  );
+  const runsOf = (contentId: number) => toNumber(runs[contentId] ?? "") ?? 0;
 
   useEffect(() => {
     if (!dirty) return;
@@ -122,9 +138,10 @@ export function WeekGrid({
       }),
     );
     startSave(async () => {
-      const result = await saveWeek(weekStart, payload);
+      const runsPayload = contents.map((c) => ({ contentTypeId: c.id, runs: runsOf(c.id) }));
+      const result = await saveWeek(weekStart, payload, runsPayload);
       if (result.ok) {
-        setSaved(cells);
+        setSaved({ cells, runs });
         setStatus("saved");
       } else {
         setStatus("error");
@@ -151,7 +168,7 @@ export function WeekGrid({
         <table className="w-full border-collapse text-sm">
           <thead>
             <tr className="border-b border-border bg-surface-2">
-              <th rowSpan={2} className="sticky left-0 z-10 bg-surface-2 px-3 py-2 text-left font-medium">
+              <th rowSpan={3} className="sticky left-0 z-10 bg-surface-2 px-3 py-2 text-left font-medium">
                 {t.member}
               </th>
               {contents.map((c) => (
@@ -159,11 +176,12 @@ export function WeekGrid({
                   key={c.id}
                   colSpan={c.hasScore ? 2 : 1}
                   className="border-l border-border px-3 pt-2 text-center font-medium"
+                  style={{ boxShadow: `inset 0 3px 0 ${contentColor(c.key)}` }}
                 >
                   {c.name}
                 </th>
               ))}
-              <th rowSpan={2} className="border-l border-border px-3 py-2 text-right font-medium">
+              <th rowSpan={3} className="border-l border-border px-3 py-2 text-right font-medium">
                 {t.total}
               </th>
             </tr>
@@ -179,6 +197,26 @@ export function WeekGrid({
                 ),
               ])}
             </tr>
+            <tr className="border-b border-border bg-surface-2 text-xs text-muted">
+              {contents.map((c) => (
+                <th key={`${c.id}-r`} colSpan={c.hasScore ? 2 : 1} className="border-l border-border px-2 pb-2 font-normal">
+                  <label className="flex items-center justify-end gap-2">
+                    <span>{t.runsHeld}</span>
+                    <input
+                      inputMode="numeric"
+                      value={runs[c.id] ?? ""}
+                      onChange={(e) => {
+                        setStatus("idle");
+                        setRuns((prev) => ({ ...prev, [c.id]: e.target.value }));
+                      }}
+                      onFocus={(e) => e.target.select()}
+                      aria-label={`${c.name} ${t.runsHeld}`}
+                      className="w-12 rounded border border-border bg-surface px-2 py-1 text-right text-foreground tabular-nums focus:border-accent focus:outline-none"
+                    />
+                  </label>
+                </th>
+              ))}
+            </tr>
           </thead>
           <tbody>
             {members.map((m, rowIndex) => {
@@ -187,12 +225,12 @@ export function WeekGrid({
               return (
                 <tr
                   key={m.id}
-                  className={`border-b border-border last:border-b-0 ${over ? "bg-warn-bg" : ""}`}
+                  className={`border-b border-border last:border-b-0 ${over ? "bg-[color-mix(in_oklch,var(--seal)_14%,var(--surface))]" : ""}`}
                 >
                   <th
                     scope="row"
                     className={`sticky left-0 z-10 max-w-44 truncate px-3 py-1 text-left font-medium ${
-                      over ? "bg-warn-bg" : "bg-surface"
+                      over ? "bg-[color-mix(in_oklch,var(--seal)_14%,var(--surface))]" : "bg-surface"
                     }`}
                   >
                     {m.ign}
@@ -206,15 +244,18 @@ export function WeekGrid({
                         data-cell={`${rowIndex}-${colIndex}`}
                         inputMode={field === "missed" ? "numeric" : "decimal"}
                         aria-label={`${m.ign} ${c.name} ${field === "missed" ? t.missed : (c.scoreLabel ?? t.score)}`}
+                        title={field === "missed" && (toNumber(cells[key(m.id, c.id)].missed) ?? 0) > runsOf(c.id) ? t.overRuns : undefined}
                         value={cells[key(m.id, c.id)][field]}
                         onChange={(e) => update(m.id, c.id, field, e.target.value)}
                         onFocus={(e) => e.target.select()}
                         onPaste={(e) => handlePaste(e, rowIndex, c.id, field)}
                         onKeyDown={(e) => handleKeyDown(e, rowIndex, colIndex)}
                         className={`${cellInput} ${
-                          field === "missed" && (toNumber(cells[key(m.id, c.id)].missed) ?? 0) > 0
-                            ? "font-semibold text-warn"
-                            : ""
+                          field === "missed" && (toNumber(cells[key(m.id, c.id)].missed) ?? 0) > runsOf(c.id)
+                            ? "font-semibold text-danger underline decoration-wavy"
+                            : field === "missed" && (toNumber(cells[key(m.id, c.id)].missed) ?? 0) > 0
+                              ? "font-semibold text-warn"
+                              : ""
                         }`}
                       />
                     </td>

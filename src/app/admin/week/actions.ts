@@ -14,6 +14,7 @@ export type EntryInput = {
 export async function saveWeek(
   weekStartRaw: string,
   entries: EntryInput[],
+  runs: { contentTypeId: number; runs: number }[] = [],
 ): Promise<{ ok: boolean }> {
   const weekStart = parseWeek(weekStartRaw);
   const supabase = await createClient();
@@ -43,6 +44,18 @@ export async function saveWeek(
       entered_by: user.id,
     };
   });
+
+  if (runs.length) {
+    const { error } = await supabase.from("period_contents").upsert(
+      runs.map((r) => ({
+        period_id: period.id,
+        content_type_id: r.contentTypeId,
+        runs_held: Math.max(0, Math.min(31, Math.trunc(r.runs) || 0)),
+      })),
+      { onConflict: "period_id,content_type_id" },
+    );
+    if (error) return { ok: false };
+  }
 
   if (rows.length) {
     const { error } = await supabase

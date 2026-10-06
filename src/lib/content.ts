@@ -1,0 +1,27 @@
+// One flat colour per content type, used on every screen (board, member page, entry grid).
+// Keys match content_types.key in the database.
+
+export const contentColors: Record<string, string> = {
+  guild_war: "var(--c-guild-war)",
+  castle_rush: "var(--c-castle-rush)",
+  advent_expedition: "var(--c-advent)",
+  checkin_donation: "var(--c-checkin)",
+};
+
+export function contentColor(key: string) {
+  return contentColors[key] ?? "var(--muted)";
+}
+
+export function formatScore(value: number | null | undefined) {
+  if (value == null) return null;
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(2).replace(/\.?0+$/, "")}M`;
+  if (value >= 1_000) return `${(value / 1_000).toFixed(1).replace(/\.0$/, "")}K`;
+  return String(value);
+}
+
+const scoreLabelsTh: Record<string, string> = { Score: "คะแนน", Damage: "ดาเมจ", Points: "แต้ม" };
+
+export function scoreLabel(label: string | null, locale: "th" | "en", fallback: string) {
+  if (!label) return fallback;
+  return locale === "th" ? (scoreLabelsTh[label] ?? label) : label;
+}

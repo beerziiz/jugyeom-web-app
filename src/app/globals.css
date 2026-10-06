@@ -1,36 +1,64 @@
 @import "tailwindcss";
 
-/* Working tokens for the officer tools. The full visual direction is set in the design pass. */
+/*
+  Guild Hall Board — night hall (default).
+  Dark stone ground tinted green, banner-green header, warm-dark notice paper,
+  brass pins, wax-seal red reserved for misses and warnings.
+*/
 :root {
-  --background: oklch(0.985 0.003 250);
-  --foreground: oklch(0.22 0.02 260);
-  --surface: oklch(1 0 0);
-  --surface-2: oklch(0.96 0.006 250);
-  --border: oklch(0.89 0.008 250);
-  --muted: oklch(0.47 0.02 260);
-  --accent: oklch(0.5 0.15 265);
-  --accent-fg: oklch(0.99 0 0);
-  --warn: oklch(0.55 0.15 50);
-  --warn-bg: oklch(0.95 0.04 70);
-  --danger: oklch(0.53 0.19 27);
-  --ok: oklch(0.5 0.12 155);
+  color-scheme: dark;
+  --background: oklch(0.17 0.012 160);
+  --foreground: oklch(0.93 0.012 85);
+  --surface: oklch(0.215 0.012 120);
+  --surface-2: oklch(0.255 0.014 130);
+  --border: oklch(0.32 0.016 140);
+  --muted: oklch(0.72 0.014 100);
+
+  --banner: oklch(0.36 0.07 160);
+  --banner-deep: oklch(0.29 0.06 160);
+  --banner-fg: oklch(0.96 0.012 150);
+  --brass: oklch(0.76 0.13 88);
+  --brass-deep: oklch(0.55 0.11 80);
+  --seal: oklch(0.6 0.19 28);
+  --seal-deep: oklch(0.42 0.15 27);
+  --seal-bg: oklch(0.6 0.19 28 / 0.14);
+  --seal-lip: oklch(0.8 0.12 35);
+  --seal-empty: oklch(0.5 0.015 100);
+
+  --accent: var(--brass);
+  --accent-fg: oklch(0.2 0.03 80);
+  --warn: var(--seal);
+  --warn-bg: var(--seal-bg);
+  --danger: var(--seal);
+  --ok: oklch(0.78 0.12 155);
+
+  --c-guild-war: oklch(0.7 0.12 250);
+  --c-castle-rush: oklch(0.72 0.11 70);
+  --c-advent: oklch(0.7 0.12 300);
+  --c-checkin: oklch(0.74 0.12 155);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: oklch(0.17 0.01 260);
-    --foreground: oklch(0.93 0.005 250);
-    --surface: oklch(0.21 0.012 260);
-    --surface-2: oklch(0.25 0.014 260);
-    --border: oklch(0.32 0.015 260);
-    --muted: oklch(0.72 0.015 260);
-    --accent: oklch(0.72 0.13 265);
-    --accent-fg: oklch(0.17 0.02 265);
-    --warn: oklch(0.8 0.13 70);
-    --warn-bg: oklch(0.3 0.06 60);
-    --danger: oklch(0.72 0.16 25);
-    --ok: oklch(0.75 0.12 155);
-  }
+/* Day hall, kept for a later light-theme switch. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --background: oklch(0.92 0.006 140);
+  --foreground: oklch(0.25 0.015 60);
+  --surface: oklch(0.985 0.004 100);
+  --surface-2: oklch(0.95 0.006 120);
+  --border: oklch(0.86 0.008 120);
+  --muted: oklch(0.47 0.015 70);
+  --banner: oklch(0.38 0.07 160);
+  --banner-deep: oklch(0.32 0.06 160);
+  --accent: oklch(0.38 0.07 160);
+  --accent-fg: oklch(0.97 0.01 150);
+  --seal: oklch(0.5 0.18 28);
+  --seal-bg: oklch(0.5 0.18 28 / 0.1);
+  --seal-empty: oklch(0.7 0.012 90);
+  --ok: oklch(0.5 0.12 155);
+  --c-guild-war: oklch(0.5 0.13 250);
+  --c-castle-rush: oklch(0.52 0.1 65);
+  --c-advent: oklch(0.48 0.13 300);
+  --c-checkin: oklch(0.52 0.12 155);
 }
 
 @theme inline {
@@ -46,7 +74,14 @@
   --color-warn-bg: var(--warn-bg);
   --color-danger: var(--danger);
   --color-ok: var(--ok);
-  --font-sans: var(--font-plex-thai);
+  --color-banner: var(--banner);
+  --color-banner-deep: var(--banner-deep);
+  --color-banner-fg: var(--banner-fg);
+  --color-brass: var(--brass);
+  --color-seal: var(--seal);
+  --color-seal-bg: var(--seal-bg);
+  --font-sans: var(--font-anuphan);
+  --font-display: var(--font-trirong);
 }
 
 body {
@@ -54,29 +89,35 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
   line-break: strict;
+  font-variant-numeric: tabular-nums;
 }
 
 ::selection {
-  background: color-mix(in oklch, var(--accent) 28%, transparent);
+  background: oklch(0.76 0.13 88 / 0.35);
+  color: var(--foreground);
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--brass);
   outline-offset: 2px;
 }
 
 input,
 select,
 textarea {
-  caret-color: var(--accent);
-  accent-color: var(--accent);
+  caret-color: var(--brass);
+  accent-color: var(--brass);
 }
 
 a {
   text-underline-offset: 3px;
 }
 
-/* Hide number spinners: officers type values, spinners waste grid space. */
+html {
+  scrollbar-color: var(--border) var(--background);
+}
+
+/* Officers type values; spinners waste grid space. */
 input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
@@ -85,4 +126,30 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+/* ── Wax seals ── */
+.seal-mark {
+  filter: drop-shadow(0 1px 1px oklch(0 0 0 / 0.55));
+}
+
+/* ── Brass pin ── */
+.pin {
+  border-radius: 9999px;
+  background: radial-gradient(circle at 35% 30%, oklch(0.9 0.1 92), var(--brass) 55%, var(--brass-deep));
+  box-shadow: 0 2px 3px oklch(0 0 0 / 0.5);
+}
+
+/* ── Pennant banner edge ── */
+.pennant {
+  --notch: clamp(18px, 4.5vw, 64px);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - var(--notch)), 0 100%);
+}
+
+/* Notices on the board sit very slightly off-true, like pinned paper. */
+.board > :nth-child(3n + 1) { rotate: -0.5deg; }
+.board > :nth-child(3n + 2) { rotate: 0.35deg; }
+.board > :nth-child(3n) { rotate: -0.15deg; }
+@media (prefers-reduced-motion: reduce) {
+  .board > * { rotate: none; }
 }

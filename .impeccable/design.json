@@ -1,0 +1,564 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-06T11:56:04.244Z",
+  "title": "Design System: Jugyeom",
+  "extensions": {
+    "colorMeta": {
+      "stone": {
+        "role": "neutral",
+        "displayName": "Stone",
+        "canonical": "oklch(0.17 0.012 160)",
+        "tonalRamp": [
+          "oklch(0.15 0.012 160)",
+          "oklch(0.26 0.012 160)",
+          "oklch(0.37 0.012 160)",
+          "oklch(0.49 0.012 160)",
+          "oklch(0.6 0.012 160)",
+          "oklch(0.71 0.012 160)",
+          "oklch(0.83 0.012 160)",
+          "oklch(0.95 0.012 160)"
+        ],
+        "lightTheme": "oklch(0.92 0.006 140)"
+      },
+      "bone-ink": {
+        "role": "neutral",
+        "displayName": "Bone Ink",
+        "canonical": "oklch(0.93 0.012 85)",
+        "tonalRamp": [
+          "oklch(0.15 0.012 85)",
+          "oklch(0.26 0.012 85)",
+          "oklch(0.37 0.012 85)",
+          "oklch(0.49 0.012 85)",
+          "oklch(0.6 0.012 85)",
+          "oklch(0.71 0.012 85)",
+          "oklch(0.83 0.012 85)",
+          "oklch(0.95 0.012 85)"
+        ],
+        "lightTheme": "oklch(0.25 0.015 60)"
+      },
+      "notice-paper": {
+        "role": "neutral",
+        "displayName": "Notice Paper",
+        "canonical": "oklch(0.215 0.012 120)",
+        "tonalRamp": [
+          "oklch(0.15 0.012 120)",
+          "oklch(0.26 0.012 120)",
+          "oklch(0.37 0.012 120)",
+          "oklch(0.49 0.012 120)",
+          "oklch(0.6 0.012 120)",
+          "oklch(0.71 0.012 120)",
+          "oklch(0.83 0.012 120)",
+          "oklch(0.95 0.012 120)"
+        ],
+        "lightTheme": "oklch(0.985 0.004 100)"
+      },
+      "notice-paper-raised": {
+        "role": "neutral",
+        "displayName": "Notice Paper Raised",
+        "canonical": "oklch(0.255 0.014 130)",
+        "tonalRamp": [
+          "oklch(0.15 0.014 130)",
+          "oklch(0.26 0.014 130)",
+          "oklch(0.37 0.014 130)",
+          "oklch(0.49 0.014 130)",
+          "oklch(0.6 0.014 130)",
+          "oklch(0.71 0.014 130)",
+          "oklch(0.83 0.014 130)",
+          "oklch(0.95 0.014 130)"
+        ],
+        "lightTheme": "oklch(0.95 0.006 120)"
+      },
+      "hall-rule": {
+        "role": "neutral",
+        "displayName": "Hall Rule",
+        "canonical": "oklch(0.32 0.016 140)",
+        "tonalRamp": [
+          "oklch(0.15 0.016 140)",
+          "oklch(0.26 0.016 140)",
+          "oklch(0.37 0.016 140)",
+          "oklch(0.49 0.016 140)",
+          "oklch(0.6 0.016 140)",
+          "oklch(0.71 0.016 140)",
+          "oklch(0.83 0.016 140)",
+          "oklch(0.95 0.016 140)"
+        ],
+        "lightTheme": "oklch(0.86 0.008 120)"
+      },
+      "faded-ink": {
+        "role": "neutral",
+        "displayName": "Faded Ink",
+        "canonical": "oklch(0.72 0.014 100)",
+        "tonalRamp": [
+          "oklch(0.15 0.014 100)",
+          "oklch(0.26 0.014 100)",
+          "oklch(0.37 0.014 100)",
+          "oklch(0.49 0.014 100)",
+          "oklch(0.6 0.014 100)",
+          "oklch(0.71 0.014 100)",
+          "oklch(0.83 0.014 100)",
+          "oklch(0.95 0.014 100)"
+        ],
+        "lightTheme": "oklch(0.47 0.015 70)"
+      },
+      "banner-green": {
+        "role": "primary",
+        "displayName": "Banner Green",
+        "canonical": "oklch(0.36 0.07 160)",
+        "tonalRamp": [
+          "oklch(0.15 0.07 160)",
+          "oklch(0.26 0.07 160)",
+          "oklch(0.37 0.07 160)",
+          "oklch(0.49 0.07 160)",
+          "oklch(0.6 0.07 160)",
+          "oklch(0.71 0.07 160)",
+          "oklch(0.83 0.07 160)",
+          "oklch(0.95 0.07 160)"
+        ],
+        "lightTheme": "oklch(0.38 0.07 160)"
+      },
+      "banner-ink": {
+        "role": "primary",
+        "displayName": "Banner Ink",
+        "canonical": "oklch(0.96 0.012 150)",
+        "tonalRamp": [
+          "oklch(0.15 0.012 150)",
+          "oklch(0.26 0.012 150)",
+          "oklch(0.37 0.012 150)",
+          "oklch(0.49 0.012 150)",
+          "oklch(0.6 0.012 150)",
+          "oklch(0.71 0.012 150)",
+          "oklch(0.83 0.012 150)",
+          "oklch(0.95 0.012 150)"
+        ]
+      },
+      "brass": {
+        "role": "secondary",
+        "displayName": "Brass",
+        "canonical": "oklch(0.76 0.13 88)",
+        "tonalRamp": [
+          "oklch(0.15 0.13 88)",
+          "oklch(0.26 0.13 88)",
+          "oklch(0.37 0.13 88)",
+          "oklch(0.49 0.13 88)",
+          "oklch(0.6 0.13 88)",
+          "oklch(0.71 0.13 88)",
+          "oklch(0.83 0.13 88)",
+          "oklch(0.95 0.13 88)"
+        ]
+      },
+      "brass-deep": {
+        "role": "secondary",
+        "displayName": "Brass Deep",
+        "canonical": "oklch(0.55 0.11 80)",
+        "tonalRamp": [
+          "oklch(0.15 0.11 80)",
+          "oklch(0.26 0.11 80)",
+          "oklch(0.37 0.11 80)",
+          "oklch(0.49 0.11 80)",
+          "oklch(0.6 0.11 80)",
+          "oklch(0.71 0.11 80)",
+          "oklch(0.83 0.11 80)",
+          "oklch(0.95 0.11 80)"
+        ]
+      },
+      "brass-ink": {
+        "role": "secondary",
+        "displayName": "Brass Ink",
+        "canonical": "oklch(0.2 0.03 80)",
+        "tonalRamp": [
+          "oklch(0.15 0.03 80)",
+          "oklch(0.26 0.03 80)",
+          "oklch(0.37 0.03 80)",
+          "oklch(0.49 0.03 80)",
+          "oklch(0.6 0.03 80)",
+          "oklch(0.71 0.03 80)",
+          "oklch(0.83 0.03 80)",
+          "oklch(0.95 0.03 80)"
+        ]
+      },
+      "seal-red": {
+        "role": "tertiary",
+        "displayName": "Seal Red",
+        "canonical": "oklch(0.6 0.19 28)",
+        "tonalRamp": [
+          "oklch(0.15 0.19 28)",
+          "oklch(0.26 0.19 28)",
+          "oklch(0.37 0.19 28)",
+          "oklch(0.49 0.19 28)",
+          "oklch(0.6 0.19 28)",
+          "oklch(0.71 0.19 28)",
+          "oklch(0.83 0.19 28)",
+          "oklch(0.95 0.19 28)"
+        ],
+        "lightTheme": "oklch(0.5 0.18 28)"
+      },
+      "seal-red-deep": {
+        "role": "tertiary",
+        "displayName": "Seal Red Deep",
+        "canonical": "oklch(0.42 0.15 27)",
+        "tonalRamp": [
+          "oklch(0.15 0.15 27)",
+          "oklch(0.26 0.15 27)",
+          "oklch(0.37 0.15 27)",
+          "oklch(0.49 0.15 27)",
+          "oklch(0.6 0.15 27)",
+          "oklch(0.71 0.15 27)",
+          "oklch(0.83 0.15 27)",
+          "oklch(0.95 0.15 27)"
+        ]
+      },
+      "seal-wash": {
+        "role": "tertiary",
+        "displayName": "Seal Wash",
+        "canonical": "oklch(0.6 0.19 28 / 0.14)",
+        "tonalRamp": [
+          "oklch(0.15 0.19 28 / 0.14)",
+          "oklch(0.26 0.19 28 / 0.14)",
+          "oklch(0.37 0.19 28 / 0.14)",
+          "oklch(0.49 0.19 28 / 0.14)",
+          "oklch(0.6 0.19 28 / 0.14)",
+          "oklch(0.71 0.19 28 / 0.14)",
+          "oklch(0.83 0.19 28 / 0.14)",
+          "oklch(0.95 0.19 28 / 0.14)"
+        ],
+        "lightTheme": "oklch(0.5 0.18 28 / 0.1)"
+      },
+      "seal-lip": {
+        "role": "tertiary",
+        "displayName": "Seal Lip",
+        "canonical": "oklch(0.8 0.12 35)",
+        "tonalRamp": [
+          "oklch(0.15 0.12 35)",
+          "oklch(0.26 0.12 35)",
+          "oklch(0.37 0.12 35)",
+          "oklch(0.49 0.12 35)",
+          "oklch(0.6 0.12 35)",
+          "oklch(0.71 0.12 35)",
+          "oklch(0.83 0.12 35)",
+          "oklch(0.95 0.12 35)"
+        ]
+      },
+      "seal-empty": {
+        "role": "tertiary",
+        "displayName": "Seal Empty",
+        "canonical": "oklch(0.5 0.015 100)",
+        "tonalRamp": [
+          "oklch(0.15 0.015 100)",
+          "oklch(0.26 0.015 100)",
+          "oklch(0.37 0.015 100)",
+          "oklch(0.49 0.015 100)",
+          "oklch(0.6 0.015 100)",
+          "oklch(0.71 0.015 100)",
+          "oklch(0.83 0.015 100)",
+          "oklch(0.95 0.015 100)"
+        ],
+        "lightTheme": "oklch(0.7 0.012 90)"
+      },
+      "clear-green": {
+        "role": "tertiary",
+        "displayName": "Clear Green",
+        "canonical": "oklch(0.78 0.12 155)",
+        "tonalRamp": [
+          "oklch(0.15 0.12 155)",
+          "oklch(0.26 0.12 155)",
+          "oklch(0.37 0.12 155)",
+          "oklch(0.49 0.12 155)",
+          "oklch(0.6 0.12 155)",
+          "oklch(0.71 0.12 155)",
+          "oklch(0.83 0.12 155)",
+          "oklch(0.95 0.12 155)"
+        ],
+        "lightTheme": "oklch(0.5 0.12 155)"
+      },
+      "content-guild-war": {
+        "role": "content",
+        "displayName": "Guild War Blue",
+        "canonical": "oklch(0.7 0.12 250)",
+        "tonalRamp": [
+          "oklch(0.15 0.12 250)",
+          "oklch(0.26 0.12 250)",
+          "oklch(0.37 0.12 250)",
+          "oklch(0.49 0.12 250)",
+          "oklch(0.6 0.12 250)",
+          "oklch(0.71 0.12 250)",
+          "oklch(0.83 0.12 250)",
+          "oklch(0.95 0.12 250)"
+        ],
+        "lightTheme": "oklch(0.5 0.13 250)"
+      },
+      "content-castle-rush": {
+        "role": "content",
+        "displayName": "Castle Rush Amber",
+        "canonical": "oklch(0.72 0.11 70)",
+        "tonalRamp": [
+          "oklch(0.15 0.11 70)",
+          "oklch(0.26 0.11 70)",
+          "oklch(0.37 0.11 70)",
+          "oklch(0.49 0.11 70)",
+          "oklch(0.6 0.11 70)",
+          "oklch(0.71 0.11 70)",
+          "oklch(0.83 0.11 70)",
+          "oklch(0.95 0.11 70)"
+        ],
+        "lightTheme": "oklch(0.52 0.1 65)"
+      },
+      "content-advent": {
+        "role": "content",
+        "displayName": "Advent Violet",
+        "canonical": "oklch(0.7 0.12 300)",
+        "tonalRamp": [
+          "oklch(0.15 0.12 300)",
+          "oklch(0.26 0.12 300)",
+          "oklch(0.37 0.12 300)",
+          "oklch(0.49 0.12 300)",
+          "oklch(0.6 0.12 300)",
+          "oklch(0.71 0.12 300)",
+          "oklch(0.83 0.12 300)",
+          "oklch(0.95 0.12 300)"
+        ],
+        "lightTheme": "oklch(0.48 0.13 300)"
+      },
+      "content-checkin": {
+        "role": "content",
+        "displayName": "Check-in Green",
+        "canonical": "oklch(0.74 0.12 155)",
+        "tonalRamp": [
+          "oklch(0.15 0.12 155)",
+          "oklch(0.26 0.12 155)",
+          "oklch(0.37 0.12 155)",
+          "oklch(0.49 0.12 155)",
+          "oklch(0.6 0.12 155)",
+          "oklch(0.71 0.12 155)",
+          "oklch(0.83 0.12 155)",
+          "oklch(0.95 0.12 155)"
+        ],
+        "lightTheme": "oklch(0.52 0.12 155)"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page title inside the pennant header."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Member name on the large notice; officer page titles sit near it at 1.5rem."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Board section headings, followed by an Anuphan count."
+      },
+      "title-small": {
+        "displayName": "Title Small",
+        "purpose": "Names on mini notices."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "General text and the verdict strip; tabular figures and strict Thai line breaking."
+      },
+      "body-strong": {
+        "displayName": "Body Strong",
+        "purpose": "Content names in notice rows; the missed-of count."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Roles, scores, controls, officer tabs (at 500)."
+      },
+      "label-small": {
+        "displayName": "Label Small",
+        "purpose": "Week chips, mini notice counts, history verdicts."
+      }
+    },
+    "shadows": [
+      {
+        "name": "notice-lift",
+        "value": "0 2px 0 oklch(0 0 0 / 0.25), 0 18px 32px -18px oklch(0 0 0 / 0.8)",
+        "purpose": "Large notice: paper-thickness edge plus long soft fall-off."
+      },
+      {
+        "name": "mini-notice-lift",
+        "value": "0 10px 18px -12px oklch(0 0 0 / 0.9)",
+        "purpose": "Small notices on the board."
+      },
+      {
+        "name": "pin",
+        "value": "0 2px 3px oklch(0 0 0 / 0.5)",
+        "purpose": "Brass pin heads, with a radial brass gradient lit from upper left."
+      },
+      {
+        "name": "seal",
+        "value": "drop-shadow(0 1px 1px oklch(0 0 0 / 0.55))",
+        "purpose": "Filter on pressed wax seals only; hollow rings cast nothing."
+      },
+      {
+        "name": "menu",
+        "value": "0 8px 24px -6px rgb(0 0 0 / 0.25)",
+        "purpose": "Officer account dropdown."
+      }
+    ],
+    "motion": [
+      {
+        "name": "notice-hover",
+        "value": "translate 0 -2px + background-color, 200ms",
+        "purpose": "Mini notice lifts and raises its paper on hover."
+      },
+      {
+        "name": "control-transition",
+        "value": "colors / filter, 150ms default ease",
+        "purpose": "Buttons, chips, fields, history rows."
+      },
+      {
+        "name": "pinned-off-true",
+        "value": "rotate -0.5deg, 0.35deg, -0.15deg cycling by position",
+        "purpose": "Board notices only; removed under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ],
+    "themes": {
+      "default": "night hall (dark, :root)",
+      "provisional": "day hall (:root[data-theme=\"light\"]); no switch ships. Light values are recorded as colorMeta.<token>.lightTheme. In day hall the accent becomes banner green rather than brass."
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Officer primary action; brass fill.",
+      "html": "<button class=\"ds-btn-primary\">Save week</button>",
+      "css": ".ds-btn-primary { font-family: var(--font-anuphan), Anuphan, system-ui, sans-serif; display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: var(--accent-fg); padding: 8px 16px; border: none; border-radius: 6px; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: filter 150ms, opacity 150ms; } .ds-btn-primary:hover { filter: brightness(1.1); } .ds-btn-primary:active { filter: brightness(0.95); } .ds-btn-primary:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; } .ds-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Officer secondary action on paper.",
+      "html": "<button class=\"ds-btn-secondary\">Cancel</button>",
+      "css": ".ds-btn-secondary { font-family: var(--font-anuphan), Anuphan, system-ui, sans-serif; display: inline-flex; align-items: center; gap: 8px; background: var(--surface); color: var(--foreground); border: 1px solid var(--border); padding: 8px 12px; border-radius: 6px; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: background-color 150ms; } .ds-btn-secondary:hover { background: var(--surface-2); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }"
+    },
+    {
+      "name": "Quiet Button",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Low-emphasis inline action and the language switch.",
+      "html": "<button class=\"ds-btn-quiet\">English</button>",
+      "css": ".ds-btn-quiet { font-family: var(--font-anuphan), Anuphan, system-ui, sans-serif; background: none; border: none; color: var(--muted); padding: 4px 8px; border-radius: 6px; font-size: 0.875rem; cursor: pointer; transition: background-color 150ms, color 150ms; } .ds-btn-quiet:hover { background: var(--surface-2); color: var(--foreground); } .ds-btn-quiet:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Officer text and number input.",
+      "html": "<input class=\"ds-field\" type=\"text\" placeholder=\"IGN\" />",
+      "css": ".ds-field { font-family: var(--font-anuphan), Anuphan, system-ui, sans-serif; background: var(--surface); color: var(--foreground); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; font-size: 1rem; caret-color: var(--brass); transition: border-color 150ms; } .ds-field:hover { border-color: var(--muted); } .ds-field:focus { border-color: var(--accent); outline: none; }"
+    },
+    {
+      "name": "Week Scrubber",
+      "kind": "nav",
+      "refersTo": "week-chip",
+      "description": "Horizontal row of week chips; the active week is banner green.",
+      "html": "<nav class=\"ds-scrub\"><a href=\"#\">21 Sep</a><a href=\"#\">28 Sep</a><a href=\"#\" aria-current=\"page\">5 Oct</a></nav>",
+      "css": ".ds-scrub { font-family: var(--font-anuphan), Anuphan, system-ui, sans-serif; display: flex; gap: 6px; } .ds-scrub a { flex: 1; min-width: 4rem; text-align: center; padding: 8px; border-radius: 4px; font-size: 0.75rem; text-decoration: none; background: var(--surface); color: var(--muted); transition: background-color 150ms, color 150ms; } .ds-scrub a:hover { background: var(--surface-2); color: var(--foreground); } .ds-scrub a[aria-current=\"page\"] { background: var(--banner); color: var(--banner-fg); font-weight: 600; } .ds-scrub a:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }"
+    },
+    {
+      "name": "Name Pill",
+      "kind": "chip",
+      "refersTo": "name-pill",
+      "description": "First-visit picker: tap your own name.",
+      "html": "<button class=\"ds-name-pill\">QazanO</button>",
+      "css": ".ds-name-pill { font-family: var(--font-anuphan), Anuphan, system-ui, sans-serif; min-height: 44px; padding: 0 16px; border-radius: 9999px; border: 1px solid var(--border); background: var(--surface-2); color: var(--foreground); font-size: 0.875rem; cursor: pointer; transition: border-color 150ms, color 150ms; } .ds-name-pill:hover { border-color: var(--brass); color: var(--brass); } .ds-name-pill:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }"
+    },
+    {
+      "name": "Pennant Header",
+      "kind": "nav",
+      "refersTo": "pennant-header",
+      "description": "Public banner with a notched lower edge.",
+      "html": "<header class=\"ds-pennant\"><div class=\"ds-pennant-top\"><a href=\"#\">Jugyeom</a><button>English</button></div><h1>กระดานกิลด์</h1><p>สัปดาห์ 5 ต.ค. – 11 ต.ค.</p></header>",
+      "css": ".ds-pennant { --notch: clamp(18px, 4.5vw, 64px); font-family: var(--font-anuphan), Anuphan, system-ui, sans-serif; background: var(--banner); color: var(--banner-fg); padding: 0 16px calc(var(--notch) + 0.75rem); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - var(--notch)), 0 100%); } .ds-pennant-top { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; } .ds-pennant-top a { font-family: var(--font-trirong), Trirong, serif; font-weight: 700; color: color-mix(in oklch, var(--banner-fg) 85%, transparent); text-decoration: none; } .ds-pennant-top a:hover { color: var(--banner-fg); } .ds-pennant-top button { font-family: var(--font-anuphan), Anuphan, system-ui, sans-serif; background: none; border: none; border-radius: 6px; padding: 6px 10px; font-size: 0.875rem; color: color-mix(in oklch, var(--banner-fg) 80%, transparent); cursor: pointer; transition: background-color 150ms, color 150ms; } .ds-pennant-top button:hover { background: color-mix(in oklch, var(--banner-fg) 10%, transparent); color: var(--banner-fg); } .ds-pennant-top a:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; } .ds-pennant-top button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; } .ds-pennant h1 { font-family: var(--font-trirong), Trirong, serif; font-weight: 700; font-size: 2rem; line-height: 1.25; margin: 0; } .ds-pennant p { margin: 2px 0 0; color: color-mix(in oklch, var(--banner-fg) 80%, transparent); }"
+    },
+    {
+      "name": "Notice",
+      "kind": "card",
+      "refersTo": "notice",
+      "description": "The visitor's pinned week: name, verdict strip, content rows with seals, limit row.",
+      "html": "<article class=\"ds-notice\"><span class=\"ds-pin\"></span><header><h2>QazanO</h2><span>รองกิลด์</span></header><p class=\"ds-verdict\"><strong>ขาด 2 จาก 3</strong><span>ขาดอีก 1 ครั้งจะโดนเตือน</span></p><div class=\"ds-row\"><span class=\"ds-row-name\"><i style=\"background:var(--c-castle-rush)\"></i>บุกปราสาท</span><span class=\"ds-row-score\">ดาเมจ 100K</span></div><div class=\"ds-seals\"><svg class=\"ds-seal-mark\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\"><g transform=\"rotate(0 12 12)\"><path d=\"M21.77 10.66Q22.38 12.00 22.24 13.48Q22.09 14.96 21.11 16.10Q20.13 17.23 19.31 18.36Q18.49 19.49 17.38 20.43Q16.28 21.36 14.88 21.83Q13.48 22.31 12.06 21.90Q10.63 21.50 9.01 21.81Q7.38 22.11 6.23 21.05Q5.08 19.99 4.24 18.76Q3.39 17.53 2.90 16.17Q2.41 14.81 1.74 13.41Q1.07 12.00 1.40 10.49Q1.73 8.99 2.83 7.90Q3.93 6.81 4.56 5.48Q5.19 4.14 6.54 3.57Q7.89 3.00 9.18 2.19Q10.47 1.38 11.93 1.87Q13.39 2.35 14.88 2.39Q16.37 2.44 17.58 3.30Q18.79 4.16 19.51 5.43Q20.23 6.71 20.69 8.01Q21.16 9.31 21.77 10.66Z\" fill=\"var(--seal)\"/><path d=\"M21.77 10.66Q22.38 12.00 22.24 13.48Q22.09 14.96 21.11 16.10Q20.13 17.23 19.31 18.36Q18.49 19.49 17.38 20.43Q16.28 21.36 14.88 21.83Q13.48 22.31 12.06 21.90Q10.63 21.50 9.01 21.81Q7.38 22.11 6.23 21.05Q5.08 19.99 4.24 18.76Q3.39 17.53 2.90 16.17Q2.41 14.81 1.74 13.41Q1.07 12.00 1.40 10.49Q1.73 8.99 2.83 7.90Q3.93 6.81 4.56 5.48Q5.19 4.14 6.54 3.57Q7.89 3.00 9.18 2.19Q10.47 1.38 11.93 1.87Q13.39 2.35 14.88 2.39Q16.37 2.44 17.58 3.30Q18.79 4.16 19.51 5.43Q20.23 6.71 20.69 8.01Q21.16 9.31 21.77 10.66Z\" fill=\"none\" stroke=\"var(--seal-deep)\" stroke-width=\"0.8\" opacity=\"0.7\"/></g><circle cx=\"12\" cy=\"12\" r=\"6.9\" fill=\"var(--seal-deep)\" opacity=\"0.55\"/><circle cx=\"12\" cy=\"12\" r=\"6.9\" fill=\"none\" stroke=\"var(--seal-lip)\" stroke-width=\"0.9\" opacity=\"0.55\"/><text x=\"12\" y=\"15.6\" text-anchor=\"middle\" font-size=\"10\" font-weight=\"700\" fill=\"var(--seal-lip)\" style=\"font-family:var(--font-trirong),Trirong,serif\">J</text></svg><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"9.6\" fill=\"none\" stroke=\"var(--seal-empty)\" stroke-width=\"1.6\"/></svg><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"9.6\" fill=\"none\" stroke=\"var(--seal-empty)\" stroke-width=\"1.6\"/></svg><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"9.6\" fill=\"none\" stroke=\"var(--seal-empty)\" stroke-width=\"1.6\"/></svg></div><div class=\"ds-limit\"><span>ลิมิต</span><span class=\"ds-limit-seals\"><svg class=\"ds-seal-mark\" width=\"26\" height=\"26\" viewBox=\"0 0 24 24\"><g transform=\"rotate(191 12 12)\"><path d=\"M21.77 10.66Q22.38 12.00 22.24 13.48Q22.09 14.96 21.11 16.10Q20.13 17.23 19.31 18.36Q18.49 19.49 17.38 20.43Q16.28 21.36 14.88 21.83Q13.48 22.31 12.06 21.90Q10.63 21.50 9.01 21.81Q7.38 22.11 6.23 21.05Q5.08 19.99 4.24 18.76Q3.39 17.53 2.90 16.17Q2.41 14.81 1.74 13.41Q1.07 12.00 1.40 10.49Q1.73 8.99 2.83 7.90Q3.93 6.81 4.56 5.48Q5.19 4.14 6.54 3.57Q7.89 3.00 9.18 2.19Q10.47 1.38 11.93 1.87Q13.39 2.35 14.88 2.39Q16.37 2.44 17.58 3.30Q18.79 4.16 19.51 5.43Q20.23 6.71 20.69 8.01Q21.16 9.31 21.77 10.66Z\" fill=\"var(--seal)\"/><path d=\"M21.77 10.66Q22.38 12.00 22.24 13.48Q22.09 14.96 21.11 16.10Q20.13 17.23 19.31 18.36Q18.49 19.49 17.38 20.43Q16.28 21.36 14.88 21.83Q13.48 22.31 12.06 21.90Q10.63 21.50 9.01 21.81Q7.38 22.11 6.23 21.05Q5.08 19.99 4.24 18.76Q3.39 17.53 2.90 16.17Q2.41 14.81 1.74 13.41Q1.07 12.00 1.40 10.49Q1.73 8.99 2.83 7.90Q3.93 6.81 4.56 5.48Q5.19 4.14 6.54 3.57Q7.89 3.00 9.18 2.19Q10.47 1.38 11.93 1.87Q13.39 2.35 14.88 2.39Q16.37 2.44 17.58 3.30Q18.79 4.16 19.51 5.43Q20.23 6.71 20.69 8.01Q21.16 9.31 21.77 10.66Z\" fill=\"none\" stroke=\"var(--seal-deep)\" stroke-width=\"0.8\" opacity=\"0.7\"/></g><circle cx=\"12\" cy=\"12\" r=\"6.9\" fill=\"var(--seal-deep)\" opacity=\"0.55\"/><circle cx=\"12\" cy=\"12\" r=\"6.9\" fill=\"none\" stroke=\"var(--seal-lip)\" stroke-width=\"0.9\" opacity=\"0.55\"/><text x=\"12\" y=\"15.6\" text-anchor=\"middle\" font-size=\"10\" font-weight=\"700\" fill=\"var(--seal-lip)\" style=\"font-family:var(--font-trirong),Trirong,serif\">J</text></svg><svg class=\"ds-seal-mark\" width=\"26\" height=\"26\" viewBox=\"0 0 24 24\"><g transform=\"rotate(251 12 12)\"><path d=\"M21.77 10.66Q22.38 12.00 22.24 13.48Q22.09 14.96 21.11 16.10Q20.13 17.23 19.31 18.36Q18.49 19.49 17.38 20.43Q16.28 21.36 14.88 21.83Q13.48 22.31 12.06 21.90Q10.63 21.50 9.01 21.81Q7.38 22.11 6.23 21.05Q5.08 19.99 4.24 18.76Q3.39 17.53 2.90 16.17Q2.41 14.81 1.74 13.41Q1.07 12.00 1.40 10.49Q1.73 8.99 2.83 7.90Q3.93 6.81 4.56 5.48Q5.19 4.14 6.54 3.57Q7.89 3.00 9.18 2.19Q10.47 1.38 11.93 1.87Q13.39 2.35 14.88 2.39Q16.37 2.44 17.58 3.30Q18.79 4.16 19.51 5.43Q20.23 6.71 20.69 8.01Q21.16 9.31 21.77 10.66Z\" fill=\"var(--seal)\"/><path d=\"M21.77 10.66Q22.38 12.00 22.24 13.48Q22.09 14.96 21.11 16.10Q20.13 17.23 19.31 18.36Q18.49 19.49 17.38 20.43Q16.28 21.36 14.88 21.83Q13.48 22.31 12.06 21.90Q10.63 21.50 9.01 21.81Q7.38 22.11 6.23 21.05Q5.08 19.99 4.24 18.76Q3.39 17.53 2.90 16.17Q2.41 14.81 1.74 13.41Q1.07 12.00 1.40 10.49Q1.73 8.99 2.83 7.90Q3.93 6.81 4.56 5.48Q5.19 4.14 6.54 3.57Q7.89 3.00 9.18 2.19Q10.47 1.38 11.93 1.87Q13.39 2.35 14.88 2.39Q16.37 2.44 17.58 3.30Q18.79 4.16 19.51 5.43Q20.23 6.71 20.69 8.01Q21.16 9.31 21.77 10.66Z\" fill=\"none\" stroke=\"var(--seal-deep)\" stroke-width=\"0.8\" opacity=\"0.7\"/></g><circle cx=\"12\" cy=\"12\" r=\"6.9\" fill=\"var(--seal-deep)\" opacity=\"0.55\"/><circle cx=\"12\" cy=\"12\" r=\"6.9\" fill=\"none\" stroke=\"var(--seal-lip)\" stroke-width=\"0.9\" opacity=\"0.55\"/><text x=\"12\" y=\"15.6\" text-anchor=\"middle\" font-size=\"10\" font-weight=\"700\" fill=\"var(--seal-lip)\" style=\"font-family:var(--font-trirong),Trirong,serif\">J</text></svg><svg width=\"26\" height=\"26\" viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"9.6\" fill=\"none\" stroke=\"var(--seal-empty)\" stroke-width=\"1.6\"/></svg><i></i></span><b>2/3</b></div></article>",
+      "css": ".ds-pin { position: absolute; top: -7px; left: 50%; width: 14px; height: 14px; transform: translateX(-50%); border-radius: 9999px; background: radial-gradient(circle at 35% 30%, oklch(0.9 0.1 92), var(--brass) 55%, var(--brass-deep)); box-shadow: 0 2px 3px oklch(0 0 0 / 0.5); } .ds-notice { font-family: var(--font-anuphan), Anuphan, system-ui, sans-serif; position: relative; background: var(--surface); color: var(--foreground); border-radius: 5px; padding: 28px 20px 20px; max-width: 26rem; box-shadow: 0 2px 0 oklch(0 0 0 / 0.25), 0 18px 32px -18px oklch(0 0 0 / 0.8); font-variant-numeric: tabular-nums; } .ds-notice header { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; } .ds-notice h2 { font-family: var(--font-trirong), Trirong, serif; font-weight: 700; font-size: 1.6rem; line-height: 1.25; margin: 0; } .ds-notice header span { font-size: 0.875rem; color: var(--muted); } .ds-verdict { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 16px; margin: 12px 0 8px; padding: 10px 12px; border-radius: 4px; background: var(--surface-2); } .ds-verdict strong { font-weight: 600; } .ds-verdict span { color: var(--muted); } .ds-row { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; font-size: 0.95rem; } .ds-row-name { display: flex; align-items: center; gap: 8px; font-weight: 600; } .ds-row-name i { width: 10px; height: 10px; border-radius: 2px; } .ds-row-score { font-size: 0.875rem; color: var(--muted); } .ds-seals { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0 12px; } .ds-limit { display: flex; align-items: center; gap: 12px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 0.875rem; color: var(--muted); } .ds-limit-seals { display: flex; align-items: center; gap: 6px; } .ds-limit-seals i { width: 2px; height: 32px; margin: 0 4px; background: var(--foreground); } .ds-limit b { margin-left: auto; font-weight: 400; } .ds-seal-mark { filter: drop-shadow(0 1px 1px oklch(0 0 0 / 0.55)); }"
+    },
+    {
+      "name": "Mini Notice",
+      "kind": "card",
+      "refersTo": "mini-notice",
+      "description": "A member on the board; seal-red ring when over the limit, slight off-true rotation.",
+      "html": "<a class=\"ds-mini ds-mini-over\" href=\"#\"><span class=\"ds-mini-pin\"></span><span class=\"ds-mini-name\">GLADIATOR</span><span class=\"ds-mini-foot\"><span class=\"ds-mini-seals\"><svg class=\"ds-seal-mark\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\"><g transform=\"rotate(0 12 12)\"><path d=\"M21.77 10.66Q22.38 12.00 22.24 13.48Q22.09 14.96 21.11 16.10Q20.13 17.23 19.31 18.36Q18.49 19.49 17.38 20.43Q16.28 21.36 14.88 21.83Q13.48 22.31 12.06 21.90Q10.63 21.50 9.01 21.81Q7.38 22.11 6.23 21.05Q5.08 19.99 4.24 18.76Q3.39 17.53 2.90 16.17Q2.41 14.81 1.74 13.41Q1.07 12.00 1.40 10.49Q1.73 8.99 2.83 7.90Q3.93 6.81 4.56 5.48Q5.19 4.14 6.54 3.57Q7.89 3.00 9.18 2.19Q10.47 1.38 11.93 1.87Q13.39 2.35 14.88 2.39Q16.37 2.44 17.58 3.30Q18.79 4.16 19.51 5.43Q20.23 6.71 20.69 8.01Q21.16 9.31 21.77 10.66Z\" fill=\"var(--seal)\"/><path d=\"M21.77 10.66Q22.38 12.00 22.24 13.48Q22.09 14.96 21.11 16.10Q20.13 17.23 19.31 18.36Q18.49 19.49 17.38 20.43Q16.28 21.36 14.88 21.83Q13.48 22.31 12.06 21.90Q10.63 21.50 9.01 21.81Q7.38 22.11 6.23 21.05Q5.08 19.99 4.24 18.76Q3.39 17.53 2.90 16.17Q2.41 14.81 1.74 13.41Q1.07 12.00 1.40 10.49Q1.73 8.99 2.83 7.90Q3.93 6.81 4.56 5.48Q5.19 4.14 6.54 3.57Q7.89 3.00 9.18 2.19Q10.47 1.38 11.93 1.87Q13.39 2.35 14.88 2.39Q16.37 2.44 17.58 3.30Q18.79 4.16 19.51 5.43Q20.23 6.71 20.69 8.01Q21.16 9.31 21.77 10.66Z\" fill=\"none\" stroke=\"var(--seal-deep)\" stroke-width=\"0.8\" opacity=\"0.7\"/></g><circle cx=\"12\" cy=\"12\" r=\"6.9\" fill=\"var(--seal-deep)\" opacity=\"0.55\"/><circle cx=\"12\" cy=\"12\" r=\"6.9\" fill=\"none\" stroke=\"var(--seal-lip)\" stroke-width=\"0.9\" opacity=\"0.55\"/></svg><svg class=\"ds-seal-mark\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\"><g transform=\"rotate(47 12 12)\"><path d=\"M21.77 10.66Q22.38 12.00 22.24 13.48Q22.09 14.96 21.11 16.10Q20.13 17.23 19.31 18.36Q18.49 19.49 17.38 20.43Q16.28 21.36 14.88 21.83Q13.48 22.31 12.06 21.90Q10.63 21.50 9.01 21.81Q7.38 22.11 6.23 21.05Q5.08 19.99 4.24 18.76Q3.39 17.53 2.90 16.17Q2.41 14.81 1.74 13.41Q1.07 12.00 1.40 10.49Q1.73 8.99 2.83 7.90Q3.93 6.81 4.56 5.48Q5.19 4.14 6.54 3.57Q7.89 3.00 9.18 2.19Q10.47 1.38 11.93 1.87Q13.39 2.35 14.88 2.39Q16.37 2.44 17.58 3.30Q18.79 4.16 19.51 5.43Q20.23 6.71 20.69 8.01Q21.16 9.31 21.77 10.66Z\" fill=\"var(--seal)\"/><path d=\"M21.77 10.66Q22.38 12.00 22.24 13.48Q22.09 14.96 21.11 16.10Q20.13 17.23 19.31 18.36Q18.49 19.49 17.38 20.43Q16.28 21.36 14.88 21.83Q13.48 22.31 12.06 21.90Q10.63 21.50 9.01 21.81Q7.38 22.11 6.23 21.05Q5.08 19.99 4.24 18.76Q3.39 17.53 2.90 16.17Q2.41 14.81 1.74 13.41Q1.07 12.00 1.40 10.49Q1.73 8.99 2.83 7.90Q3.93 6.81 4.56 5.48Q5.19 4.14 6.54 3.57Q7.89 3.00 9.18 2.19Q10.47 1.38 11.93 1.87Q13.39 2.35 14.88 2.39Q16.37 2.44 17.58 3.30Q18.79 4.16 19.51 5.43Q20.23 6.71 20.69 8.01Q21.16 9.31 21.77 10.66Z\" fill=\"none\" stroke=\"var(--seal-deep)\" stroke-width=\"0.8\" opacity=\"0.7\"/></g><circle cx=\"12\" cy=\"12\" r=\"6.9\" fill=\"var(--seal-deep)\" opacity=\"0.55\"/><circle cx=\"12\" cy=\"12\" r=\"6.9\" fill=\"none\" stroke=\"var(--seal-lip)\" stroke-width=\"0.9\" opacity=\"0.55\"/></svg><svg class=\"ds-seal-mark\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\"><g transform=\"rotate(113 12 12)\"><path d=\"M21.77 10.66Q22.38 12.00 22.24 13.48Q22.09 14.96 21.11 16.10Q20.13 17.23 19.31 18.36Q18.49 19.49 17.38 20.43Q16.28 21.36 14.88 21.83Q13.48 22.31 12.06 21.90Q10.63 21.50 9.01 21.81Q7.38 22.11 6.23 21.05Q5.08 19.99 4.24 18.76Q3.39 17.53 2.90 16.17Q2.41 14.81 1.74 13.41Q1.07 12.00 1.40 10.49Q1.73 8.99 2.83 7.90Q3.93 6.81 4.56 5.48Q5.19 4.14 6.54 3.57Q7.89 3.00 9.18 2.19Q10.47 1.38 11.93 1.87Q13.39 2.35 14.88 2.39Q16.37 2.44 17.58 3.30Q18.79 4.16 19.51 5.43Q20.23 6.71 20.69 8.01Q21.16 9.31 21.77 10.66Z\" fill=\"var(--seal)\"/><path d=\"M21.77 10.66Q22.38 12.00 22.24 13.48Q22.09 14.96 21.11 16.10Q20.13 17.23 19.31 18.36Q18.49 19.49 17.38 20.43Q16.28 21.36 14.88 21.83Q13.48 22.31 12.06 21.90Q10.63 21.50 9.01 21.81Q7.38 22.11 6.23 21.05Q5.08 19.99 4.24 18.76Q3.39 17.53 2.90 16.17Q2.41 14.81 1.74 13.41Q1.07 12.00 1.40 10.49Q1.73 8.99 2.83 7.90Q3.93 6.81 4.56 5.48Q5.19 4.14 6.54 3.57Q7.89 3.00 9.18 2.19Q10.47 1.38 11.93 1.87Q13.39 2.35 14.88 2.39Q16.37 2.44 17.58 3.30Q18.79 4.16 19.51 5.43Q20.23 6.71 20.69 8.01Q21.16 9.31 21.77 10.66Z\" fill=\"none\" stroke=\"var(--seal-deep)\" stroke-width=\"0.8\" opacity=\"0.7\"/></g><circle cx=\"12\" cy=\"12\" r=\"6.9\" fill=\"var(--seal-deep)\" opacity=\"0.55\"/><circle cx=\"12\" cy=\"12\" r=\"6.9\" fill=\"none\" stroke=\"var(--seal-lip)\" stroke-width=\"0.9\" opacity=\"0.55\"/></svg></span><span class=\"ds-mini-count\">3/3</span></span></a>",
+      "css": ".ds-mini { font-family: var(--font-anuphan), Anuphan, system-ui, sans-serif; position: relative; display: block; width: 11rem; rotate: -0.5deg; background: var(--surface); color: var(--foreground); text-decoration: none; border-radius: 3px; padding: 14px 12px 12px; box-shadow: 0 10px 18px -12px oklch(0 0 0 / 0.9); transition: translate 200ms, background-color 200ms; } .ds-mini:hover { translate: 0 -2px; background: var(--surface-2); } .ds-mini:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; } .ds-mini-over { box-shadow: 0 0 0 2px var(--seal), 0 10px 18px -12px oklch(0 0 0 / 0.9); } .ds-mini-pin { position: absolute; top: -4px; left: 50%; width: 8px; height: 8px; transform: translateX(-50%); border-radius: 9999px; background: radial-gradient(circle at 35% 30%, oklch(0.9 0.1 92), var(--brass) 55%, var(--brass-deep)); box-shadow: 0 2px 3px oklch(0 0 0 / 0.5); } .ds-mini-name { display: block; font-family: var(--font-trirong), Trirong, serif; font-weight: 700; font-size: 1.05rem; } .ds-mini-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; } .ds-mini-seals { display: flex; gap: 5px; } .ds-mini-count { font-size: 0.75rem; font-weight: 600; color: var(--seal); } .ds-seal-mark { filter: drop-shadow(0 1px 1px oklch(0 0 0 / 0.55)); } @media (prefers-reduced-motion: reduce) { .ds-mini { rotate: none; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Night Hall Notice Board",
+    "overview": "Jugyeom is a guild hall at night. The page is dark stone tinted green; a banner-green pennant hangs across the top with a notched lower edge; each member's week is a warm-dark paper notice held by a brass pin; every missed run is a red wax seal pressed onto that notice. The world is physical and quiet: paper, brass, wax, stone. Nothing glows, nothing is a chart, and no number appears without the seals that justify it.\n\nDensity is low on the public side (one large notice, then a grid of small ones) and plain on the officer side, which uses the same tokens, content colours, and Trirong headings in an ordinary working layout of header, tabs, fields, and tables. Dark (\"night hall\") is the shipped default. A light \"day hall\" token set exists under `:root[data-theme=\"light\"]` for a future switch; nothing toggles it yet, so treat it as provisional.\n\nThe world rejects the stat-tile bot dashboard and the ranked leaderboard table as the first thing a member sees.",
+    "keyCharacteristics": [
+      "Wax seals are the miss counter: filled seal = missed run, hollow ring = attended run, a hard vertical rule marks the limit.",
+      "Seal red belongs only to misses, warnings, and over-limit states.",
+      "One flat colour per content type, identical on every screen.",
+      "Notices are paper: brass pin at top centre, soft drop shadow, small radii, slight off-true rotation on the board.",
+      "Trirong (Thai serif) for names and headings; Anuphan for UI and every number, with tabular figures."
+    ],
+    "rules": [
+      {
+        "name": "The Wax Is Evidence Rule",
+        "body": "Seal red appears only where a miss, a warning, or an over-limit state is being shown. It is never decoration, never a brand accent, never a button.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Colour Per Content Rule",
+        "body": "Each content type has exactly one flat colour, read from the shared map, and it is the same on the board, member page, and officer entry grid.",
+        "section": "colors"
+      },
+      {
+        "name": "The Brass Means Touch Rule",
+        "body": "Brass marks pins, focus, and the thing you act on or are; it does not tint panels or text blocks.",
+        "section": "colors"
+      },
+      {
+        "name": "The Names Are Carved Rule",
+        "body": "People's names and section headings are Trirong bold; numbers, counts, and controls are never Trirong. The only Trirong inside a seal is the stamped J.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sentence Case Rule",
+        "body": "No uppercase labels or letter-spaced captions; Thai has no case, and the system does not fake one for English.",
+        "section": "typography"
+      },
+      {
+        "name": "The Pinned Paper Rule",
+        "body": "Board notices sit slightly off-true (-0.5deg, 0.35deg, -0.15deg cycling by position) and lift 2px on hover; reduced-motion users get them square. Rotation belongs to notices on the board, not to controls or the large notice.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** show every miss count as seals next to the number; the number never stands alone.",
+      "**Do** read content colours from the shared content map and render them as a 10px, 2px-corner square key.",
+      "**Do** put a brass pin at the top centre of every notice-shaped container and give it 28px top padding.",
+      "**Do** use Trirong bold for names and headings and Anuphan with tabular figures for everything numeric.",
+      "**Do** mark the limit with the 2px bone-ink rule inside the seal row, with over-limit seals continuing after it.",
+      "**Do** keep officer screens on the same tokens with plain controls (6px corners, brass primary)."
+    ],
+    "donts": [
+      "**Don't** use seal red for anything that is not a miss, warning, or over-limit state.",
+      "**Don't** open a public page with stat tiles or a ranked leaderboard table.",
+      "**Don't** give a content type a second colour, gradient, or tint on another screen.",
+      "**Don't** add uppercase or letter-spaced labels above headings.",
+      "**Don't** rotate controls, chips, or the visitor's large notice; off-true rotation is for board notices only, and never under reduced motion.",
+      "**Don't** set numbers or controls in Trirong."
+    ]
+  }
+}
