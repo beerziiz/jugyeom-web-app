@@ -6,6 +6,7 @@ import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { saveWeek } from "./actions";
 import { primaryButton } from "@/lib/ui";
 import { contentColor } from "@/lib/content";
+import { ScreenshotReader, type GridUpdate } from "./screenshot-reader";
 
 export type GridMember = { id: number; ign: string };
 export type GridContent = {
@@ -60,6 +61,7 @@ export function WeekGrid({
   entries,
   threshold,
   t,
+  tr,
 }: {
   weekStart: string;
   recorded: boolean;
@@ -68,6 +70,7 @@ export function WeekGrid({
   entries: GridEntry[];
   threshold: number;
   t: Dictionary["week"];
+  tr: Dictionary["reader"];
 }) {
   const [saved, setSaved] = useState(() => ({
     cells: initialCells(members, contents, entries),
@@ -112,6 +115,25 @@ export function WeekGrid({
   function update(memberId: number, contentId: number, field: Field, value: string) {
     setStatus("idle");
     setCells((prev) => ({ ...prev, [key(memberId, contentId)]: withValue(prev[key(memberId, contentId)], field, value) }));
+  }
+
+  // Results read from screenshots land in the cells; the officer still reviews and saves.
+  function applyUpdates(updates: GridUpdate[]) {
+    const byKey = new Map(contents.map((c) => [c.key, c]));
+    setStatus("idle");
+    setCells((prev) => {
+      const next = { ...prev };
+      for (const u of updates) {
+        const c = byKey.get(u.contentKey);
+        const k = c && key(u.memberId, c.id);
+        if (!c || !k || !next[k]) continue;
+        let cell = next[k];
+        if (u.missed !== undefined) cell = { ...cell, missed: String(u.missed) };
+        if (u.score && u.score.part < cell.scores.length) cell = withValue(cell, u.score.part, String(u.score.value));
+        next[k] = cell;
+      }
+      return next;
+    });
   }
 
   // Paste a column of values from a spreadsheet: fill down from this row.
@@ -181,6 +203,17 @@ export function WeekGrid({
 
   return (
     <div className="flex flex-col gap-3">
+      <ScreenshotReader
+        weekStart={weekStart}
+        members={members}
+        contentKeys={contents.map((c) => c.key)}
+        runsOf={(contentKey) => {
+          const c = contents.find((x) => x.key === contentKey);
+          return c ? runsOf(c.id) : 0;
+        }}
+        onApply={applyUpdates}
+        t={tr}
+      />
       <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 text-sm text-muted">
         <p>{recorded ? t.pasteHint : t.notRecorded}</p>
         <p className="flex items-center gap-1.5">

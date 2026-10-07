@@ -120,6 +120,7 @@ export default async function WeekPage({ searchParams }: PageProps<"/admin/week"
           entries={gridEntries}
           threshold={settings?.miss_threshold ?? 5}
           t={t.week}
+          tr={t.reader}
         />
       )}
     </div>

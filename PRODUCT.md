@@ -37,7 +37,9 @@ A private, purpose-built tracker for this guild's own content and rules. It is n
   - **Check-in / การเช็คชื่อ**: every day.
 - **Misses are judged on attendance only.** A member either took part in a run or missed it. Damage score is recorded for reference but never counts toward warnings.
 - Cadence: officers enter data in a **weekly** batch.
-- Data entry: **leader/officers enter it manually**, plus **screenshot reading**: officers upload an in-game screenshot per content, the app reads who took part and their damage score, and an officer confirms before saving.
+- Data entry: **leader/officers enter it manually**, plus **screenshot reading** (Gemini free tier): on the weekly entry page an officer picks which in-game screen they captured, uploads the screenshots, checks the matched names, and puts the results in the grid before saving. Screenshots are not stored.
+  - The guild member list shows today's check-in and guild war W/L, and the castle days done this week (N/7). Today-only results are kept per day (`day_marks`) so a week adds up across days.
+  - Ranking screens give damage: castle per day (summed for the week), Advent per boss, and God of Destruction with attack counts.
 - Members mostly check results on their phones after reset or when shared in guild chat (assumed, not confirmed).
 
 ## Capabilities and Constraints

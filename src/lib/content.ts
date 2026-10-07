@@ -26,3 +26,10 @@ export function scoreLabel(label: string | null, locale: "th" | "en", fallback: 
   if (!label) return fallback;
   return locale === "th" ? (scoreLabelsTh[label] ?? label) : label;
 }
+
+/** Guild War runs on Monday, Wednesday and Saturday (Date#getUTCDay numbering). */
+export const GUILD_WAR_DAYS = [1, 3, 6];
+
+/** Attacks a member must use for a Guild War day, or the God of Destruction, to count. */
+export const GUILD_WAR_ATTACKS = 3;
+export const ADVENT_GOD_ATTACKS = 3;

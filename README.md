@@ -14,7 +14,8 @@ create for check list miss of content member dashboard.
 
 1. `npm install`
 2. Copy `.env.example` to `.env.local` and fill in the Supabase URL and anon key
-   (Supabase → Project Settings → API).
+   (Supabase → Project Settings → API), and a Gemini API key from Google AI Studio
+   for reading screenshots. Add the same variables in Vercel → Settings → Environment Variables.
 3. In Supabase → SQL Editor, run each file in `supabase/migrations/` in order (0001, 0002, 0003, …).
 4. Create an officer: see `supabase/create-officer.sql`.
 5. `npm run dev` and open http://localhost:3000. Officers sign in at `/login`.

@@ -48,3 +48,6 @@ next-env.d.ts
 
 # impeccable working files
 .impeccable/review/
+
+# in-game screenshots used while building the reader
+/samples
