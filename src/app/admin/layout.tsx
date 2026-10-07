@@ -18,6 +18,7 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
           <AdminNav
             items={[
               { href: "/admin/week", label: t.admin.navWeek },
+              { href: "/admin/warnings", label: t.admin.navWarnings },
               { href: "/admin/members", label: t.admin.navMembers },
             ]}
           />
