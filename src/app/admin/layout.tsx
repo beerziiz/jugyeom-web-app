@@ -20,6 +20,7 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
               { href: "/admin/week", label: t.admin.navWeek },
               { href: "/admin/warnings", label: t.admin.navWarnings },
               { href: "/admin/members", label: t.admin.navMembers },
+              { href: "/admin/settings", label: t.admin.navSettings },
             ]}
           />
         }
