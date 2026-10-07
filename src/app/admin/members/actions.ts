@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { today } from "@/lib/week";
 
 export type MemberRole = "leader" | "officer" | "member";
 export type ActionState = { error?: "duplicate" | "failed"; ok?: number };
@@ -57,7 +58,7 @@ export async function setMemberLeft(id: number, left: boolean): Promise<ActionSt
   const supabase = await createClient();
   const { error } = await supabase
     .from("members")
-    .update({ left_at: left ? new Date().toISOString().slice(0, 10) : null })
+    .update({ left_at: left ? today() : null })
     .eq("id", id);
 
   if (error) return { error: error.code === "23505" ? "duplicate" : "failed" };

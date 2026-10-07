@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { today } from "@/lib/week";
 
 function refresh() {
   revalidatePath("/admin", "layout");
@@ -48,7 +49,7 @@ export async function kickMember(memberId: number) {
 
   await supabase
     .from("members")
-    .update({ left_at: new Date().toISOString().slice(0, 10) })
+    .update({ left_at: today() })
     .eq("id", memberId);
   refresh();
 }

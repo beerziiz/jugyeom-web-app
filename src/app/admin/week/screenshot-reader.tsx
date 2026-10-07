@@ -5,7 +5,7 @@ import { CalendarDays, ImageUp, LoaderCircle, X } from "lucide-react";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { ADVENT_GOD_ATTACKS, GUILD_WAR_ATTACKS, GUILD_WAR_DAYS } from "@/lib/content";
 import { field, primaryButton, quietButton, secondaryButton } from "@/lib/ui";
-import { formatDay, weekEnd } from "@/lib/week";
+import { formatDay, today as bangkokToday, weekEnd } from "@/lib/week";
 import { readScreen, saveDayMarks, type DayMark, type ReadRow } from "./screenshot-actions";
 
 /** A change the reader asks the grid to make. `part` is the damage field index. */
@@ -53,7 +53,7 @@ export function ScreenshotReader({
   onApply: (updates: GridUpdate[], runs: GridRuns) => void;
   t: Dictionary["reader"];
 }) {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = bangkokToday();
   const end = weekEnd(weekStart);
   const [open, setOpen] = useState(false);
   const [screen, setScreen] = useState<Screen>("guild_members");

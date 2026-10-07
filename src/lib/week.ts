@@ -2,6 +2,11 @@
 
 const DAY = 86_400_000;
 
+/** Today's date in Bangkok, as YYYY-MM-DD. The guild plays on Thai time, whatever the server's clock. */
+export function today(): string {
+  return new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Bangkok" });
+}
+
 export function mondayOf(date: Date): string {
   const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
   const offset = (d.getUTCDay() + 6) % 7; // Monday = 0
@@ -32,7 +37,7 @@ export function parseWeek(value: string | string[] | undefined): string {
     const parsed = new Date(value);
     if (!Number.isNaN(parsed.getTime())) return mondayOf(parsed);
   }
-  return mondayOf(new Date());
+  return mondayOf(new Date(today()));
 }
 
 /** "6–12 Oct" / "6–12 ต.ค." for a week starting on the given Monday. */

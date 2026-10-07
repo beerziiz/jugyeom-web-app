@@ -2,14 +2,14 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getDictionary } from "@/lib/i18n";
 import { createClient } from "@/lib/supabase/server";
-import { addWeeks, isCycleEnd, mondayOf, parseWeek, weekEnd } from "@/lib/week";
+import { addWeeks, isCycleEnd, mondayOf, parseWeek, today, weekEnd } from "@/lib/week";
 import { secondaryButton, quietButton } from "@/lib/ui";
 import { WeekGrid, type GridContent, type GridDayValue, type GridEntry, type GridMember } from "./week-grid";
 
 export default async function WeekPage({ searchParams }: PageProps<"/admin/week">) {
   const weekStart = parseWeek((await searchParams).w);
   const end = weekEnd(weekStart);
-  const thisWeek = mondayOf(new Date());
+  const thisWeek = mondayOf(new Date(today()));
   const { locale, t } = await getDictionary();
   const supabase = await createClient();
 

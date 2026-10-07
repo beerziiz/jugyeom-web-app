@@ -6,7 +6,7 @@ import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { saveWeek } from "./actions";
 import { primaryButton } from "@/lib/ui";
 import { COUNTED_BY_DAY, EVERY_DAY, contentColor, isHeldOn } from "@/lib/content";
-import { weekDays } from "@/lib/week";
+import { today as bangkokToday, weekDays } from "@/lib/week";
 import { ScreenshotReader, type GridRuns, type GridUpdate } from "./screenshot-reader";
 
 export type GridMember = { id: number; ign: string };
@@ -108,7 +108,7 @@ export function WeekGrid({
   /** The day whose damage the column shows, per content; none shows the week's total. */
   const [picked, setPicked] = useState<Record<number, string | null>>(() => {
     // Start on today when it falls in this week, ready to type.
-    const today = new Date().toISOString().slice(0, 10);
+    const today = bangkokToday();
     const day = weekDays(weekStart).includes(today) ? today : null;
     return Object.fromEntries(contents.filter((c) => EVERY_DAY.includes(c.key)).map((c) => [c.id, day]));
   });
@@ -497,7 +497,7 @@ function DayStrip({
   onPick?: (day: string) => void;
   t: Dictionary["week"];
 }) {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = bangkokToday();
   const color = contentColor(content.key);
   return (
     <div className="flex flex-col items-end gap-1">
