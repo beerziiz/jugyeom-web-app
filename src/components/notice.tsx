@@ -1,16 +1,16 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import type { ContentResult } from "@/lib/board";
 import { contentColor, formatScore } from "@/lib/content";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
-import { Seal, Seals } from "./seals";
+import { Allowance, RunMarks } from "./marks";
 
 type T = Dictionary["board"];
 
 const fill = (s: string, vars: Record<string, string | number>) =>
   s.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ""));
 
-/** Verdict line shared by the big and mini notices. */
+/** Verdict line shared by the player card and the board cards. */
 export function verdict(missed: number, threshold: number, t: T) {
   if (missed >= threshold) return { tone: "warn" as const, text: t.atLimit };
   if (missed === 0) return { tone: "ok" as const, text: t.clean };
@@ -18,7 +18,14 @@ export function verdict(missed: number, threshold: number, t: T) {
   return { tone: "mid" as const, text: fill(left === 1 ? t.left : t.leftMany, { n: left }) };
 }
 
-/** The visitor's own week, pinned to the top of the board. */
+/** Short allowance note beside the lives row: "2 left", "At the limit", "1 over". */
+function allowanceNote(missed: number, threshold: number, t: T) {
+  const left = threshold - missed;
+  if (left > 0) return fill(t.allowance, { n: left });
+  return left === 0 ? t.atLimitShort : fill(t.overBy, { n: -left });
+}
+
+/** One member's week as a player card: score, allowance, then a row per content. */
 export function Notice({
   name,
   role,
@@ -42,33 +49,41 @@ export function Notice({
   const over = missed >= threshold;
 
   return (
-    <article
-      className={`relative rounded-[5px] bg-surface px-5 pt-7 pb-5 shadow-[0_2px_0_oklch(0_0_0/0.25),0_18px_32px_-18px_oklch(0_0_0/0.8)] ${
-        over ? "ring-2 ring-seal" : ""
-      }`}
-    >
-      <span aria-hidden className="pin absolute -top-[7px] left-1/2 size-[14px] -translate-x-1/2" />
-
-      <header className="flex items-baseline justify-between gap-4">
-        <Heading className="min-w-0 truncate font-display text-[1.6rem] leading-tight font-bold">{name}</Heading>
-        <span className="shrink-0 text-sm text-muted">{role}</span>
+    <article className={`overflow-hidden rounded-[4px] bg-surface ${over ? "ring-2 ring-miss" : ""}`}>
+      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-x-3 gap-y-1 px-5 pt-5 pb-3.5">
+        <Heading className="headline min-w-0 truncate text-[2rem] leading-[1.1]">{name}</Heading>
+        <p className="row-span-2 text-right leading-none font-display font-semibold">
+          <span className={`text-[3.2rem] font-extrabold italic ${over ? "text-miss" : ""}`}>{missed}</span>
+          <span className="text-xl text-muted">/{threshold}</span>
+        </p>
+        <span className="text-sm text-muted">
+          {role} · {t.youMissed}
+        </span>
       </header>
 
+      <div className="px-5 pb-3.5">
+        <Allowance missed={missed} limit={threshold} size="lg" label={fill(t.missedOf, { n: missed, limit: threshold })}>
+          <span className={`ml-2.5 text-sm whitespace-nowrap ${over ? "font-semibold text-miss" : ""}`}>
+            {allowanceNote(missed, threshold, t)}
+          </span>
+        </Allowance>
+      </div>
+
       <p
-        className={`mt-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5 rounded-[4px] px-3 py-2.5 ${
-          v.tone === "warn" ? "bg-seal-bg text-seal" : v.tone === "ok" ? "bg-surface-2 text-ok" : "bg-surface-2"
+        className={`flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5 px-5 py-2.5 ${
+          v.tone === "warn" ? "bg-miss-bg text-miss" : "bg-surface-2"
         }`}
       >
         <strong className="font-semibold">{fill(t.missedOf, { n: missed, limit: threshold })}</strong>
-        <span className={v.tone === "mid" ? "text-muted" : ""}>{v.text}</span>
+        <span className={v.tone === "ok" ? "text-ok" : ""}>{v.text}</span>
       </p>
 
-      <ul className="mt-2">
+      <ul className="px-5 pt-1 pb-1.5">
         {contents.map((c) => (
-          <li key={c.id} className="border-t border-dashed border-border py-3 first:border-t-0">
-            <div className="flex items-center justify-between gap-3 text-[0.95rem]">
+          <li key={c.id} className="border-t border-border py-3 first:border-t-0">
+            <div className="flex items-center justify-between gap-3 text-base">
               <span className="flex min-w-0 items-center gap-2 font-semibold">
-                <span aria-hidden className="size-2.5 shrink-0 rounded-[2px]" style={{ background: contentColor(c.key) }} />
+                <span aria-hidden className="h-4 w-1 shrink-0 -skew-x-[18deg] rounded-[1px]" style={{ background: contentColor(c.key) }} />
                 <span className="truncate">{c.name}</span>
               </span>
               <span className="shrink-0 text-sm text-muted">
@@ -78,34 +93,33 @@ export function Notice({
               </span>
             </div>
             <div className="mt-2">
-              <Seals total={c.runs} missed={c.missed} label={fill(t.missedRuns, { n: c.missed, b: c.runs })} />
+              <RunMarks runs={c.runs} missed={c.missed} color={contentColor(c.key)} label={fill(t.missedRuns, { n: c.missed, b: c.runs })} />
             </div>
           </li>
         ))}
       </ul>
 
-      <div className="mt-2 flex items-center gap-3 border-t border-border pt-4 text-sm text-muted">
-        <span>{t.limit}</span>
-        <span role="img" aria-label={fill(t.missedOf, { n: missed, limit: threshold })} className="flex items-center gap-1.5">
-          {Array.from({ length: threshold }, (_, i) => (
-            <Seal key={i} index={i + 3} missed={i < missed} size={26} />
-          ))}
-          <span aria-hidden className="mx-1 h-8 w-0.5 bg-foreground" />
-          {Array.from({ length: Math.max(missed - threshold, 0) }, (_, i) => (
-            <Seal key={`o${i}`} index={i + 5} missed size={26} />
-          ))}
+      <p aria-hidden className="flex flex-wrap gap-x-4 gap-y-1.5 border-t border-border px-5 py-2.5 text-xs text-muted">
+        <span className="inline-flex items-center gap-1.5">
+          <span className="mark mark-sm mark-done" style={{ "--mark": "var(--c-guild-war)" } as CSSProperties} />
+          {t.legendDone}
         </span>
-        <span className={`ml-auto ${over ? "font-semibold text-seal" : ""}`}>
-          {missed}/{threshold}
+        <span className="inline-flex items-center gap-1.5">
+          <span className="mark mark-sm mark-gap" />
+          {t.legendMissed}
         </span>
-      </div>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="mark mark-sm mark-life" />
+          {t.legendLeft}
+        </span>
+      </p>
 
-      {footer && <div className="mt-4 border-t border-border pt-3 text-sm">{footer}</div>}
+      {footer && <div className="border-t border-border px-5 py-3 text-sm">{footer}</div>}
     </article>
   );
 }
 
-/** A small notice on the board: name and a seal per miss up to the limit. */
+/** A small card on the board: name, the week's allowance and the missed count. */
 export function MiniNotice({
   href,
   name,
@@ -125,15 +139,14 @@ export function MiniNotice({
   return (
     <Link
       href={href}
-      className={`group relative block rounded-[3px] bg-surface px-3 pt-3.5 pb-3 shadow-[0_10px_18px_-12px_oklch(0_0_0/0.9)] transition-[translate,background-color] duration-200 hover:-translate-y-0.5 hover:bg-surface-2 ${
-        over ? "ring-2 ring-seal" : highlight ? "ring-1 ring-brass" : ""
+      className={`block rounded-[4px] p-3 transition-colors duration-150 ${over ? "bg-miss-bg hover:bg-surface-2" : "bg-surface hover:bg-surface-2"} ${
+        highlight ? "ring-1 ring-live ring-inset" : ""
       }`}
     >
-      <span aria-hidden className="pin absolute -top-1 left-1/2 size-2 -translate-x-1/2" />
-      <span className="block truncate font-display text-[1.05rem] font-bold">{name}</span>
+      <span className="headline block truncate text-[1.1rem] leading-snug">{name}</span>
       <span className="mt-2 flex items-center justify-between gap-2">
-        <Seals total={threshold} missed={missed} size={12} label={fill(t.missedOf, { n: missed, limit: threshold })} />
-        <span className={`text-xs ${over ? "font-semibold text-seal" : "text-muted"}`}>
+        <Allowance missed={missed} limit={threshold} size="sm" label={fill(t.missedOf, { n: missed, limit: threshold })} />
+        <span className={`font-display text-base font-semibold ${over ? "text-miss" : ""}`}>
           {missed}/{threshold}
         </span>
       </span>

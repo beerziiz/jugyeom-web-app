@@ -400,12 +400,12 @@ export function WeekGrid({
               return (
                 <tr
                   key={m.id}
-                  className={`border-b border-border last:border-b-0 ${over ? "bg-[color-mix(in_oklch,var(--seal)_14%,var(--surface))]" : ""}`}
+                  className={`border-b border-border last:border-b-0 ${over ? "bg-[color-mix(in_oklch,var(--miss)_14%,var(--surface))]" : ""}`}
                 >
                   <th
                     scope="row"
                     className={`sticky left-0 z-10 max-w-44 truncate px-3 py-1 text-left font-medium ${
-                      over ? "bg-[color-mix(in_oklch,var(--seal)_14%,var(--surface))]" : "bg-surface"
+                      over ? "bg-[color-mix(in_oklch,var(--miss)_14%,var(--surface))]" : "bg-surface"
                     }`}
                   >
                     {m.ign}

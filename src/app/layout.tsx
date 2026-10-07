@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Anuphan, Trirong } from "next/font/google";
+import { Anuphan, Kanit } from "next/font/google";
 import { getLocale } from "@/lib/i18n";
 import "./globals.css";
 
@@ -9,10 +9,11 @@ const anuphan = Anuphan({
   weight: ["400", "500", "600", "700"],
 });
 
-const trirong = Trirong({
-  variable: "--font-trirong",
+const kanit = Kanit({
+  variable: "--font-kanit",
   subsets: ["thai", "latin"],
-  weight: ["600", "700"],
+  weight: ["600", "700", "800"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -29,7 +30,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const locale = await getLocale();
 
   return (
-    <html lang={locale} className={`${anuphan.variable} ${trirong.variable} h-full antialiased`}>
+    <html lang={locale} className={`${anuphan.variable} ${kanit.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );

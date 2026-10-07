@@ -12,7 +12,7 @@ export default async function LoginPage() {
     <>
       <SiteHeader
         width="max-w-sm"
-        banner={<h1 className="pb-1 font-display text-2xl font-bold">{t.login.title}</h1>}
+        banner={<h1 className="headline text-[1.35rem] leading-tight text-balance">{t.login.title}</h1>}
       />
       <main className="mx-auto w-full max-w-sm px-4 py-8">
         <LoginForm t={t.login} />

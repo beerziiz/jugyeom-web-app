@@ -28,15 +28,11 @@ export default async function BoardPage({ searchParams }: PageProps<"/">) {
     <>
       <SiteHeader
         width="max-w-5xl"
-        banner={
-          <div className="pb-1">
-            <h1 className="font-display text-[2rem] leading-tight font-bold">{tb.title}</h1>
-            {week && <p className="mt-0.5 text-banner-fg/80">{fill(tb.week, week)}</p>}
-          </div>
-        }
+        tag={week ? fill(tb.week, week) : undefined}
+        banner={<h1 className="headline text-[clamp(2rem,6vw,3.2rem)] leading-[1.05]">{tb.title}</h1>}
       />
 
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 pt-3 pb-16">
+      <main className="mx-auto w-full max-w-5xl flex-1 px-4 pt-7 pb-16">
         {!period ? (
           <p className="mx-auto max-w-md py-16 text-center text-muted">{tb.noWeek}</p>
         ) : (
@@ -57,9 +53,8 @@ export default async function BoardPage({ searchParams }: PageProps<"/">) {
                   }
                 />
               ) : (
-                <section className="relative rounded-[5px] bg-surface px-5 pt-7 pb-5">
-                  <span aria-hidden className="pin absolute -top-[7px] left-1/2 size-[14px] -translate-x-1/2" />
-                  <h2 className="font-display text-[1.45rem] font-bold">{tb.whoAreYou}</h2>
+                <section className="rounded-[4px] bg-surface px-5 pt-5 pb-5">
+                  <h2 className="headline text-[2rem] leading-tight">{tb.whoAreYou}</h2>
                   <p className="mt-1 text-sm text-muted">{tb.whoHint}</p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {[...members]
@@ -67,7 +62,7 @@ export default async function BoardPage({ searchParams }: PageProps<"/">) {
                       .map((m) => (
                         <form key={m.id} action={setMe}>
                           <input type="hidden" name="id" value={m.id} />
-                          <button className="min-h-11 rounded-full border border-border bg-surface-2 px-4 text-sm transition-colors hover:border-brass hover:text-brass">
+                          <button className="slant min-h-11 bg-surface-2 px-5 text-sm transition-colors hover:bg-live hover:text-live-fg">
                             {m.ign}
                           </button>
                         </form>
@@ -86,9 +81,9 @@ export default async function BoardPage({ searchParams }: PageProps<"/">) {
                         key={p.id}
                         href={latest ? "/" : `/?w=${p.week_start}`}
                         aria-current={active ? "page" : undefined}
-                        className={`min-w-16 flex-1 rounded-[4px] px-2 py-2 text-center text-xs whitespace-nowrap transition-colors ${
+                        className={`slant flex min-h-11 min-w-18 flex-1 items-center justify-center px-2 text-center text-xs whitespace-nowrap transition-colors ${
                           active
-                            ? "bg-banner font-semibold text-banner-fg"
+                            ? "bg-live font-semibold text-live-fg"
                             : "bg-surface text-muted hover:bg-surface-2 hover:text-foreground"
                         }`}
                       >
@@ -102,12 +97,12 @@ export default async function BoardPage({ searchParams }: PageProps<"/">) {
 
             <div className="flex flex-col gap-8">
               <section>
-                <h2 className="mb-4 flex items-baseline gap-2 font-display text-xl font-bold">
+                <h2 className="mb-3 flex items-baseline gap-2 headline text-[1.35rem]">
                   {tb.warned}
-                  <span className="font-sans text-base font-normal text-seal">{warned.length}</span>
+                  <span className={`font-sans text-base font-normal not-italic ${warned.length ? "text-miss" : "text-muted"}`}>{warned.length}</span>
                 </h2>
                 {warned.length ? (
-                  <div className="board grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
                     {warned.map((m) => (
                       <MiniNotice
                         key={m.id}
@@ -126,12 +121,12 @@ export default async function BoardPage({ searchParams }: PageProps<"/">) {
               </section>
 
               <section>
-                <h2 className="mb-4 flex items-baseline gap-2 font-display text-xl font-bold">
+                <h2 className="mb-3 flex items-baseline gap-2 headline text-[1.35rem]">
                   {tb.everyone}
-                  <span className="font-sans text-base font-normal text-muted">{rest.length}</span>
+                  <span className="font-sans text-base font-normal not-italic text-muted">{rest.length}</span>
                 </h2>
                 {rest.length ? (
-                  <div className="board grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
                     {rest.map((m) => (
                       <MiniNotice
                         key={m.id}

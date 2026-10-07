@@ -137,11 +137,11 @@ function WarnedCard({
   kick?: boolean;
 }) {
   return (
-    <li className={`rounded-lg border bg-surface ${kick ? "border-seal" : "border-border"}`}>
+    <li className={`rounded-lg border bg-surface ${kick ? "border-miss" : "border-border"}`}>
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-3">
         <span className="flex items-baseline gap-3">
           <MemberLink id={member.memberId} ign={member.ign} />
-          <span className={`text-sm tabular-nums ${kick ? "font-semibold text-seal" : "text-muted"}`}>
+          <span className={`text-sm tabular-nums ${kick ? "font-semibold text-miss" : "text-muted"}`}>
             {fill(t.count, { n: member.warnings.length, k: kickAfter })}
           </span>
         </span>

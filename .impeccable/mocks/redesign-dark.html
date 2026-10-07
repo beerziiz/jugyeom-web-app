@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jugyeom Dark Directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Kanit:ital,wght@0,400;0,500;0,600;1,600;1,800&family=Chonburi&family=Bai+Jamjuree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: #0b0b0e; color: #e9e9ee;
+    font-family: Anuphan, system-ui, sans-serif;
+    line-break: strict; font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Picker chrome (not part of any design) ── */
+  .chrome {
+    position: sticky; top: 0; z-index: 10;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px;
+    padding: 12px 16px; background: #0b0b0e; border-bottom: 1px solid #24242b;
+  }
+  .chrome h1 { margin: 0; font-size: 1rem; font-weight: 600; }
+  .chrome p { margin: 0; font-size: .8rem; color: #9a9aa6; flex: 1 1 260px; }
+  .seg { display: flex; gap: 4px; background: #17171c; border: 1px solid #26262e; border-radius: 8px; padding: 3px; }
+  .seg button {
+    font: inherit; font-size: .875rem; color: #a7a7b3; background: none; border: 0;
+    padding: 6px 12px; border-radius: 6px; cursor: pointer; min-height: 36px;
+  }
+  .seg button[aria-pressed="true"] { background: #2b2b34; color: #fff; }
+  .seg button:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+
+  .about {
+    max-width: 1100px; margin: 20px auto 0; padding: 0 16px;
+    display: grid; gap: 4px 24px; grid-template-columns: minmax(0, 1fr) auto; align-items: end;
+  }
+  .about h2 { margin: 0; font-size: 1.35rem; }
+  .about p { margin: 0; color: #a2a2ad; font-size: .9rem; max-width: 70ch; }
+  .about .chips { display: flex; gap: 6px; grid-row: span 2; }
+  .about .chips span { width: 26px; height: 26px; border-radius: 4px; border: 1px solid #ffffff1f; }
+  @media (max-width: 640px) { .about { grid-template-columns: 1fr; } .about .chips { grid-row: auto; } }
+
+  .stage-wrap { padding: 16px 16px 64px; }
+  .stage {
+    container-type: inline-size;
+    margin: 0 auto; max-width: 1280px; overflow: hidden;
+    border-radius: 10px; border: 1px solid #24242b;
+    transition: max-width .35s cubic-bezier(.16, 1, .3, 1);
+  }
+  .stage.phone { max-width: 390px; border-radius: 28px; border-width: 8px; border-color: #1f1f25; }
+
+  .demo-tag { font-size: .75rem; opacity: .7; }
+
+  /* ───────────────────────── Shared board skeleton ───────────────────────── */
+  .board-page { min-height: 760px; background: var(--bg); color: var(--fg); padding-bottom: 48px; }
+  .board-page ::selection { background: var(--sel); color: var(--fg); }
+  .wrap { max-width: 64rem; margin: 0 auto; padding: 0 16px; }
+  .cols { display: grid; gap: 32px; margin-top: 28px; }
+  @container (min-width: 900px) {
+    .cols { grid-template-columns: minmax(0, 26rem) minmax(0, 1fr); gap: 40px; align-items: start; }
+  }
+  .sec-h { display: flex; align-items: baseline; gap: 8px; margin: 0 0 12px; }
+  .sec-h .n { font-size: .95rem; color: var(--muted); }
+  .sec-h .n.bad { color: var(--miss); }
+  .grid { display: grid; gap: 10px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @container (min-width: 520px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .mini { min-width: 0; }
+  .mini .nm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .row-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .cname { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: .95rem; min-width: 0; }
+  .cname span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .meta { color: var(--muted); font-size: .85rem; white-space: nowrap; }
+  .marks { display: flex; flex-wrap: wrap; align-items: center; }
+  .weeks { display: flex; gap: 6px; overflow-x: auto; margin-top: 16px; padding-bottom: 2px; }
+  .weeks button {
+    font: inherit; font-size: .75rem; flex: 1 0 4.5rem; min-height: 44px; cursor: pointer;
+    border: 0; padding: 6px 8px; line-height: 1.3;
+  }
+  .verdict { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 16px; align-items: baseline; }
+  .lang { font: inherit; font-size: .875rem; background: none; border: 0; cursor: pointer; padding: 6px 10px; border-radius: 6px; }
+  .empty-ok { font-size: .95rem; }
+
+  /* ───────────────────────── A · Match Broadcast ───────────────────────── */
+  .dir-a {
+    --bg: oklch(0.155 0.022 285); --panel: oklch(0.205 0.03 285); --panel-2: oklch(0.25 0.036 285);
+    --line: oklch(0.32 0.04 285); --fg: oklch(0.96 0.008 285); --muted: oklch(0.74 0.03 285);
+    --live: oklch(0.82 0.16 75); --live-ink: oklch(0.2 0.04 70);
+    --miss: oklch(0.65 0.22 22); --miss-wash: oklch(0.65 0.22 22 / 0.16); --idle: oklch(0.36 0.03 285);
+    --ok: oklch(0.82 0.11 220); --sel: oklch(0.82 0.16 75 / 0.35);
+    --c-gw: oklch(0.7 0.15 255); --c-castle: oklch(0.8 0.14 70); --c-adv: oklch(0.72 0.17 320); --c-chk: oklch(0.8 0.11 200);
+  }
+  .dir-a .disp { font-family: Kanit, sans-serif; font-style: italic; font-weight: 800; letter-spacing: -0.01em; }
+  .dir-a .hdr { background: var(--bg); border-bottom: 1px solid var(--line); }
+  .dir-a .bar { display: flex; align-items: stretch; justify-content: space-between; gap: 12px; padding-top: 14px; }
+  .dir-a .bug { display: flex; align-items: stretch; }
+  .dir-a .bug .brand {
+    background: var(--live); color: var(--live-ink); padding: 4px 18px 4px 14px;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    font-family: Kanit; font-style: italic; font-weight: 800; font-size: 1.05rem; display: flex; align-items: center;
+  }
+  .dir-a .bug .wk {
+    background: var(--panel-2); padding: 4px 18px 4px 16px; margin-left: -6px; font-size: .85rem; display: flex; align-items: center;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%); color: var(--fg);
+  }
+  .dir-a .lang { color: var(--muted); } .dir-a .lang:hover { color: var(--fg); background: var(--panel); }
+  .dir-a .title { padding: 22px 0 24px; display: flex; align-items: end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .dir-a .title h1 { margin: 0; font-size: clamp(2rem, 6cqi, 3.2rem); line-height: 1.05; }
+  .dir-a .title .sub { color: var(--muted); font-size: .9rem; }
+  .dir-a .card { background: var(--panel); border-radius: 4px; position: relative; overflow: hidden; }
+  .dir-a .me { padding: 0 0 8px; }
+  .dir-a .me-head { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 18px 20px 14px; align-items: end; }
+  .dir-a .me-head h2 { margin: 0; font-size: 2rem; line-height: 1.05; }
+  .dir-a .me-head .role { color: var(--muted); font-size: .85rem; }
+  .dir-a .score { grid-row: span 2; text-align: right; font-family: Kanit; font-weight: 600; line-height: 1; }
+  .dir-a .score b { font-size: 3.2rem; font-style: italic; font-weight: 800; }
+  .dir-a .score span { font-size: 1.2rem; color: var(--muted); }
+  .dir-a .strike { padding: 0 20px 14px; }
+  .dir-a .strike .marks { gap: 4px; }
+  .dir-a .verdict { background: var(--panel-2); padding: 10px 20px; font-size: .95rem; }
+  .dir-a .verdict.warn { background: var(--miss-wash); color: var(--miss); }
+  .dir-a .verdict .v { color: var(--live); }
+  .dir-a .rows { padding: 4px 20px 6px; }
+  .dir-a .rows li { padding: 12px 0; border-top: 1px solid var(--line); }
+  .dir-a .rows li:first-child { border-top: 0; }
+  .dir-a .rows .marks { gap: 3px; margin-top: 8px; }
+  .dir-a .key { width: 4px; height: 16px; border-radius: 1px; transform: skewX(-14deg); flex: none; }
+  .dir-a .pip { display: inline-block; width: 18px; height: 10px; transform: skewX(-18deg); background: var(--idle); border-radius: 1px; }
+  .dir-a .pip.on { background: var(--miss); }
+  .dir-a .pip.big { width: 30px; height: 16px; }
+  .dir-a .pip.done { background: var(--pc, var(--live)); }
+  .dir-a .pip.life { background: var(--fg); }
+  .dir-a .pip.gap { background: transparent; box-shadow: inset 0 0 0 2px var(--miss); }
+  .dir-a .pip.big.gap { box-shadow: inset 0 0 0 2.5px var(--miss); }
+  .dir-a .pip.over { background: var(--miss); }
+  .dir-a .strike .left { margin-left: 10px; font-size: .85rem; color: var(--fg); white-space: nowrap; }
+  .dir-a .strike .left.bad { color: var(--miss); }
+  .dir-a .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 10px 20px 4px; margin: 0; border-top: 1px solid var(--line); font-size: .75rem; color: var(--muted); }
+  .dir-a .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .dir-a .legend .pip { width: 14px; height: 8px; }
+  .dir-a .limit { width: 3px; height: 24px; background: var(--fg); margin: 0 4px; transform: skewX(-18deg); }
+  .dir-a .weeks button { background: var(--panel); color: var(--muted); clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%); }
+  .dir-a .weeks button[aria-current] { background: var(--live); color: var(--live-ink); font-weight: 600; }
+  .dir-a .sec-h h3 { margin: 0; font-size: 1.35rem; }
+  .dir-a .mini { padding: 12px 12px 10px; }
+  .dir-a .mini::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--idle); }
+  .dir-a .mini.over::before { background: var(--miss); }
+  .dir-a .mini.you { box-shadow: inset 0 0 0 1px var(--live); }
+  .dir-a .mini.you::before { background: var(--live); }
+  .dir-a .mini .nm { font-size: 1.1rem; }
+  .dir-a .mini .ct { font-family: Kanit; font-weight: 600; font-size: .95rem; }
+  .dir-a .mini.over .ct { color: var(--miss); }
+  .dir-a .mini .marks { gap: 3px; margin-top: 8px; }
+  .dir-a .mini .pip { width: 12px; height: 7px; }
+  .dir-a .mini:hover { background: var(--panel-2); }
+  .dir-a .empty-ok { color: var(--ok); }
+  .dir-a .rank { font-family: Kanit; font-style: italic; color: var(--muted); font-size: .85rem; }
+
+  /* ───────────────────────── B · Order of Knights ───────────────────────── */
+  .dir-b {
+    --bg: oklch(0.15 0.008 45); --panel: oklch(0.195 0.012 40); --panel-2: oklch(0.235 0.016 35);
+    --line: oklch(0.31 0.02 45); --fg: oklch(0.93 0.02 80); --muted: oklch(0.72 0.025 70);
+    --claret: oklch(0.32 0.11 18); --claret-deep: oklch(0.25 0.09 18); --claret-fg: oklch(0.94 0.03 80);
+    --or: oklch(0.8 0.12 82); --or-deep: oklch(0.6 0.11 75);
+    --miss: oklch(0.6 0.2 25); --miss-wash: oklch(0.6 0.2 25 / 0.15); --idle: oklch(0.45 0.02 60);
+    --ok: var(--or); --sel: oklch(0.8 0.12 82 / 0.32);
+    --c-gw: oklch(0.68 0.13 250); --c-castle: oklch(0.76 0.12 65); --c-adv: oklch(0.68 0.14 305); --c-chk: oklch(0.76 0.09 205);
+  }
+  .dir-b .disp { font-family: Chonburi, serif; font-weight: 400; }
+  .dir-b .hdr {
+    background: var(--claret); color: var(--claret-fg);
+    --tail: clamp(16px, 3.5cqi, 40px);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 75% calc(100% - var(--tail)), 50% 100%, 25% calc(100% - var(--tail)), 0 100%);
+    padding-bottom: calc(var(--tail) + 14px);
+    box-shadow: inset 0 -3px 0 var(--or-deep);
+    position: relative;
+  }
+  .dir-b .hdr::after {
+    content: ""; position: absolute; inset: 8px 0 auto; height: 1px; background: oklch(0.8 0.12 82 / 0.45);
+  }
+  .dir-b .bar { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; }
+  .dir-b .brand { font-family: Chonburi; color: var(--or); font-size: 1.05rem; }
+  .dir-b .lang { color: oklch(0.94 0.03 80 / 0.8); } .dir-b .lang:hover { background: oklch(0.94 0.03 80 / 0.1); color: var(--claret-fg); }
+  .dir-b .title { text-align: center; padding: 14px 0 8px; }
+  .dir-b .title h1 { margin: 0; font-size: clamp(2rem, 5.5cqi, 3rem); line-height: 1.25; }
+  .dir-b .title .sub { color: oklch(0.94 0.03 80 / 0.78); font-size: .9rem; }
+  .dir-b .card { background: var(--panel); border-radius: 3px; position: relative; }
+  .dir-b .me { box-shadow: 0 1px 0 oklch(0 0 0 / .3), 0 20px 36px -20px oklch(0 0 0 / .85); }
+  .dir-b .me::before {
+    content: ""; position: absolute; inset: 6px; border: 1px solid oklch(0.8 0.12 82 / 0.28); border-radius: 2px; pointer-events: none;
+  }
+  .dir-b .me-head { background: var(--claret-deep); padding: 18px 20px 14px; border-bottom: 2px solid var(--or-deep); border-radius: 3px 3px 0 0; display: flex; align-items: center; gap: 14px; }
+  .dir-b .crest { flex: none; }
+  .dir-b .me-head h2 { margin: 0; font-size: 1.7rem; line-height: 1.3; color: var(--claret-fg); }
+  .dir-b .me-head .role { color: oklch(0.94 0.03 80 / 0.7); font-size: .85rem; }
+  .dir-b .me-body { padding: 14px 20px 18px; }
+  .dir-b .strike { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .dir-b .strike .marks { gap: 5px; }
+  .dir-b .verdict { margin-top: 12px; padding: 10px 12px; background: var(--panel-2); border-radius: 2px; }
+  .dir-b .verdict .v { color: var(--muted); }
+  .dir-b .verdict.warn { background: var(--miss-wash); color: var(--miss); }
+  .dir-b .rows li { padding: 12px 0; border-top: 1px solid var(--line); }
+  .dir-b .rows .marks { gap: 4px; margin-top: 8px; }
+  .dir-b .key { width: 10px; height: 12px; flex: none; clip-path: polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%); }
+  .dir-b .sh { display: block; }
+  .dir-b .limit { width: 2px; height: 26px; background: var(--or); margin: 0 3px; }
+  .dir-b .weeks button { background: var(--panel); color: var(--muted); border-radius: 2px; }
+  .dir-b .weeks button[aria-current] { background: var(--claret); color: var(--claret-fg); box-shadow: inset 0 -2px 0 var(--or); font-weight: 600; }
+  .dir-b .sec-h h3 { margin: 0; font-size: 1.2rem; font-family: Chonburi; font-weight: 400; }
+  .dir-b .mini { padding: 0 0 10px; overflow: hidden; box-shadow: 0 12px 20px -14px oklch(0 0 0 / .9); }
+  .dir-b .mini .chief { height: 6px; background: var(--claret); border-bottom: 1px solid var(--or-deep); }
+  .dir-b .mini.over .chief { background: var(--miss); }
+  .dir-b .mini .in { padding: 10px 12px 0; }
+  .dir-b .mini .nm { font-family: Chonburi; font-size: 1.02rem; }
+  .dir-b .mini.over { box-shadow: 0 0 0 1px var(--miss), 0 12px 20px -14px oklch(0 0 0 / .9); }
+  .dir-b .mini.you { box-shadow: 0 0 0 1px var(--or), 0 12px 20px -14px oklch(0 0 0 / .9); }
+  .dir-b .mini .marks { gap: 3px; margin-top: 8px; }
+  .dir-b .mini .ct { font-size: .75rem; color: var(--muted); }
+  .dir-b .mini.over .ct { color: var(--miss); }
+  .dir-b .mini:hover { background: var(--panel-2); }
+  .dir-b .empty-ok { color: var(--ok); }
+
+  /* ───────────────────────── C · Midnight Line Map ───────────────────────── */
+  .dir-c {
+    --bg: oklch(0.19 0.045 262); --panel: oklch(0.235 0.05 262); --panel-2: oklch(0.28 0.055 262);
+    --line: oklch(0.36 0.05 262); --fg: oklch(0.97 0.008 250); --muted: oklch(0.78 0.03 255);
+    --miss: oklch(0.64 0.21 27); --miss-wash: oklch(0.64 0.21 27 / 0.16); --idle: oklch(0.97 0.008 250);
+    --ok: oklch(0.86 0.09 200); --touch: oklch(0.97 0.008 250); --sel: oklch(0.86 0.09 200 / 0.3);
+    --c-gw: oklch(0.66 0.17 258); --c-castle: oklch(0.81 0.15 75); --c-adv: oklch(0.7 0.17 315); --c-chk: oklch(0.82 0.11 200);
+  }
+  .dir-c, .dir-c .disp { font-family: "Bai Jamjuree", Anuphan, sans-serif; }
+  .dir-c .disp { font-weight: 700; letter-spacing: -0.01em; }
+  .dir-c .hdr { background: oklch(0.15 0.04 262); position: relative; padding-bottom: 26px; }
+  .dir-c .hdr .lines { position: absolute; left: 0; right: 0; bottom: 0; height: 21px; display: grid; grid-template-rows: repeat(4, 1fr); gap: 3px; }
+  .dir-c .hdr .lines i { display: block; }
+  .dir-c .bar { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; }
+  .dir-c .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1rem; }
+  .dir-c .brand .roundel { width: 18px; height: 18px; border-radius: 50%; border: 4px solid var(--fg); }
+  .dir-c .lang { color: var(--muted); } .dir-c .lang:hover { color: var(--fg); background: var(--panel); }
+  .dir-c .title { padding: 18px 0 4px; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; }
+  .dir-c .title h1 { margin: 0; font-size: clamp(1.9rem, 5cqi, 2.8rem); line-height: 1.15; }
+  .dir-c .title .sub { color: var(--muted); font-size: .95rem; }
+  .dir-c .card { background: var(--panel); border-radius: 10px; position: relative; }
+  .dir-c .me { padding: 18px 20px 8px; }
+  .dir-c .me-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .dir-c .me-head h2 { margin: 0; font-size: 1.7rem; }
+  .dir-c .me-head .role { color: var(--muted); font-size: .85rem; }
+  .dir-c .journey { margin-top: 14px; }
+  .dir-c .verdict { margin-top: 10px; padding: 10px 12px; border-radius: 6px; background: var(--panel-2); }
+  .dir-c .verdict .v { color: var(--muted); }
+  .dir-c .verdict.warn { background: var(--miss-wash); color: var(--miss); }
+  .dir-c .rows { margin-top: 6px; }
+  .dir-c .rows li { padding: 12px 0; border-top: 1px solid var(--line); }
+  .dir-c .key { width: 14px; height: 4px; border-radius: 2px; flex: none; }
+  .dir-c .track { position: relative; display: flex; gap: 10px; align-items: center; margin-top: 10px; padding: 0 2px; }
+  .dir-c .track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 4px; margin-top: -2px; border-radius: 2px; background: var(--lc); }
+  .dir-c .st { position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid var(--fg); flex: none; }
+  .dir-c .st.on { background: var(--miss); border-color: var(--miss); }
+  .dir-c .st.on::after { content: ""; position: absolute; left: 2px; right: 2px; top: 50%; height: 2px; margin-top: -1px; background: var(--fg); border-radius: 1px; }
+  .dir-c .track.sum { gap: 14px; }
+  .dir-c .track.sum::before { right: 80px; }
+  .dir-c .track.sum .st { width: 22px; height: 22px; border-width: 4px; }
+  .dir-c .track.sum .st.on::after { left: 3px; right: 3px; height: 3px; margin-top: -1.5px; }
+  .dir-c .term { position: relative; flex: none; margin-left: auto; font-size: .75rem; color: var(--muted); background: var(--panel); padding-left: 8px; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .dir-c .term::before { content: ""; width: 26px; height: 26px; border-radius: 50%; border: 4px solid var(--miss); background: var(--bg); box-sizing: border-box; }
+  .dir-c .weeks button { background: var(--panel); color: var(--muted); border-radius: 999px; }
+  .dir-c .weeks button[aria-current] { background: var(--fg); color: oklch(0.2 0.045 262); font-weight: 600; }
+  .dir-c .sec-h h3 { margin: 0; font-size: 1.25rem; }
+  .dir-c .mini { padding: 12px 12px 12px; border-radius: 8px; }
+  .dir-c .mini .nm { font-weight: 700; font-size: 1.05rem; }
+  .dir-c .mini .track { gap: 6px; margin-top: 10px; }
+  .dir-c .mini .track::before { height: 2px; margin-top: -1px; background: var(--line); }
+  .dir-c .mini .st { width: 11px; height: 11px; border-width: 2px; }
+  .dir-c .mini .st.on::after { display: none; }
+  .dir-c .mini .ct { font-size: .75rem; color: var(--muted); }
+  .dir-c .mini.over { box-shadow: inset 0 0 0 2px var(--miss); }
+  .dir-c .mini.over .ct { color: var(--miss); }
+  .dir-c .mini.you { box-shadow: inset 0 0 0 2px var(--fg); }
+  .dir-c .mini:hover { background: var(--panel-2); }
+  .dir-c .empty-ok { color: var(--ok); }
+
+  @media (prefers-reduced-motion: reduce) { .stage { transition: none; } }
+</style>
+</head>
+<body>
+
+<div class="chrome">
+  <h1>Jugyeom · Dark redesign</h1>
+  <p>ข้อมูลตัวอย่าง (ตัวเลขสมมติ) · หน้ากระดานกิลด์ตอนเลือกชื่อแล้ว</p>
+  <div class="seg" role="group" aria-label="แบบ">
+    <button data-dir="a" aria-pressed="true">A · ถ่ายทอดสด</button>
+    <button data-dir="b" aria-pressed="false">B · ภาคีอัศวิน</button>
+    <button data-dir="c" aria-pressed="false">C · แผนที่สายกลางคืน</button>
+  </div>
+  <div class="seg" role="group" aria-label="เครื่องหมายของแบบ A">
+    <button data-marks="new" aria-pressed="true">A: เติมสี = เข้า (แนะนำ)</button>
+    <button data-marks="old" aria-pressed="false">A: แดง = ขาด (เดิม)</button>
+  </div>
+  <div class="seg" role="group" aria-label="ขนาดจอ">
+    <button data-view="desk" aria-pressed="true">เดสก์ท็อป</button>
+    <button data-view="phone" aria-pressed="false">มือถือ</button>
+  </div>
+</div>
+
+<div class="about" id="about"></div>
+<div class="stage-wrap"><div class="stage" id="stage"></div></div>
+
+<script>
+const DIRS = {
+  a: {
+    name: "A · ถ่ายทอดสด (Match Broadcast)",
+    blurb: "กราฟิกถ่ายทอดอีสปอร์ตบนพื้นกรมม่วงเกือบดำ ชื่อตัวหนาเอียงแบบป้ายคะแนน ทุกครั้งที่ขาดเป็นแถบเอียงสีแดงเหมือนแต้มของซีรีส์ ส่วนสีทองบอกสิ่งที่เป็น ‘คุณ’ หรือสิ่งที่กดได้",
+    chips: ["oklch(0.155 0.022 285)", "oklch(0.205 0.03 285)", "oklch(0.82 0.16 75)", "oklch(0.65 0.22 22)", "oklch(0.82 0.11 220)"],
+  },
+  b: {
+    name: "B · ภาคีอัศวิน (Order of Knights)",
+    blurb: "ทำเนียบอัศวินบนพื้นดำอุ่น ธงแดงเลือดหมูชายแฉกขลิบทอง ชื่อใช้ฟอนต์ Chonburi แบบสลัก ทุกครั้งที่ขาดเป็นโล่สีแดง ส่วนโล่ที่ยังว่างคือรอบที่เข้าแล้ว",
+    chips: ["oklch(0.15 0.008 45)", "oklch(0.195 0.012 40)", "oklch(0.32 0.11 18)", "oklch(0.8 0.12 82)", "oklch(0.6 0.2 25)"],
+  },
+  c: {
+    name: "C · แผนที่สายกลางคืน (Midnight Line Map)",
+    blurb: "แผนที่รถไฟเคลือบสีน้ำเงินเที่ยงคืน แต่ละคอนเทนต์คือหนึ่งสายสี แต่ละรอบคือหนึ่งสถานี สถานีที่ขาดเป็นสีแดงมีขีดปิด ส่วนเส้นทางของสัปดาห์จะวิ่งไปจนถึงสถานีปลายทางที่โดนเตือน",
+    chips: ["oklch(0.19 0.045 262)", "oklch(0.235 0.05 262)", "oklch(0.97 0.008 250)", "oklch(0.64 0.21 27)", "oklch(0.81 0.15 75)"],
+  },
+};
+
+// Demo data only.
+const LIMIT = 5;
+const ME = {
+  name: "7rud", role: "สมาชิก", missed: 3,
+  contents: [
+    { key: "gw", name: "สงครามกิลด์", runs: 3, missed: 1 },
+    { key: "castle", name: "สงครามชิงปราสาท", runs: 7, missed: 1, score: "ดาเมจรวม 48.2M" },
+    { key: "adv", name: "กลุ่มนักเดินทางจุติ", runs: 2, missed: 0, score: "ดาเมจรวม 112.7M" },
+    { key: "chk", name: "เช็คชื่อ", runs: 7, missed: 1 },
+  ],
+};
+const OTHERS = [
+  { name: "zGLADIATOR", missed: 6 },
+  { name: "Flxcky", missed: 4 },
+  { name: "อิทาจิ888", missed: 2 },
+  { name: "iCiE", missed: 1 },
+  { name: "nnonx", missed: 0 },
+  { name: "Sorafeen", missed: 0 },
+];
+const WEEKS = ["14–20 ก.ย.", "21–27 ก.ย.", "28 ก.ย.–4 ต.ค.", "5–11 ต.ค."];
+
+const runsText = (c) => c.score ?? `${c.runs - c.missed} จาก ${c.runs} รอบ`;
+const verdictOf = (m) =>
+  m >= LIMIT ? { tone: "warn", text: "โดนเตือนสัปดาห์นี้" }
+  : m === 0 ? { tone: "ok", text: "เข้าครบทุกรอบ เยี่ยมมาก" }
+  : { tone: "mid", text: `ขาดอีก ${LIMIT - m} ครั้งจะโดนเตือน` };
+
+/* Marks per direction */
+let aMarks = "new";
+// A, new marks: attended runs fill in the content's colour; a missed run is a red outline (a gap).
+const aRuns = (runs, missed) =>
+  Array.from({ length: Math.max(runs, missed) }, (_, i) => `<i class="pip ${i < runs - missed ? "done" : "gap"}"></i>`).join("");
+// A, new marks: the week's allowance as lives. Gold = misses still allowed, red outline = used.
+const aLives = (missed, cls = "") => {
+  const used = Math.min(missed, LIMIT), over = Math.max(missed - LIMIT, 0);
+  return Array.from({ length: LIMIT }, (_, i) => `<i class="pip ${cls} ${i < LIMIT - used ? "life" : "gap"}"></i>`).join("")
+    + (over ? `<span class="limit"></span>` + Array.from({ length: over }, () => `<i class="pip ${cls} over"></i>`).join("") : "");
+};
+const pips = (total, missed, cls = "") =>
+  Array.from({ length: Math.max(total, missed) }, (_, i) => `<i class="pip ${cls} ${i < missed ? "on" : ""}"></i>`).join("");
+const SHIELD = "M2 2h16v7.5c0 4.6-3.6 8-8 9.6C5.6 17.5 2 14.1 2 9.5z";
+const shields = (total, missed, size = 18) =>
+  Array.from({ length: Math.max(total, missed) }, (_, i) => i < missed
+    ? `<svg class="sh" width="${size}" height="${size}" viewBox="0 0 20 20" aria-hidden="true"><path d="${SHIELD}" fill="var(--miss)" stroke="var(--or-deep)" stroke-width="1.2"/>${size >= 16 ? `<path d="M6 6l8 8M14 6l-8 8" stroke="oklch(0.25 0.09 18)" stroke-width="1.6" stroke-linecap="round"/>` : ""}</svg>`
+    : `<svg class="sh" width="${size}" height="${size}" viewBox="0 0 20 20" aria-hidden="true"><path d="${SHIELD}" fill="none" stroke="var(--idle)" stroke-width="1.5"/></svg>`).join("");
+const stations = (total, missed) =>
+  Array.from({ length: Math.max(total, missed) }, (_, i) => `<i class="st ${i < missed ? "on" : ""}"></i>`).join("");
+
+function limitRow(dir, missed) {
+  const pre = Math.min(missed, LIMIT), over = Math.max(missed - LIMIT, 0);
+  const label = `ขาด ${missed} จาก ${LIMIT}`;
+  if (dir === "a" && aMarks === "new") {
+    const left = LIMIT - missed;
+    return `<div class="marks" role="img" aria-label="${label}">${aLives(missed, "big")}<span class="left ${left <= 0 ? "bad" : ""}">${left > 0 ? `ขาดได้อีก ${left}` : left === 0 ? "ครบโควตา" : `เกิน ${-left}`}</span></div>`;
+  }
+  if (dir === "a") return `<div class="marks" role="img" aria-label="${label}">${pips(LIMIT, pre, "big")}<span class="limit"></span>${over ? pips(over, over, "big") : ""}</div>`;
+  if (dir === "b") return `<div class="marks" role="img" aria-label="${label}">${shields(LIMIT, pre, 26)}<span class="limit"></span>${over ? shields(over, over, 26) : ""}</div>`;
+  return `<div class="track sum" style="--lc: var(--fg)" role="img" aria-label="${label}">${stations(LIMIT, pre)}<span class="term">โดนเตือน</span></div>`;
+}
+function contentMarks(dir, c) {
+  const label = `ขาด ${c.missed} จาก ${c.runs}`;
+  if (dir === "a" && aMarks === "new") return `<div class="marks" style="--pc: var(--c-${c.key})" role="img" aria-label="${label}">${aRuns(c.runs, c.missed)}</div>`;
+  if (dir === "a") return `<div class="marks" role="img" aria-label="${label}">${pips(c.runs, c.missed)}</div>`;
+  if (dir === "b") return `<div class="marks" role="img" aria-label="${label}">${shields(c.runs, c.missed, 18)}</div>`;
+  return `<div class="track" style="--lc: var(--c-${c.key})" role="img" aria-label="${label}">${stations(c.runs, c.missed)}</div>`;
+}
+function miniMarks(dir, m) {
+  if (dir === "a" && aMarks === "new") return `<div class="marks">${aLives(m)}</div>`;
+  if (dir === "a") return `<div class="marks">${pips(LIMIT, m)}</div>`;
+  if (dir === "b") return `<div class="marks">${shields(LIMIT, m, 13)}</div>`;
+  return `<div class="track">${stations(LIMIT, m)}</div>`;
+}
+
+function header(dir) {
+  const lang = `<button class="lang">English</button>`;
+  if (dir === "a") return `
+    <header class="hdr"><div class="wrap">
+      <div class="bar"><div class="bug"><span class="brand">JUGYEOM</span><span class="wk">สัปดาห์ 5 ต.ค. – 11 ต.ค.</span></div>${lang}</div>
+      <div class="title"><h1 class="disp">กระดานกิลด์</h1></div>
+    </div></header>`;
+  if (dir === "b") return `
+    <header class="hdr"><div class="wrap">
+      <div class="bar"><span class="brand">Jugyeom</span>${lang}</div>
+      <div class="title"><h1 class="disp">กระดานกิลด์</h1><div class="sub">สัปดาห์ 5 ต.ค. – 11 ต.ค.</div></div>
+    </div></header>`;
+  return `
+    <header class="hdr"><div class="wrap">
+      <div class="bar"><span class="brand"><span class="roundel"></span>Jugyeom</span>${lang}</div>
+      <div class="title"><h1 class="disp">กระดานกิลด์</h1><span class="sub">สัปดาห์ 5 ต.ค. – 11 ต.ค.</span></div>
+    </div>
+    <div class="lines" aria-hidden="true"><i style="background:var(--c-gw)"></i><i style="background:var(--c-castle)"></i><i style="background:var(--c-adv)"></i><i style="background:var(--c-chk)"></i></div>
+    </header>`;
+}
+
+function meCard(dir) {
+  const v = verdictOf(ME.missed);
+  const verdict = `<p class="verdict ${v.tone}" style="margin-bottom:0"><strong>ขาด ${ME.missed} จาก ${LIMIT}</strong><span class="v">${v.text}</span></p>`;
+  const rows = ME.contents.map((c) => `
+    <li>
+      <div class="row-top"><span class="cname"><span class="key" style="background:var(--c-${c.key})"></span><span>${c.name}</span></span><span class="meta">${runsText(c)}</span></div>
+      ${contentMarks(dir, c)}
+    </li>`).join("");
+  if (dir === "a") return `
+    <article class="card me">
+      <div class="me-head"><h2 class="disp">${ME.name}</h2><div class="score"><b>${ME.missed}</b><span>/${LIMIT}</span></div><span class="role">${ME.role} · ขาดสัปดาห์นี้</span></div>
+      <div class="strike">${limitRow(dir, ME.missed)}</div>
+      ${verdict}
+      <ul class="rows" style="list-style:none;margin:0">${rows}</ul>
+      ${aMarks === "new" ? `<p class="legend"><span><i class="pip done" style="--pc: var(--c-gw)"></i>เข้าแล้ว (สีของคอนเทนต์)</span><span><i class="pip gap"></i>ขาด</span><span><i class="pip life"></i>ขาดได้อีก</span></p>` : ""}
+    </article>`;
+  if (dir === "b") return `
+    <article class="card me">
+      <div class="me-head">
+        <svg class="crest" width="40" height="44" viewBox="0 0 20 22" aria-hidden="true"><path d="M2 2h16v8c0 5-3.6 8.6-8 10.4C5.6 18.6 2 15 2 10z" fill="oklch(0.25 0.09 18)" stroke="var(--or)" stroke-width="1"/><text x="10" y="13.5" text-anchor="middle" font-family="Chonburi" font-size="9" fill="var(--or)">7</text></svg>
+        <div><h2 class="disp">${ME.name}</h2><div class="role">${ME.role}</div></div>
+      </div>
+      <div class="me-body">
+        <div class="strike">${limitRow(dir, ME.missed)}</div>
+        ${verdict}
+        <ul class="rows" style="list-style:none;margin:8px 0 0;padding:0">${rows}</ul>
+      </div>
+    </article>`;
+  return `
+    <article class="card me">
+      <div class="me-head"><h2 class="disp">${ME.name}</h2><span class="role">${ME.role}</span></div>
+      <div class="journey">${limitRow(dir, ME.missed)}</div>
+      ${verdict}
+      <ul class="rows" style="list-style:none;margin:6px 0 0;padding:0">${rows}</ul>
+    </article>`;
+}
+
+function mini(dir, m, you = false) {
+  const over = m.missed >= LIMIT;
+  const cls = `card mini ${over ? "over" : ""} ${you ? "you" : ""}`;
+  const ct = `<span class="ct">${m.missed}/${LIMIT}</span>`;
+  if (dir === "b") return `<a class="${cls}" style="display:block;color:inherit;text-decoration:none" href="#"><div class="chief"></div><div class="in"><div class="nm">${m.name}</div><div class="row-top">${miniMarks(dir, m.missed)}${ct}</div></div></a>`;
+  return `<a class="${cls}" style="display:block;color:inherit;text-decoration:none" href="#"><div class="nm disp">${m.name}</div><div class="row-top">${miniMarks(dir, m.missed)}${ct}</div></a>`;
+}
+
+function render(dir) {
+  const warned = OTHERS.filter((m) => m.missed >= LIMIT);
+  const rest = OTHERS.filter((m) => m.missed < LIMIT);
+  const weeks = WEEKS.map((w, i) => `<button ${i === WEEKS.length - 1 ? 'aria-current="true"' : ""}>${w}</button>`).join("");
+  return `
+  <div class="board-page dir-${dir}">
+    ${header(dir)}
+    <main class="wrap"><div class="cols">
+      <div>
+        ${meCard(dir)}
+        <nav class="weeks" aria-label="สัปดาห์">${weeks}</nav>
+      </div>
+      <div>
+        <section>
+          <div class="sec-h"><h3 class="disp">โดนเตือนสัปดาห์นี้</h3><span class="n bad">${warned.length}</span></div>
+          <div class="grid">${warned.map((m) => mini(dir, m)).join("")}</div>
+        </section>
+        <section style="margin-top:32px">
+          <div class="sec-h"><h3 class="disp">สมาชิกคนอื่นในกิลด์</h3><span class="n">${rest.length}</span></div>
+          <div class="grid">${rest.map((m) => mini(dir, m)).join("")}</div>
+        </section>
+      </div>
+    </div></main>
+  </div>`;
+}
+
+const stage = document.getElementById("stage");
+const about = document.getElementById("about");
+let cur = "a";
+function show(dir) {
+  cur = dir;
+  stage.innerHTML = render(dir);
+  const d = DIRS[dir];
+  about.innerHTML = `<h2>${d.name}</h2><div class="chips">${d.chips.map((c) => `<span style="background:${c}"></span>`).join("")}</div><p>${d.blurb}</p>`;
+  document.querySelectorAll("[data-dir]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.dir === dir)));
+}
+document.querySelectorAll("[data-dir]").forEach((b) => b.addEventListener("click", () => show(b.dataset.dir)));
+document.querySelectorAll("[data-view]").forEach((b) => b.addEventListener("click", () => {
+  stage.classList.toggle("phone", b.dataset.view === "phone");
+  document.querySelectorAll("[data-view]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+}));
+document.addEventListener("keydown", (e) => { if (["1", "2", "3"].includes(e.key)) show("abc"[+e.key - 1]); });
+document.querySelectorAll("[data-marks]").forEach((b) => b.addEventListener("click", () => {
+  aMarks = b.dataset.marks;
+  document.querySelectorAll("[data-marks]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+  show("a");
+}));
+const [h, v] = location.hash.slice(1).split("-");
+show(DIRS[h] ? h : "a");
+if (v === "phone") document.querySelector('[data-view="phone"]').click();
+</script>
+</body>
+</html>

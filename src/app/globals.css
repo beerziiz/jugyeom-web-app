@@ -1,64 +1,57 @@
 @import "tailwindcss";
 
 /*
-  Guild Hall Board — night hall (default).
-  Dark stone ground tinted green, banner-green header, warm-dark notice paper,
-  brass pins, wax-seal red reserved for misses and warnings.
+  Match Broadcast — esports broadcast graphics on near-black indigo.
+  Live gold marks the score bug, "you" and what you can press; miss red is
+  reserved for misses and warnings; attended runs fill in their content colour.
 */
 :root {
   color-scheme: dark;
-  --background: oklch(0.17 0.012 160);
-  --foreground: oklch(0.93 0.012 85);
-  --surface: oklch(0.215 0.012 120);
-  --surface-2: oklch(0.255 0.014 130);
-  --border: oklch(0.32 0.016 140);
-  --muted: oklch(0.72 0.014 100);
+  --background: oklch(0.155 0.022 285);
+  --foreground: oklch(0.96 0.008 285);
+  --surface: oklch(0.205 0.03 285);
+  --surface-2: oklch(0.25 0.036 285);
+  --border: oklch(0.32 0.04 285);
+  --muted: oklch(0.74 0.03 285);
 
-  --banner: oklch(0.36 0.07 160);
-  --banner-deep: oklch(0.29 0.06 160);
-  --banner-fg: oklch(0.96 0.012 150);
-  --brass: oklch(0.76 0.13 88);
-  --brass-deep: oklch(0.55 0.11 80);
-  --seal: oklch(0.6 0.19 28);
-  --seal-deep: oklch(0.42 0.15 27);
-  --seal-bg: oklch(0.6 0.19 28 / 0.14);
-  --seal-lip: oklch(0.8 0.12 35);
-  --seal-empty: oklch(0.5 0.015 100);
+  --live: oklch(0.82 0.16 75);
+  --live-fg: oklch(0.2 0.04 70);
+  --miss: oklch(0.65 0.22 22);
+  --miss-bg: oklch(0.65 0.22 22 / 0.16);
+  --idle: oklch(0.36 0.03 285);
 
-  --accent: var(--brass);
-  --accent-fg: oklch(0.2 0.03 80);
-  --warn: var(--seal);
-  --warn-bg: var(--seal-bg);
-  --danger: var(--seal);
-  --ok: oklch(0.78 0.12 155);
+  --accent: var(--live);
+  --accent-fg: var(--live-fg);
+  --warn: var(--miss);
+  --warn-bg: var(--miss-bg);
+  --danger: var(--miss);
+  --ok: oklch(0.82 0.11 220);
 
-  --c-guild-war: oklch(0.7 0.12 250);
-  --c-castle-rush: oklch(0.72 0.11 70);
-  --c-advent: oklch(0.7 0.12 300);
-  --c-checkin: oklch(0.74 0.12 155);
+  --c-guild-war: oklch(0.68 0.15 250);
+  --c-castle-rush: oklch(0.76 0.06 55);
+  --c-advent: oklch(0.68 0.17 300);
+  --c-checkin: oklch(0.76 0.13 350);
 }
 
-/* Day hall, kept for a later light-theme switch. */
+/* Day broadcast, kept for a later light-theme switch. */
 :root[data-theme="light"] {
   color-scheme: light;
-  --background: oklch(0.92 0.006 140);
-  --foreground: oklch(0.25 0.015 60);
-  --surface: oklch(0.985 0.004 100);
-  --surface-2: oklch(0.95 0.006 120);
-  --border: oklch(0.86 0.008 120);
-  --muted: oklch(0.47 0.015 70);
-  --banner: oklch(0.38 0.07 160);
-  --banner-deep: oklch(0.32 0.06 160);
-  --accent: oklch(0.38 0.07 160);
-  --accent-fg: oklch(0.97 0.01 150);
-  --seal: oklch(0.5 0.18 28);
-  --seal-bg: oklch(0.5 0.18 28 / 0.1);
-  --seal-empty: oklch(0.7 0.012 90);
-  --ok: oklch(0.5 0.12 155);
-  --c-guild-war: oklch(0.5 0.13 250);
-  --c-castle-rush: oklch(0.52 0.1 65);
-  --c-advent: oklch(0.48 0.13 300);
-  --c-checkin: oklch(0.52 0.12 155);
+  --background: oklch(0.96 0.006 285);
+  --foreground: oklch(0.2 0.03 285);
+  --surface: oklch(0.995 0.002 285);
+  --surface-2: oklch(0.93 0.01 285);
+  --border: oklch(0.86 0.014 285);
+  --muted: oklch(0.46 0.03 285);
+  --live: oklch(0.72 0.15 70);
+  --live-fg: oklch(0.2 0.04 70);
+  --miss: oklch(0.55 0.21 22);
+  --miss-bg: oklch(0.55 0.21 22 / 0.1);
+  --idle: oklch(0.85 0.012 285);
+  --ok: oklch(0.5 0.12 230);
+  --c-guild-war: oklch(0.52 0.16 255);
+  --c-castle-rush: oklch(0.55 0.07 55);
+  --c-advent: oklch(0.5 0.18 300);
+  --c-checkin: oklch(0.55 0.15 350);
 }
 
 @theme inline {
@@ -74,14 +67,13 @@
   --color-warn-bg: var(--warn-bg);
   --color-danger: var(--danger);
   --color-ok: var(--ok);
-  --color-banner: var(--banner);
-  --color-banner-deep: var(--banner-deep);
-  --color-banner-fg: var(--banner-fg);
-  --color-brass: var(--brass);
-  --color-seal: var(--seal);
-  --color-seal-bg: var(--seal-bg);
+  --color-live: var(--live);
+  --color-live-fg: var(--live-fg);
+  --color-miss: var(--miss);
+  --color-miss-bg: var(--miss-bg);
+  --color-idle: var(--idle);
   --font-sans: var(--font-anuphan);
-  --font-display: var(--font-trirong);
+  --font-display: var(--font-kanit);
 }
 
 body {
@@ -93,20 +85,20 @@ body {
 }
 
 ::selection {
-  background: oklch(0.76 0.13 88 / 0.35);
+  background: oklch(0.82 0.16 75 / 0.35);
   color: var(--foreground);
 }
 
 :focus-visible {
-  outline: 2px solid var(--brass);
+  outline: 2px solid var(--live);
   outline-offset: 2px;
 }
 
 input,
 select,
 textarea {
-  caret-color: var(--brass);
-  accent-color: var(--brass);
+  caret-color: var(--live);
+  accent-color: var(--live);
 }
 
 a {
@@ -128,28 +120,53 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-/* ── Wax seals ── */
-.seal-mark {
-  filter: drop-shadow(0 1px 1px oklch(0 0 0 / 0.55));
+/* ── Broadcast display type: heavy italic, like a score graphic ── */
+.headline {
+  font-family: var(--font-display), sans-serif;
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
-/* ── Brass pin ── */
-.pin {
-  border-radius: 9999px;
-  background: radial-gradient(circle at 35% 30%, oklch(0.9 0.1 92), var(--brass) 55%, var(--brass-deep));
-  box-shadow: 0 2px 3px oklch(0 0 0 / 0.5);
+/* ── Score bug: slanted plates in the header ── */
+.bug-lead {
+  clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+}
+.bug-tail {
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+}
+.slant {
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
 }
 
-/* ── Pennant banner edge ── */
-.pennant {
-  --notch: clamp(18px, 4.5vw, 64px);
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - var(--notch)), 0 100%);
+/* ── Run marks: slanted plates, like a series score ── */
+.mark {
+  display: inline-block;
+  flex: none;
+  width: 18px;
+  height: 10px;
+  border-radius: 1px;
+  transform: skewX(-18deg);
+  background: var(--idle);
 }
-
-/* Notices on the board sit very slightly off-true, like pinned paper. */
-.board > :nth-child(3n + 1) { rotate: -0.5deg; }
-.board > :nth-child(3n + 2) { rotate: 0.35deg; }
-.board > :nth-child(3n) { rotate: -0.15deg; }
-@media (prefers-reduced-motion: reduce) {
-  .board > * { rotate: none; }
+.mark-sm { width: 12px; height: 7px; }
+.mark-lg { width: 30px; height: 16px; }
+/* Attended: filled in the content's colour. */
+.mark-done { background: var(--mark, var(--foreground)); }
+/* Missed: an empty red outline, the gap where a run should be. */
+.mark-gap { background: transparent; box-shadow: inset 0 0 0 2px var(--miss); }
+.mark-sm.mark-gap { box-shadow: inset 0 0 0 1.5px var(--miss); }
+.mark-lg.mark-gap { box-shadow: inset 0 0 0 2.5px var(--miss); }
+/* Allowance: misses still allowed this week. */
+.mark-life { background: var(--foreground); }
+/* Past the limit. */
+.mark-over { background: var(--miss); }
+.mark-limit {
+  display: inline-block;
+  flex: none;
+  width: 3px;
+  height: 1.5em;
+  margin: 0 4px;
+  transform: skewX(-18deg);
+  background: var(--foreground);
 }
