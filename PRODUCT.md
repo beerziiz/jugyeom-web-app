@@ -45,11 +45,11 @@ A private, purpose-built tracker for this guild's own content and rules. It is n
 - **Access:** public read-only link for everyone; only leader/officers sign in to create or edit data.
 - **Performance view:** per-member performance across tracked content, plus a guild-wide overview.
 - **Missed-content checklist:** per-member count of missed content, by content type and time period.
-- **Warnings and kick list:** members are flagged once their misses in a **single week** reach an officer-set threshold (default 5). Repeat offenders go on a kick-candidate list. The final decision stays with officers.
+- **Warnings and kick list:** members are flagged once their misses in a **single week** reach an officer-set threshold (default 5). Warnings never expire; once a member has 2 (officer-set), they go on a kick-candidate list. The final decision stays with officers.
 - **Bilingual:** Thai and English, with a language switch.
 - **History:** members who leave are kept forever (marked as left, never deleted), with all their entries and warnings.
 - **Scale:** one guild, about 30 members. Multi-guild support is out of scope for now.
-- **Decided:** misses count attendance only; warnings are judged per week; past members are kept forever; screenshot reading per content fills attendance and damage score, and an officer confirms it.
+- **Decided:** misses count attendance only; warnings are judged per week and never expire; past members are kept forever; screenshot reading per content fills attendance and damage score, and an officer confirms it.
 - **Open decisions:** how many warnings put a member on the kick list (currently 2).
 
 ## Brand Commitments
