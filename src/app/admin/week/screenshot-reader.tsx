@@ -10,6 +10,13 @@ import { readScreen, saveDayMarks, type DayMark, type ReadRow } from "./screensh
 
 /** A change the reader asks the grid to make. `part` is the damage field index. */
 export type GridUpdate = { memberId: number; contentKey: string; missed?: number; score?: { part: number; value: number } };
+/** Days now on record per content, and runs that follow from the screenshot's day. */
+export type GridRuns = {
+  days: { contentKey: string; day: string }[];
+  runs: { contentKey: string; runs: number }[];
+  /** Damage read for one day, per member. */
+  values: { contentKey: string; day: string; memberId: number; value: number }[];
+};
 
 type Screen = "guild_members" | "guild_war" | "castle" | "advent1" | "advent2" | "advent3" | "advent4" | "god";
 const SCREENS: Screen[] = ["guild_members", "guild_war", "castle", "advent1", "advent2", "advent3", "advent4", "god"];
@@ -36,7 +43,6 @@ export function ScreenshotReader({
   weekStart,
   members,
   contentKeys,
-  runsOf,
   onApply,
   t,
 }: {
@@ -44,8 +50,7 @@ export function ScreenshotReader({
   members: { id: number; ign: string }[];
   /** Content keys that have columns in this week's grid. */
   contentKeys: string[];
-  runsOf: (contentKey: string) => number;
-  onApply: (updates: GridUpdate[]) => void;
+  onApply: (updates: GridUpdate[], runs: GridRuns) => void;
   t: Dictionary["reader"];
 }) {
   const today = new Date().toISOString().slice(0, 10);
@@ -125,6 +130,7 @@ export function ScreenshotReader({
     const read = [...byMember.values()];
     const updates: GridUpdate[] = [];
     const daily: { key: string; marks: DayMark[]; use: "missed" | "value" }[] = [];
+    const heldRuns: GridRuns["runs"] = [];
 
     if (screen === "guild_members") {
       daily.push({ key: "checkin_donation", marks: read.map((r) => ({ memberId: r.memberId!, done: r.checked_in ?? null })), use: "missed" });
@@ -135,10 +141,14 @@ export function ScreenshotReader({
           use: "missed",
         });
       }
-      // The castle tile already counts this week's days, so it sets the week directly.
-      const runs = runsOf("castle_rush");
-      for (const r of read) {
-        if (r.castle_done != null) updates.push({ memberId: r.memberId!, contentKey: "castle_rush", missed: Math.max(0, runs - r.castle_done) });
+      // The castle badge counts this week's days so far, so it sets the week directly:
+      // runs are the days from Monday through the day shown.
+      if (read.some((r) => r.castle_done != null)) {
+        const runs = Math.round((Date.parse(day) - Date.parse(weekStart)) / 86_400_000) + 1;
+        heldRuns.push({ contentKey: "castle_rush", runs });
+        for (const r of read) {
+          if (r.castle_done != null) updates.push({ memberId: r.memberId!, contentKey: "castle_rush", missed: Math.max(0, runs - r.castle_done) });
+        }
       }
     } else if (screen === "guild_war") {
       daily.push({
@@ -184,7 +194,15 @@ export function ScreenshotReader({
       }
     }
     setApplying(false);
-    onApply(updates);
+    onApply(updates, {
+      days: daily
+        .filter((d) => d.use === "missed" && d.marks.some((m) => m.done != null))
+        .map((d) => ({ contentKey: d.key, day })),
+      runs: heldRuns,
+      values: daily
+        .filter((d) => d.use === "value")
+        .flatMap((d) => d.marks.flatMap((m) => (m.value != null ? [{ contentKey: d.key, day, memberId: m.memberId, value: m.value }] : []))),
+    });
     setRows([]);
     setMessage({ tone: "ok", text: t.applied.replace("{n}", String(read.length)) });
   }

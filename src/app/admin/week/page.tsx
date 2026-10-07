@@ -4,7 +4,7 @@ import { getDictionary } from "@/lib/i18n";
 import { createClient } from "@/lib/supabase/server";
 import { addWeeks, isCycleEnd, mondayOf, parseWeek, weekEnd } from "@/lib/week";
 import { secondaryButton, quietButton } from "@/lib/ui";
-import { WeekGrid, type GridContent, type GridEntry, type GridMember } from "./week-grid";
+import { WeekGrid, type GridContent, type GridDayValue, type GridEntry, type GridMember } from "./week-grid";
 
 export default async function WeekPage({ searchParams }: PageProps<"/admin/week">) {
   const weekStart = parseWeek((await searchParams).w);
@@ -13,7 +13,7 @@ export default async function WeekPage({ searchParams }: PageProps<"/admin/week"
   const { locale, t } = await getDictionary();
   const supabase = await createClient();
 
-  const [{ data: members }, { data: contents }, { data: period }, { data: settings }] =
+  const [{ data: members }, { data: contents }, { data: period }, { data: settings }, { data: marks }] =
     await Promise.all([
       supabase
         .from("members")
@@ -28,6 +28,12 @@ export default async function WeekPage({ searchParams }: PageProps<"/admin/week"
         .order("sort_order"),
       supabase.from("periods").select("id").eq("week_start", weekStart).maybeSingle(),
       supabase.from("settings").select("miss_threshold").maybeSingle(),
+      // Results per day read from screenshots; these can exist before the week is first saved.
+      supabase
+        .from("day_marks")
+        .select("member_id, content_type_id, day, done, value")
+        .gte("day", weekStart)
+        .lte("day", end),
     ]);
 
   const [{ data: entries }, { data: runs }] = period
@@ -41,6 +47,14 @@ export default async function WeekPage({ searchParams }: PageProps<"/admin/week"
     : [{ data: [] }, { data: [] }];
 
   const runsByContent = new Map((runs ?? []).map((r) => [r.content_type_id, r.runs_held]));
+  const daysByContent = new Map<number, Set<string>>();
+  for (const m of marks ?? []) {
+    if (m.done === null && m.value === null) continue;
+    daysByContent.set(m.content_type_id, (daysByContent.get(m.content_type_id) ?? new Set()).add(m.day));
+  }
+  const dayValues: GridDayValue[] = (marks ?? [])
+    .filter((m) => m.value !== null)
+    .map((m) => ({ memberId: m.member_id, contentTypeId: m.content_type_id, day: m.day, value: Number(m.value) }));
 
   // Content on a multi-week cycle is entered only in the cycle’s last week.
   const dueThisWeek = (c: NonNullable<typeof contents>[number]) =>
@@ -56,6 +70,7 @@ export default async function WeekPage({ searchParams }: PageProps<"/admin/week"
     scoreLabel: c.score_label,
     scoreParts: c.has_score ? (c.score_parts ?? 1) : 0,
     runs: runsByContent.get(c.id) ?? c.default_runs ?? 1,
+    days: [...(daysByContent.get(c.id) ?? [])].sort(),
   }));
 
   const gridEntries: GridEntry[] = (entries ?? []).map((e) => ({
@@ -118,6 +133,7 @@ export default async function WeekPage({ searchParams }: PageProps<"/admin/week"
           members={members as GridMember[]}
           contents={gridContents}
           entries={gridEntries}
+          dayValues={dayValues}
           threshold={settings?.miss_threshold ?? 5}
           t={t.week}
           tr={t.reader}

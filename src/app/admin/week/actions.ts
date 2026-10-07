@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { parseWeek } from "@/lib/week";
+import { parseWeek, weekEnd } from "@/lib/week";
 
 export type EntryInput = {
   memberId: number;
@@ -13,10 +13,13 @@ export type EntryInput = {
   scoreParts?: (number | null)[] | null;
 };
 
+export type DayValueInput = { memberId: number; contentTypeId: number; day: string; value: number | null };
+
 export async function saveWeek(
   weekStartRaw: string,
   entries: EntryInput[],
   runs: { contentTypeId: number; runs: number }[] = [],
+  dayValues: DayValueInput[] = [],
 ): Promise<{ ok: boolean }> {
   const weekStart = parseWeek(weekStartRaw);
   const supabase = await createClient();
@@ -57,6 +60,24 @@ export async function saveWeek(
         runs_held: Math.max(0, Math.min(31, Math.trunc(r.runs) || 0)),
       })),
       { onConflict: "period_id,content_type_id" },
+    );
+    if (error) return { ok: false };
+  }
+
+  // Damage per day (Castle Rush); only the value is written, so attendance read from screenshots stays.
+  if (dayValues.length) {
+    const end = weekEnd(weekStart);
+    const { error } = await supabase.from("day_marks").upsert(
+      dayValues
+        .filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d.day) && d.day >= weekStart && d.day <= end)
+        .map((d) => ({
+          member_id: d.memberId,
+          content_type_id: d.contentTypeId,
+          day: d.day,
+          value: d.value == null || !Number.isFinite(d.value) ? null : d.value,
+          updated_by: user.id,
+        })),
+      { onConflict: "member_id,content_type_id,day" },
     );
     if (error) return { ok: false };
   }

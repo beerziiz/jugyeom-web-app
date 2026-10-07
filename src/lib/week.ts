@@ -46,3 +46,8 @@ export function formatWeek(weekStart: string, locale: "th" | "en"): { start: str
   const end = fmt.format(new Date(weekEnd(weekStart)));
   return { start, end, short: start };
 }
+
+/** The seven days of the week starting on the given Monday, as YYYY-MM-DD. */
+export function weekDays(weekStart: string): string[] {
+  return Array.from({ length: 7 }, (_, i) => new Date(Date.parse(weekStart) + i * DAY).toISOString().slice(0, 10));
+}
