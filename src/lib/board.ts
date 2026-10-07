@@ -1,6 +1,6 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
-import { weekEnd } from "@/lib/week";
+import { isCycleEnd, weekEnd } from "@/lib/week";
 import { scoreLabel } from "@/lib/content";
 import type { Locale } from "@/lib/i18n/dictionaries";
 
@@ -11,6 +11,9 @@ export type ContentInfo = {
   hasScore: boolean;
   scoreLabel: string | null;
   defaultRuns: number;
+  /** Weeks per cycle; content on a longer cycle only shows in the cycle’s last week. */
+  cycleWeeks: number;
+  cycleStart: string | null;
 };
 
 export type ContentResult = ContentInfo & {
@@ -37,7 +40,7 @@ type EntryRow = {
   score: number | string | null;
 };
 
-// Usual runs per week, matching migration 0002, for databases that have not run it yet.
+// Usual runs per week, for databases that have not run migration 0002 yet.
 const FALLBACK_RUNS: Record<string, number> = {
   guild_war: 3,
   castle_rush: 7,
@@ -47,22 +50,8 @@ const FALLBACK_RUNS: Record<string, number> = {
 
 async function loadContents(locale: Locale): Promise<ContentInfo[]> {
   const supabase = await createClient();
-  const withRuns = await supabase
-    .from("content_types")
-    .select("id, key, name_en, name_th, has_score, score_label, default_runs")
-    .eq("active", true)
-    .order("sort_order");
-
-  // Before migration 0002 runs, default_runs does not exist yet.
-  const data = withRuns.error
-    ? ((
-        await supabase
-          .from("content_types")
-          .select("id, key, name_en, name_th, has_score, score_label")
-          .eq("active", true)
-          .order("sort_order")
-      ).data?.map((c) => ({ ...c, default_runs: FALLBACK_RUNS[c.key] ?? 1 })) ?? [])
-    : withRuns.data;
+  // "*" so databases that have not run every migration yet still load.
+  const { data } = await supabase.from("content_types").select("*").eq("active", true).order("sort_order");
 
   return (data ?? []).map((c) => ({
     id: c.id,
@@ -70,26 +59,31 @@ async function loadContents(locale: Locale): Promise<ContentInfo[]> {
     name: locale === "th" ? c.name_th : c.name_en,
     hasScore: c.has_score,
     scoreLabel: scoreLabel(c.score_label, locale, locale === "th" ? "คะแนน" : "Score"),
-    defaultRuns: c.default_runs ?? 1,
+    defaultRuns: c.default_runs ?? FALLBACK_RUNS[c.key] ?? 1,
+    cycleWeeks: c.cycle_weeks ?? 1,
+    cycleStart: c.cycle_start ?? null,
   }));
 }
 
 function buildResults(
+  weekStart: string,
   contents: ContentInfo[],
   runsByContent: Map<number, number>,
   entries: EntryRow[],
 ): { contents: ContentResult[]; missed: number; score: number } {
   const byContent = new Map(entries.map((e) => [e.content_type_id, e]));
-  const results = contents.map((c) => {
-    const e = byContent.get(c.id);
-    return {
-      ...c,
-      runs: runsByContent.get(c.id) ?? c.defaultRuns,
-      missed: e?.missed_count ?? 0,
-      score: e?.score == null ? null : Number(e.score),
-      recorded: Boolean(e),
-    };
-  });
+  const results = contents
+    .filter((c) => isCycleEnd(weekStart, c.cycleWeeks, c.cycleStart))
+    .map((c) => {
+      const e = byContent.get(c.id);
+      return {
+        ...c,
+        runs: runsByContent.get(c.id) ?? c.defaultRuns,
+        missed: e?.missed_count ?? 0,
+        score: e?.score == null ? null : Number(e.score),
+        recorded: Boolean(e),
+      };
+    });
   return {
     contents: results,
     missed: results.reduce((sum, r) => sum + r.missed, 0),
@@ -107,7 +101,7 @@ export async function loadBoard(locale: Locale, requestedWeek?: string) {
     supabase.from("settings").select("miss_threshold").maybeSingle(),
   ]);
 
-  const threshold = settings?.miss_threshold ?? 3;
+  const threshold = settings?.miss_threshold ?? 5;
   const recent = periods ?? [];
   const period = recent.find((p) => p.week_start === requestedWeek) ?? recent[0] ?? null;
 
@@ -140,7 +134,7 @@ export async function loadBoard(locale: Locale, requestedWeek?: string) {
     id: m.id,
     ign: m.ign,
     role: m.role,
-    ...buildResults(contents, runsByContent, entriesByMember.get(m.id) ?? []),
+    ...buildResults(period.week_start, contents, runsByContent, entriesByMember.get(m.id) ?? []),
   }));
 
   return { contents, threshold, periods: recent, period, members: rows };
@@ -156,7 +150,7 @@ export async function loadMember(locale: Locale, memberId: number) {
     supabase.from("settings").select("miss_threshold").maybeSingle(),
   ]);
 
-  const threshold = settings?.miss_threshold ?? 3;
+  const threshold = settings?.miss_threshold ?? 5;
   if (!member) return { contents, threshold, member: null, weeks: [] };
 
   const { data: entries } = await supabase
@@ -179,7 +173,7 @@ export async function loadMember(locale: Locale, memberId: number) {
         (runs ?? []).filter((r) => r.period_id === p.id).map((r) => [r.content_type_id, r.runs_held]),
       );
       const weekEntries = ((entries ?? []) as EntryRow[]).filter((e) => e.period_id === p.id);
-      return { weekStart: p.week_start, ...buildResults(contents, runsByContent, weekEntries) };
+      return { weekStart: p.week_start, ...buildResults(p.week_start, contents, runsByContent, weekEntries) };
     });
 
   return { contents, threshold, member, weeks };

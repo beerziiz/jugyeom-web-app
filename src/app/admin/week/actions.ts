@@ -9,6 +9,8 @@ export type EntryInput = {
   contentTypeId: number;
   missed: number;
   score: number | null;
+  /** Damage per boss when the content splits its score; null otherwise. */
+  scoreParts?: (number | null)[] | null;
 };
 
 export async function saveWeek(
@@ -32,7 +34,8 @@ export async function saveWeek(
 
   const rows = entries.map((e) => {
     const missed = Math.max(0, Math.min(99, Math.trunc(e.missed) || 0));
-    const score = e.score === null || !Number.isFinite(e.score) ? null : e.score;
+    const clean = (v: number | null | undefined) => (v == null || !Number.isFinite(v) ? null : v);
+    const score = clean(e.score);
     return {
       member_id: e.memberId,
       period_id: period.id,
@@ -40,6 +43,7 @@ export async function saveWeek(
       missed_count: missed,
       participated: missed === 0,
       score,
+      ...(e.scoreParts ? { score_parts: e.scoreParts.map(clean) } : {}),
       source: "manual" as const,
       entered_by: user.id,
     };

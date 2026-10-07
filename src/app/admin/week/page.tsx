@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getDictionary } from "@/lib/i18n";
 import { createClient } from "@/lib/supabase/server";
-import { addWeeks, mondayOf, parseWeek, weekEnd } from "@/lib/week";
+import { addWeeks, isCycleEnd, mondayOf, parseWeek, weekEnd } from "@/lib/week";
 import { secondaryButton, quietButton } from "@/lib/ui";
 import { WeekGrid, type GridContent, type GridEntry, type GridMember } from "./week-grid";
 
@@ -23,7 +23,7 @@ export default async function WeekPage({ searchParams }: PageProps<"/admin/week"
         .order("ign"),
       supabase
         .from("content_types")
-        .select("id, key, name_en, name_th, has_score, score_label, default_runs")
+        .select("*")
         .eq("active", true)
         .order("sort_order"),
       supabase.from("periods").select("id").eq("week_start", weekStart).maybeSingle(),
@@ -34,7 +34,7 @@ export default async function WeekPage({ searchParams }: PageProps<"/admin/week"
     ? await Promise.all([
         supabase
           .from("entries")
-          .select("member_id, content_type_id, missed_count, score")
+          .select("*")
           .eq("period_id", period.id),
         supabase.from("period_contents").select("content_type_id, runs_held").eq("period_id", period.id),
       ])
@@ -42,12 +42,19 @@ export default async function WeekPage({ searchParams }: PageProps<"/admin/week"
 
   const runsByContent = new Map((runs ?? []).map((r) => [r.content_type_id, r.runs_held]));
 
-  const gridContents: GridContent[] = (contents ?? []).map((c) => ({
+  // Content on a multi-week cycle is entered only in the cycle’s last week.
+  const dueThisWeek = (c: NonNullable<typeof contents>[number]) =>
+    isCycleEnd(weekStart, c.cycle_weeks ?? 1, c.cycle_start ?? null);
+  const nameOf = (c: NonNullable<typeof contents>[number]) => (locale === "th" ? c.name_th : c.name_en);
+  const laterNames = (contents ?? []).filter((c) => !dueThisWeek(c)).map(nameOf);
+
+  const gridContents: GridContent[] = (contents ?? []).filter(dueThisWeek).map((c) => ({
     id: c.id,
-    name: locale === "th" ? c.name_th : c.name_en,
+    name: nameOf(c),
     key: c.key,
     hasScore: c.has_score,
     scoreLabel: c.score_label,
+    scoreParts: c.has_score ? (c.score_parts ?? 1) : 0,
     runs: runsByContent.get(c.id) ?? c.default_runs ?? 1,
   }));
 
@@ -56,6 +63,7 @@ export default async function WeekPage({ searchParams }: PageProps<"/admin/week"
     contentTypeId: e.content_type_id,
     missed: e.missed_count,
     score: e.score === null ? null : Number(e.score),
+    scoreParts: e.score_parts?.map((v: number | string | null) => (v === null ? null : Number(v))) ?? null,
   }));
 
   return (
@@ -66,6 +74,11 @@ export default async function WeekPage({ searchParams }: PageProps<"/admin/week"
           <p className="text-muted tabular-nums">
             {t.week.weekOf} {weekStart} – {end}
           </p>
+          {laterNames.length > 0 && (
+            <p className="text-sm text-muted">
+              {t.week.nextWeek.replace("{names}", laterNames.join(", ")).replace("{date}", addWeeks(weekStart, 1))}
+            </p>
+          )}
         </div>
         <nav className="flex items-center gap-1">
           <Link
@@ -105,7 +118,7 @@ export default async function WeekPage({ searchParams }: PageProps<"/admin/week"
           members={members as GridMember[]}
           contents={gridContents}
           entries={gridEntries}
-          threshold={settings?.miss_threshold ?? 3}
+          threshold={settings?.miss_threshold ?? 5}
           t={t.week}
         />
       )}

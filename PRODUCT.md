@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Next.js / React (user's choice). Hosting, database, and auth provider are not decided yet.
+Next.js (App Router) + TypeScript + Tailwind CSS. Supabase for Postgres, Auth (officer accounts), and Storage (screenshots). Hosted on Vercel.
 
 ## Users
 
@@ -28,9 +28,16 @@ A private, purpose-built tracker for this guild's own content and rules. It is n
 ## Operating Context
 
 - Game: Seven Knights Re:BIRTH, Global server. The game has no public API, so all data is entered by hand or read from screenshots.
-- Tracked guild content (per the user): **Guild War**, **Castle Rush**, **Advent Expedition**, **daily check-in / donation**. Exact in-game names, schedules, and scoring metrics for each are still to be confirmed.
+- Tracked guild content and what counts as one run (a miss is one run not done):
+  - **Guild War / สงครามกิลด์**: 3 days a week (Mon, Wed, Sat), 3 attacks a day. A day counts only when all 3 attacks are used.
+  - **Castle Rush / สงครามชิงปราสาท**: every day, 1 attack. Damage is recorded.
+  - **Advent Expedition / กลุ่มนักเดินทางจุติ**: a 2-week cycle (first cycle starts Mon 5 Oct 2026), counted once per cycle in its second week. Attacks stock up by one a day to a cap of 10. Two parts, one run each:
+    - **4 bosses**: attacked at all. Damage recorded per boss.
+    - **God of Destruction / เทพแห่งการทำลาย**: attacked at least 3 times. Damage recorded.
+  - **Check-in / การเช็คชื่อ**: every day.
+- **Misses are judged on attendance only.** A member either took part in a run or missed it. Damage score is recorded for reference but never counts toward warnings.
 - Cadence: officers enter data in a **weekly** batch.
-- Data entry: **leader/officers enter it manually**, plus **screenshot reading** (upload in-game screenshots and pull the numbers out).
+- Data entry: **leader/officers enter it manually**, plus **screenshot reading**: officers upload an in-game screenshot per content, the app reads who took part and their damage score, and an officer confirms before saving.
 - Members mostly check results on their phones after reset or when shared in guild chat (assumed, not confirmed).
 
 ## Capabilities and Constraints
@@ -38,10 +45,12 @@ A private, purpose-built tracker for this guild's own content and rules. It is n
 - **Access:** public read-only link for everyone; only leader/officers sign in to create or edit data.
 - **Performance view:** per-member performance across tracked content, plus a guild-wide overview.
 - **Missed-content checklist:** per-member count of missed content, by content type and time period.
-- **Warnings and kick list:** members are flagged once misses pass an officer-set threshold. Repeat offenders go on a kick-candidate list. The final decision stays with officers.
+- **Warnings and kick list:** members are flagged once their misses in a **single week** reach an officer-set threshold (default 5). Repeat offenders go on a kick-candidate list. The final decision stays with officers.
 - **Bilingual:** Thai and English, with a language switch.
+- **History:** members who leave are kept forever (marked as left, never deleted), with all their entries and warnings.
 - **Scale:** one guild, about 30 members. Multi-guild support is out of scope for now.
-- **Open decisions:** the exact metrics per content type (damage, score, rank, or attendance only); warning threshold defaults and period (week or season); whether past members and history are kept; how far screenshot reading is automated versus officer-confirmed.
+- **Decided:** misses count attendance only; warnings are judged per week; past members are kept forever; screenshot reading per content fills attendance and damage score, and an officer confirms it.
+- **Open decisions:** how many warnings put a member on the kick list (currently 2).
 
 ## Brand Commitments
 

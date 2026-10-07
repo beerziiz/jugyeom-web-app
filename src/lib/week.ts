@@ -16,6 +16,16 @@ export function weekEnd(weekStart: string): string {
   return new Date(Date.parse(weekStart) + 6 * DAY).toISOString().slice(0, 10);
 }
 
+/**
+ * Whether content on a multi-week cycle is entered in this week. It is entered once,
+ * in the last week of each cycle; weekly content is entered every week.
+ */
+export function isCycleEnd(weekStart: string, cycleWeeks: number, cycleStart: string | null): boolean {
+  if (cycleWeeks <= 1 || !cycleStart) return true;
+  const weeks = Math.round((Date.parse(weekStart) - Date.parse(mondayOf(new Date(cycleStart)))) / (7 * DAY));
+  return ((weeks % cycleWeeks) + cycleWeeks) % cycleWeeks === cycleWeeks - 1;
+}
+
 /** Returns a valid Monday for the given query value, or this week's Monday. */
 export function parseWeek(value: string | string[] | undefined): string {
   if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)) {

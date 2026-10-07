@@ -5,6 +5,7 @@ export const contentColors: Record<string, string> = {
   guild_war: "var(--c-guild-war)",
   castle_rush: "var(--c-castle-rush)",
   advent_expedition: "var(--c-advent)",
+  advent_god: "var(--c-advent)",
   checkin_donation: "var(--c-checkin)",
 };
 

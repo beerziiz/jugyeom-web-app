@@ -14,12 +14,21 @@ export type GridContent = {
   name: string;
   hasScore: boolean;
   scoreLabel: string | null;
+  /** Damage fields per member (one per boss); 0 when the content has no score. */
+  scoreParts: number;
   runs: number;
 };
-export type GridEntry = { memberId: number; contentTypeId: number; missed: number; score: number | null };
+export type GridEntry = {
+  memberId: number;
+  contentTypeId: number;
+  missed: number;
+  score: number | null;
+  scoreParts: (number | null)[] | null;
+};
 
-type Cell = { missed: string; score: string };
-type Field = keyof Cell;
+type Cell = { missed: string; scores: string[] };
+/** "missed", or the index of a damage field. */
+type Field = "missed" | number;
 
 const key = (memberId: number, contentId: number) => `${memberId}:${contentId}`;
 const toNumber = (value: string) => {
@@ -33,9 +42,10 @@ function initialCells(members: GridMember[], contents: GridContent[], entries: G
   for (const m of members) {
     for (const c of contents) {
       const e = byKey.get(key(m.id, c.id));
+      const values = c.scoreParts > 1 ? (e?.scoreParts ?? []) : [e?.score ?? null];
       cells[key(m.id, c.id)] = {
         missed: e ? String(e.missed) : "0",
-        score: e?.score != null ? String(e.score) : "",
+        scores: Array.from({ length: c.scoreParts }, (_, i) => (values[i] != null ? String(values[i]) : "")),
       };
     }
   }
@@ -81,14 +91,27 @@ export function WeekGrid({
     return () => window.removeEventListener("beforeunload", warn);
   }, [dirty]);
 
-  // Column order for keyboard movement: each content has "missed" then (optionally) "score".
-  const columns = contents.flatMap((c) =>
-    c.hasScore ? [{ c, field: "missed" as Field }, { c, field: "score" as Field }] : [{ c, field: "missed" as Field }],
-  );
+  // Column order for keyboard movement: each content has "missed" then its damage fields.
+  const columns = contents.flatMap((c) => [
+    { c, field: "missed" as Field },
+    ...Array.from({ length: c.scoreParts }, (_, i) => ({ c, field: i as Field })),
+  ]);
+
+  const withValue = (cell: Cell, field: Field, value: string): Cell =>
+    field === "missed"
+      ? { ...cell, missed: value }
+      : { ...cell, scores: cell.scores.map((v, i) => (i === field ? value : v)) };
+  const valueOf = (cell: Cell, field: Field) => (field === "missed" ? cell.missed : cell.scores[field]);
+  const fieldLabel = (c: GridContent, field: Field) =>
+    field === "missed"
+      ? t.missed
+      : c.scoreParts > 1
+        ? t.part.replace("{n}", String(field + 1))
+        : (c.scoreLabel ?? t.score);
 
   function update(memberId: number, contentId: number, field: Field, value: string) {
     setStatus("idle");
-    setCells((prev) => ({ ...prev, [key(memberId, contentId)]: { ...prev[key(memberId, contentId)], [field]: value } }));
+    setCells((prev) => ({ ...prev, [key(memberId, contentId)]: withValue(prev[key(memberId, contentId)], field, value) }));
   }
 
   // Paste a column of values from a spreadsheet: fill down from this row.
@@ -104,7 +127,7 @@ export function WeekGrid({
         const member = members[rowIndex + i];
         if (!member) return;
         const k = key(member.id, contentId);
-        next[k] = { ...next[k], [field]: value.replace(/,/g, "") };
+        next[k] = withValue(next[k], field, value.replace(/,/g, ""));
       });
       return next;
     });
@@ -129,11 +152,14 @@ export function WeekGrid({
     const payload = members.flatMap((m) =>
       contents.map((c) => {
         const cell = cells[key(m.id, c.id)];
+        const parts = cell.scores.map(toNumber);
+        const filled = parts.filter((v): v is number => v !== null);
         return {
           memberId: m.id,
           contentTypeId: c.id,
           missed: toNumber(cell.missed) ?? 0,
-          score: c.hasScore ? toNumber(cell.score) : null,
+          score: filled.length ? filled.reduce((a, b) => a + b, 0) : null,
+          scoreParts: c.scoreParts > 1 ? parts : null,
         };
       }),
     );
@@ -174,7 +200,7 @@ export function WeekGrid({
               {contents.map((c) => (
                 <th
                   key={c.id}
-                  colSpan={c.hasScore ? 2 : 1}
+                  colSpan={1 + c.scoreParts}
                   className="border-l border-border px-3 pt-2 text-center font-medium"
                   style={{ boxShadow: `inset 0 3px 0 ${contentColor(c.key)}` }}
                 >
@@ -186,20 +212,18 @@ export function WeekGrid({
               </th>
             </tr>
             <tr className="border-b border-border bg-surface-2 text-xs text-muted">
-              {contents.map((c) => [
-                <th key={`${c.id}-m`} className="border-l border-border px-2 pb-2 text-right font-normal">
-                  {t.missed}
-                </th>,
-                c.hasScore && (
-                  <th key={`${c.id}-s`} className="px-2 pb-2 text-right font-normal">
-                    {c.scoreLabel ?? t.score}
-                  </th>
-                ),
-              ])}
+              {columns.map(({ c, field }) => (
+                <th
+                  key={`${c.id}-${field}`}
+                  className={`px-2 pb-2 text-right font-normal ${field === "missed" ? "border-l border-border" : ""}`}
+                >
+                  {fieldLabel(c, field)}
+                </th>
+              ))}
             </tr>
             <tr className="border-b border-border bg-surface-2 text-xs text-muted">
               {contents.map((c) => (
-                <th key={`${c.id}-r`} colSpan={c.hasScore ? 2 : 1} className="border-l border-border px-2 pb-2 font-normal">
+                <th key={`${c.id}-r`} colSpan={1 + c.scoreParts} className="border-l border-border px-2 pb-2 font-normal">
                   <label className="flex items-center justify-end gap-2">
                     <span>{t.runsHeld}</span>
                     <input
@@ -238,14 +262,14 @@ export function WeekGrid({
                   {columns.map(({ c, field }, colIndex) => (
                     <td
                       key={`${c.id}-${field}`}
-                      className={`px-1 py-1 ${field === "missed" ? "w-16 border-l border-border" : "w-32"}`}
+                      className={`px-1 py-1 ${field === "missed" ? "w-16 border-l border-border" : c.scoreParts > 1 ? "w-24" : "w-32"}`}
                     >
                       <input
                         data-cell={`${rowIndex}-${colIndex}`}
                         inputMode={field === "missed" ? "numeric" : "decimal"}
-                        aria-label={`${m.ign} ${c.name} ${field === "missed" ? t.missed : (c.scoreLabel ?? t.score)}`}
+                        aria-label={`${m.ign} ${c.name} ${fieldLabel(c, field)}`}
                         title={field === "missed" && (toNumber(cells[key(m.id, c.id)].missed) ?? 0) > runsOf(c.id) ? t.overRuns : undefined}
-                        value={cells[key(m.id, c.id)][field]}
+                        value={valueOf(cells[key(m.id, c.id)], field)}
                         onChange={(e) => update(m.id, c.id, field, e.target.value)}
                         onFocus={(e) => e.target.select()}
                         onPaste={(e) => handlePaste(e, rowIndex, c.id, field)}

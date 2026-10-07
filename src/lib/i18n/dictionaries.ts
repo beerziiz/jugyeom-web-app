@@ -91,6 +91,8 @@ const en = {
     pasteHint: "Tip: paste a column of numbers from a sheet into the first score cell to fill down.",
     runsHeld: "Runs held",
     overRuns: "Missed is more than runs held.",
+    part: "Boss {n}",
+    nextWeek: "{names}: entered next week ({date}), when the 2-week cycle ends.",
   },
 };
 
@@ -183,6 +185,8 @@ const th: typeof en = {
     pasteHint: "ทิป: วางตัวเลขทั้งคอลัมน์จากชีตลงช่องคะแนนแรก ระบบจะเติมลงให้ทุกแถว",
     runsHeld: "จำนวนรอบที่จัด",
     overRuns: "จำนวนที่ขาดมากกว่ารอบที่จัด",
+    part: "บอส {n}",
+    nextWeek: "{names}: กรอกสัปดาห์หน้า ({date}) ตอนจบรอบ 2 สัปดาห์",
   },
 };
 
