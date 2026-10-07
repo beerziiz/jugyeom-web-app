@@ -1,11 +1,11 @@
 "use client";
 
 import { useMemo, useState, type ChangeEvent } from "react";
-import { ImageUp, LoaderCircle, X } from "lucide-react";
+import { CalendarDays, ImageUp, LoaderCircle, X } from "lucide-react";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { ADVENT_GOD_ATTACKS, GUILD_WAR_ATTACKS, GUILD_WAR_DAYS } from "@/lib/content";
 import { field, primaryButton, quietButton, secondaryButton } from "@/lib/ui";
-import { weekEnd } from "@/lib/week";
+import { formatDay, weekEnd } from "@/lib/week";
 import { readScreen, saveDayMarks, type DayMark, type ReadRow } from "./screenshot-actions";
 
 /** A change the reader asks the grid to make. `part` is the damage field index. */
@@ -242,14 +242,21 @@ export function ScreenshotReader({
         {DAILY.includes(screen) && (
           <label className="flex flex-col gap-1 text-sm">
             <span className="text-muted">{t.day}</span>
-            <input
-              type="date"
-              min={weekStart}
-              max={end}
-              value={day}
-              onChange={(e) => e.target.value && reset({ day: e.target.value })}
-              className={`${field} py-1.5 tabular-nums`}
-            />
+            {/* The native field shows the browser's own date format, so it sits invisibly
+                over a dd/mm/yyyy label and only supplies the picker. */}
+            <span className={`${field} relative flex items-center gap-2 py-1.5 tabular-nums`}>
+              {formatDay(day)}
+              <CalendarDays className="size-4 text-muted" aria-hidden />
+              <input
+                type="date"
+                min={weekStart}
+                max={end}
+                value={day}
+                onChange={(e) => e.target.value && reset({ day: e.target.value })}
+                onClick={(e) => e.currentTarget.showPicker?.()}
+                className="absolute inset-0 cursor-pointer opacity-0"
+              />
+            </span>
           </label>
         )}
         <label className={`${primaryButton} cursor-pointer ${blocked || progress ? "pointer-events-none opacity-50" : ""}`}>

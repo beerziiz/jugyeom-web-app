@@ -51,3 +51,9 @@ export function formatWeek(weekStart: string, locale: "th" | "en"): { start: str
 export function weekDays(weekStart: string): string[] {
   return Array.from({ length: 7 }, (_, i) => new Date(Date.parse(weekStart) + i * DAY).toISOString().slice(0, 10));
 }
+
+/** "2026-10-06" → "06/10/2026". */
+export function formatDay(day: string): string {
+  const [y, m, d] = day.split("-");
+  return `${d}/${m}/${y}`;
+}
