@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/directions.html"
+        ],
+        "createdAt": "2026-10-06T11:57:13.866Z",
+        "reason": "Claude: direction-round mockup that deliberately renders five alternative visual worlds (Kanit, Mitr, Prompt, Noto Sans Thai); not shipped UI"
+      }
+    ]
+  }
+}
